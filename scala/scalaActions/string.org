@@ -13,7 +13,7 @@ Fred is 34 years old.
 #+END_SRC
 ** s和raw格式化区别
 s,raw 实际上是个方法 
-#+BIGIN_SRC java
+#+BEGIN_SRC java
 
 scala> s"foo\nbar"
 res9: String =
