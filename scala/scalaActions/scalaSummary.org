@@ -1,0 +1,64 @@
+* 纪要
+** 结构
+*** for是如何被解释的
+ P64页
+*** for/yield 原理
+ P71页
+*** switch使用
+  见P78
+  switch模式 见 P89
+  给模式添加变量 P90
+  匹配使用Some 和 None见P91
+  给case语句添加if表达式见: P93
+*** 创建自定义控制结构
+ P100
+** 类
+*** 构造函数
+**** scala 构造函数原理
+    见P105
+**** 为case 类生成辅助函数
+     P113
+     P138
+**** 单例: 定义私有的主构造函数
+     P115
+**** 设置构造函数参数默认值
+     P117
+ #+BEGIN_SRC java
+  class Socket (val timeout:Int = 10000);
+ #+END
+
+*** 设置未初始化值
+ P125
+ var address = None:Option[Address];
+*** 继承类时处理构造函数参数
+    P127
+*** 方法
+**** 作用域
+     P148
+**** 定义一个返回多个值Tuples方法
+     P15
+**** 创建接受变参的方法
+     P162
+     def printAll(strings :String*);
+     printAll(list:_*);
+     printAll("aa","bb");
+     list可为: Array,List,Seq,Vector.
+
+** 对象
+*** 对象强制转换
+    val recogizer = cm.lookup("recognizer").asInstanctOf[Recognizer];
+    val a = 10;
+    val b = a.asInstanceOf[Long];
+    P173
+*** 确定对象所属的类
+    P174
+*** 使用Object启动一个应用 ,即 main()
+    P175
+*** 不使用new关键字创建对象实例
+P183
+*** 在scala中用apply方法实现工厂方法
+    P187
+** 包和导入
+    
+    
+

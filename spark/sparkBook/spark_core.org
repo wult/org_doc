@@ -1,0 +1,3 @@
+* Spark核心原理
+** Spark消息通信架构
+   Master继承于ThreadSafeRpcEndpoint,其启动可见Master.main方法.具体Master,Worker可见书P91页

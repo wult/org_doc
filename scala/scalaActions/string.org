@@ -1,0 +1,28 @@
+* scala字符串文档 
+** 字符串打印 
+#+BEGIN_SRC java
+scala> val name="Fred"
+name: String = Fred
+
+scala> val age = 33;
+age: Int = 33
+
+scala> println(s"$name is ${age+1} years old.");
+Fred is 34 years old.
+
+#+END_SRC
+** s和raw格式化区别
+s,raw 实际上是个方法 
+#+BIGIN_SRC java
+
+scala> s"foo\nbar"
+res9: String =
+foo
+bar
+
+scala> raw"foo\nbar"
+res10: String = foo\nbar
+
+
+#+END
+
