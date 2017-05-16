@@ -15,7 +15,7 @@
 ** 类
 *** 构造函数
 **** scala 构造函数原理
-    见P105
+     见P105
 **** 为case 类生成辅助函数
      P113
      P138
@@ -25,7 +25,7 @@
      P117
  #+BEGIN_SRC java
   class Socket (val timeout:Int = 10000);
- #+END
+ #+END_SRC
 
 *** 设置未初始化值
  P125
