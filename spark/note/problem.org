@@ -1,0 +1,5 @@
+**  高并发下 AsynchronousListenerBus
+	设置: --conf spark.scheduler.listenerbus.eventqueue.size=100000
+	源代码中默认为10000,见:org.apache.spark.internal.config.LISTENER_BUS_EVENT_QUEUE_SIZE
+** 修改 scheduler日志级别
+        log4j.logger.org.apache.spark.scheduler=ERROR

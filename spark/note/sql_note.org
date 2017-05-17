@@ -1,0 +1,36 @@
+* relation流程
+** BroadcastExchangeExec.relationFuture() 
+   
+** HashedRelationBroadcastMode->transform()
+
+
+
+
+* spark sql 解析执行杂记
+** SparkPlanner类的strategies决定是使用哪种 join,如broadcastJoin还是hashJoin
+** SparkPlan类的doExecute()方法执行rdd任务 
+** UnsafehashedRelation类执行过程记录:
+*** SparkPlanner类的strategies的JoinSelection的canBroadcast决定其是否使用BroadcastHashJoinExec
+*** case class BroadcastHashJoinExec.doExecute()方法中
+**** buildPlan.executeBroadcast() 
+***** prepare(),waitForSubqueries(),query()
+***** prepare()-> doPrepare() -> relationFuture()   (driver 执行)
+****** relation = mode.transform(input)
+      
+***** 调用HashedRelation(...)中有方法判断决定使用LongHashedRelation(...)还是UnsafehashedRelation(...)
+**** streamedPlan.execute().mapPartitions{}
+**** broadcastRelation.value.asReadOnlyCopy(); join(...)
+**** join()方法中有多种join方式,如:innerJoin,outerJoin...
+#+BEGIN_QUOTE
+    以innerJoin(streamIter: Iterator[InternalRow],hashRelation:HashedRelation)为例子:
+    streamIter.flatMap{srow=>
+        srow.flatMap{...};
+    }
+#+END_QUOTE
+
+
+
+* QueryExecution
+** lazy val executedPlan: SparkPlan = prepareForExecution(sparkPlan) 
+*** 其中调用 EnsureRequirements(...);直接调用 EnsureRequirements.apply(..)方法,再调用 ShuffleExchange
+*** ShuffleExchange.doExecute()
