@@ -1,0 +1,68 @@
+** 匿名函数
+*** 定义
+    将匿名函数作为变量 传入把函数作为参数的方法中，或者赋值给一个变量 
+*** 例子
+#+BEGIN_QUOTE
+scala> val x = List.range(1,10);
+scala> val evens = x.filter((i:Int)=>i%2==0)
+evens: List[Int] = List(2, 4, 6, 8)
+
+#+END_QUOTE
+其中 (i:Int) => i%2 == 0 就是匿名函数
+也可以写为 val evens = x.filter(_%2==0)
+*** 讨论
+=> 符号可以看成为转换器,因为表达式转变了符号左边参数列表,应用符号右边算法生成新的结果
+** 将函数作为变量 
+*** 说明
+将函数作为变量传递,就像面向对象语言中传递String,Int和其他类型变量 一样
+*** 例子
+#+BEGIN_QUOTE
+scala> val double=(i:Int)=>{i*2};
+double: Int => Int = $$Lambda$1165/831404354@1c4057f9
+
+scala> double(2);
+res0: Int = 4
+
+scala> val list = List.range(1,5);
+list: List[Int] = List(1, 2, 3, 4)
+
+scala> list.map(double);
+res1: List[Int] = List(2, 4, 6, 8)
+
+#+END_QUOTE
+*** 不同方式写法
+显示声明返回值
+#+BEGIN_QUOTE
+val f:(Int)=>Boolean=i=>{i%2 == 0}
+val f:Int=>Boolean=i=>{i%2==0}
+#+END_QUOTE
+
+含多个参数写法
+#+BEGIN_QUOTE
+//简写
+val add =(x:Int,y:Int) =>{x+y}
+val add =(x:Int,y:Int)=>x+y
+//严格写法
+val add:(Int,Int) =>Int=(x,y)=>{x+y}
+val add:(Int,Int) =>Int=(x,y)=>x+y
+#+END_QUOTE
+*** 使用方法区别
+#+BEGIN_QUOTE
+//modeMethod是类的方法 
+def modeMethod(i:Int) = i%2 ==0
+var list = List.range(1,10)
+list.filter(modeMethod)
+//modeFunction是赋给变量的函数,是一个实例
+val modeFunction = (i:Int) => i%2 ==0
+list.filter(modeFunction)
+#+END_QUOTE
+*** 将已存在函数方法赋给函数变量
+#+BEGIN_QUOTE
+val c = scala.math.cos _
+c(0)
+val p = scala.math.pow(_,_)
+p(scala.math.E,2)
+#+END_QUOTE
+** 定义接受简单函数作为参数的方法
+
+
