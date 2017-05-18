@@ -1,0 +1,9 @@
+* spark DAG
+** EventLoop
+*** EventLoop 内部维护LinkedBlockingDeque,LinkedBlockingDeque基于链表实现双端阻塞队列,支持双端同时操作,在指定容量并且容量已满时，支持阻塞.
+#+BEGIN_QUOTE
+ eventThread中循环消费eventQueue中存储的事件,消费方法为onReceive
+ DAGScheduler对事件分类,其父类为DAGSchedulerEvent,也是EventLoop存储类型,其子类有: JobSubmitted,MapStageSubmitted...
+ *EventLoop* 实现类有: *DAGSchedulerEventProcessLoop* 
+ 
+#+END_QUOTE
