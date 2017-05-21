@@ -1,5 +1,73 @@
 * Spark内存管理 
 ** 概念
-| 概念          | 作用 |
-|---------------+------|
-| MemoryManager |      |
+| 概念                 | 作用                                                                                                                                                 |
+|----------------------+------------------------------------------------------------------------------------------------------------------------------------------------------|
+| MemoryManager        | 管理CoarseGrainedExecutorBackend进程内存(Executor),将其内存分为storage,execution和other三部分,CoarseGrainedExecutorBackend上运行的Task共享这部分内存 |
+| TaskMemoryManager    | 内部使用MemoryManager,管理所有Task的execution这部分内存                                                                                              |
+| MemoryStore          | 主要作用为管理内存中的block,即管理storage这部分内存                                                                                                  |
+| MemoryPool           | 用于记录storage,execution内存使用情况,对应的子类分别为StorageMemoryPool,ExecutionMemoryPool                                                          |
+| StaticMemory         | spark1.6 之前的内存管理器                                                                                                                            |
+| UnifiedMemoryManager | spark1.6 新加入的内存管理器，统一管理器,内存分界不固定,可以互借用                                                                                                               |
+#+BEGIN_QUOTE
+1. MemoryManager 方法的主要功能是管理内存，acquire*和release*.
+2. 从方法名判断,MemoryManager将内存分为storage,execution,unroll三部分管理
+3. 三个配置和Tungsten相关,Tungsten是spark执行引擎最大的改动,关于ON_HEAP和OFF_HEAP可以见:MemoryManager的tungstenMemoryMode方法
+注意配置: spark.memory.offHeap.enabled
+
+#+END_QUOTE
+** 内存模型
+| 名称      | 作用                                                                                         |
+|-----------+----------------------------------------------------------------------------------------------|
+| Storage   | 用于cache block ，保存broadcast数据,以及发送large task result                                |
+| Unroll    | Unroll占用的是Storage内存,Unroll指BlockManager收到的iterator形式的数据，最终存放到内存的过程 |
+| Execution | 保存shuffles,joins,sorts,aggregations等操作的中间数据                                        |
+| other     | 剩余部分，用于创建对象以及spark中的元数据等开销                                                                   |
+
+on-heap,off-heap管理方式:
+| 名称                              | 作用                              |
+|-----------------------------------+-----------------------------------|
+| on-heap                           | 使用JVM管理对象                   |
+| off-heap[tungsten memory相关优化] | 手动管理 ,减小JVM对象空间及gc开销 |
+
+off-heap使用sun.misc.Unsafe直接向OS申请释放内存,具体实现意义在Tungsten相关部分介绍
+** UnifiedMemoryManager
+*** 内存借用策略
+storage ,execution内存可以互相借用,如果execution占用storage内存,且storage内存也不足,execution并不会归还这部分占用的内存,反之,storage会归还占用内存
+**** 策略原因
+     1. 数据清除的开销
+        驱逐storage内存的开销取决于storage level,MEMORY_ONLY可能最为昂贵,因为需要重新计算,MEMORY_AND_DISK_SER正好相反,只涉及磁盘IO，溢写execution内存到磁盘斩开销不昂贵
+因为execution存储数据紧凑(compact format)，序列化开销低,清除的storage内存可能不会被用到,可以预见驱逐execution内存是必然会再被读取到内存,频繁驱逐execution内存将导致
+昂贵的开销.
+     2. 实现的复杂度
+        storage驱逐容易实现,需要使用已有的方法,drop掉block,execution复杂的多,execution以page单位管理这部分内存,并且确保相应的操作至少有one page,如果把这one page
+内存驱逐了,操作会处于饥饿状态,还需要考虑execution内存驱逐的情况下，等待cache的block如何处理
+**** 统一内存管理 
+UnifiedMemroyManager首先会预留出300M内存，剩下的记作MaxMemory
+** BytesToBytesMap
+** 简介
+BytesToBytesMap 是spark实现HashMap,降低JVM对象和GC的开销.
+RDD(K,V)相关的操作,例如aggregate
+*** longArray
+    longArray是long型数组
+#+BEGIN_SRC java
+  /**
+   * {@code i} 存储Record
+   * {@code 2*i} 存储fullKeyAddress
+   * {@code 2*i+1} 存储hashcode
+   */
+  @Nullable private LongArray longArray;
+#+END_SRC
+| fullKeyAdress | pageNum       | Record所在的page信息,仅对on-heap有用,off-heap不需要关心page,只需要内存地址可获得记录 |
+|               | OffsetAddress | Record内存地址                                                                       |
+| hashcode      |               | Record对应的hashcode,使用key相关信息生成(keyBase,keyOffset,keyLength)                           |
+*** dataPages
+    记录申请的memoryBlock,每一个MemoryBlock被称为一个Page.
+*** 插入及读取数据
+    读取数据流程如下:
+    1. 根据Key相关信息计算hashcode,hashcode与容量 得到存储Record地址i;
+    2. 如LongArray中介绍, 2*i存放的是fullKeyAddress
+    3. 判断fullKeyAddress处的值,若为0则表示 i 这个位置没有值,返回location对象 ,Location包含了读取及插入i处的数据的操作
+    4. 若2*i处不为0,表示i位置已插入值,接下来判断2*i+1处存储的hascode和生成的hashcode是否相等,以及key相关的信息是否相等.
+    5. 若4中判断 相等,找到对应位置Location对象,可以插入及读取数据,BytesToBytesMap不支持删除数据
+    6. 若4判断不相等,说明发生了hash冲突, BytesToBytesMap使用开放定址法，即i+1探测下个位置,重复步骤2
+    7. 最后,若是首次插入数据,插入当前Page,根据pageNum和内存地址OffsetAddress生成fullKeyAddress

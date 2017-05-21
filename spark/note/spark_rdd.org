@@ -1,0 +1,19 @@
+* RDD
+** partition
+*** 概要
+RDD 主要是由Dependdency,partition,Partitioner组成.一份待处理的原始数据会被按照相应的逻辑(jdbc或hdfs的split逻辑)切分面m份,每份数据对应到RDD中的一个Partition,Parents
+的数据决定了task数量,影响着程序的并行度.
+*** Partitioner定义
+    查看源代码,我们关注其两个子类:JdbcPartition和HadoopPartition
+    重点关注: getPartitions和compute方法
+    并发数的修改，通过配置参数来改变spark.default.parallelism，如果是sql的话，可能通过修改spark.sql.shuffle.partitions来修改
+    Partitioner记录了数据split的逻辑,Dependency记录的是transformation操作过程中的Partition演化,Partitioner是shuffle过程中key重分区时的策略,即计算key决定k-v属
+于哪个分区
+    使用Partitioner必须满足两个前提，1、RDD是k-v形式，如RDD[(K, V)]，2、有shuffle操作。常见的触发shuffle的操作有： 
+1.combineByKey(groupByKey, reduceByKey , aggregateByKey) 
+2. sortByKey 
+3. join(leftOuterJoin, rightOuterJoin, fullOuterJoin) 
+4. cogroup 
+5. repartition(coalesce(shuffle=true)) 
+6. groupWith 
+7. repartitionAndSortWithinPartitions
