@@ -64,5 +64,24 @@ val p = scala.math.pow(_,_)
 p(scala.math.E,2)
 #+END_SRC
 ** 定义接受简单函数作为参数的方法
+   通用语法: paramterName: (ParamterType(s)) =>returnType
+   如:
+   executeFunction(f:(String) =>Int)
+** 部分函数
+   val sum = (a:Int,b:Int,c:Int) =>a+b+c;
+   val f = sum(1,2,_:Int)
+   f(3)
+** 创建返回函数的函数
+#+BEGIN_SRC
+scala> def saySomething(prefix:String) = (s:String) =>{
+     | prefix + " " +s
+     | }
+scala> val sayHello = saySomething("Hello");
+sayHello: String => String = $$Lambda$1134/1859216983@1442f788
 
+scala> sayHello("aaaa");
+res3: String = Hello aaaa
 
+#+END_SRC
+
+   

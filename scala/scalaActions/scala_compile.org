@@ -1,0 +1,23 @@
+* scala 编译教程
+** 建立类
+#+BEGIN_SRC java
+object Main{
+       def main(args :Array[String]){
+        for(i<- 1 to 10)
+                println(i);
+       }
+}
+#+END_SRC
+** 编译
+#+BEGIN_SRC 
+scalac Main.scala
+#+END_SRC
+** 运行
+#+BEGIN_SRC 
+scala Main
+#+END_SRC
+** 查看解释过程
+#+BEGIN_SRC 
+scalac -Xprint:parse Main.scala
+#+END_SRC
+

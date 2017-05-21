@@ -1,9 +1,62 @@
 * spark DAG
-** EventLoop
-*** EventLoop 内部维护LinkedBlockingDeque,LinkedBlockingDeque基于链表实现双端阻塞队列,支持双端同时操作,在指定容量并且容量已满时，支持阻塞.
-#+BEGIN_QUOTE
- eventThread中循环消费eventQueue中存储的事件,消费方法为onReceive
- DAGScheduler对事件分类,其父类为DAGSchedulerEvent,也是EventLoop存储类型,其子类有: JobSubmitted,MapStageSubmitted...
- *EventLoop* 实现类有: *DAGSchedulerEventProcessLoop* 
+** SubmitJob
+*** EventLoop
+**** EventLoop 内部维护LinkedBlockingDeque,LinkedBlockingDeque基于链表实现双端阻塞队列,支持双端同时操作,在指定容量并且容量已满时，支持阻塞.
+ #+BEGIN_QUOTE
+  eventThread中循环消费eventQueue中存储的事件,消费方法为onReceive
+  DAGScheduler对事件分类,其父类为DAGSchedulerEvent,也是EventLoop存储类型,其子类有: JobSubmitted,MapStageSubmitted...
+  *EventLoop* 实现类有: *DAGSchedulerEventProcessLoop*  *DAGSchedulerEventProcessLoop* 类是DAGScheduler的内部类
  
+ #+END_QUOTE
+**** SubmitJob
+ 1. DAGScheduler.run(...)->submitJob
+ 2. eventProcessLoop.post(JobSubmitted(...));
+** 划分Stage
+*** Stage介绍
+    Stage 有两个属性rdd , parents. 分别记录RDD,父Stage信息
+| stage           | 差异属性                          | 作用                   |
+|-----------------+-----------------------------------+------------------------|
+| ShuffleMapStage | shuffleDep:ShuffleDependecy       | 保存Dependency信息     |
+| ResultStage     | func:(TaskContext,Iterator[_])=>_ | 保存action对应处理函数 |
+
+*** handleJobSubmitted方法
+1. 调用 newResultStage方法,划分DAG成为stage.
+2. 创建ActiveJob,并添加对应集合管理
+3. 调用submitStage,submitWaitingStages提交Stage.
+***** 划分Stage
+      DAGScheduler的newResultStage方法划分DAG成为Stage,newResultStage方法依次调用 getParentStageAndId,getParentStage方法
+** SubmitStage
+   完成Stage划分后，DAGScheduler的handleJobSubmitted方法提交 Stage
+*** submitStage方法
+    1. 根据jobId,判断stage所属的Job是否active
+    2. 判断stage状态,是否为waiting,running或failed
+    3. stage是否还有父stage没有提交，如果有,提交父Stage,并把Stage加到waitingStage,否则提交stage
+#+BEGIN_QUOTE
+其中getMissingParentStages方法中的mapStage.isAvailable判断父节点是否执行完 。
+  /**
+    *  ShuffleMapStage是否执行完毕
+    *  当全部partitions的shuffle outputs存在则表示执行完毕
+    *  该方法和outputLocs.contains(Nil)等价
+    */
+  def isAvailable: Boolean = _numAvailableOutputs == numPartitions
+
+  每执行完一个Task会对变量_numAvailableOutput加1,直至所有Task执行完。
+
 #+END_QUOTE
+** SubmitTask
+*** Task介绍
+Task 是执行计算单元Executor调用Task对象的runTask方法完成计算.
+Task有两个子类,和Stage对应关系如下:
+| Task           | 对应的Stage     |
+|----------------+-----------------|
+| ShuffleMapTask | ShuffleMapStage |
+| ResultTask     | ResultStage     |
+*** submitMissingTasks
+    当提交的Stage没有父Stage或父Stage已执行完毕时,调用submitMissingTasks方法.
+#+BEGIN_QUOTE
+1. 获取preferred location
+2. broadcast taskBinary
+3. Stage 转为 Task
+4. send Task
+#+END_QUOTE
+
