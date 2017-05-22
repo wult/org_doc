@@ -3,6 +3,7 @@
 *** 概要
 RDD 主要是由Dependdency,partition,Partitioner组成.一份待处理的原始数据会被按照相应的逻辑(jdbc或hdfs的split逻辑)切分面m份,每份数据对应到RDD中的一个Partition,Parents
 的数据决定了task数量,影响着程序的并行度.
+
 *** Partitioner定义
     查看源代码,我们关注其两个子类:JdbcPartition和HadoopPartition
     重点关注: getPartitions和compute方法
@@ -17,3 +18,11 @@ RDD 主要是由Dependdency,partition,Partitioner组成.一份待处理的原始
 5. repartition(coalesce(shuffle=true)) 
 6. groupWith 
 7. repartitionAndSortWithinPartitions
+*** Task
+spark规定最后一个Stage的Task类型为resultTask,因为需要获取结果,前面所有Stage的Task都是shuffMapTask.
+**** ShuffleMapTask:
+     1. compute计算partition
+     2. shuffleWriter写入具体文件
+     3. 将MapStatus发送给Driver MapOutputTracker
+**** ResultTask
+     根据前面Stage执行结果进行shuffle后产生整个job最后的结果
