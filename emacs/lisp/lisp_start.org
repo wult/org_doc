@@ -1,0 +1,13 @@
+* 进入*scratch*
+  M-x scratch
+  M-x lisp-interaction-mode
+* defun
+** 标准格式 
+(defun function-name (arguments ...)
+    "optional-document..."
+    (interactive argument-passing-info)  ;optional
+    body...
+)
+** let 表达式
+    let 是局部变量
+    格式: (let varlist body)
