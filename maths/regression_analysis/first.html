@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2017-06-11 日 17:06 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="wlt" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2013 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        displayAlign: "center",
+        displayIndent: "0em",
+
+        "HTML-CSS": { scale: 100,
+                        linebreaks: { automatic: "false" },
+                        webFont: "TeX"
+                       },
+        SVG: {scale: 100,
+              linebreaks: { automatic: "false" },
+              font: "TeX"},
+        NativeMML: {scale: 100},
+        TeX: { equationNumbers: {autoNumber: "AMS"},
+               MultLineWidth: "85%",
+               TagSide: "right",
+               TagIndent: ".8em"
+             }
+});
+</script>
+<script type="text/javascript"
+        src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML"></script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org91b81dc">1. 回归分析</a>
+<ul>
+<li><a href="#org5867e5f">1.1. 概述</a></li>
+<li><a href="#org614f403">1.2. 拟合方法</a></li>
+<li><a href="#org7b5a32c">1.3. 模型拟合</a></li>
+</ul>
+</li>
+<li><a href="#org03c6869">2. 简单线性回归</a>
+<ul>
+<li><a href="#org973240b">2.1. 协方差与相关系数</a></li>
+<li><a href="#org449ab82">2.2. 简单线性回归模型</a></li>
+<li><a href="#org0f17884">2.3. 参数估计</a></li>
+<li><a href="#org9eaa890">2.4. 假设检验</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org91b81dc" class="outline-2">
+<h2 id="org91b81dc"><span class="section-number-2">1</span> 回归分析</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-org5867e5f" class="outline-3">
+<h3 id="org5867e5f"><span class="section-number-3">1.1</span> 概述</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+  变量之间的关系可以表示 为方程或模型的形式，将 <b>响应变量</b> 或 <b>因变量</b> 与一个或多个 <b>解释变量</b> 或 <b>预测变量</b> 联系起来 ，如我们想知道香烟的消费量是否与社会经济变量和人口统计学变量有关,那响应变量 是香烟的消费量,解释变量或预测变量是一些社会经济变量和人口统计学变量
+      用Y表示响应变量，用\(X_{1},X_{2},\cdots,X_{p}\)表示预测变量,其中p是预测变量个数,公式如下: 
+\[Y=f(X_{1},X_{2},\cdots,X_{p})+\epsilon\]
+其中\(\epsilon\)是随机误差，代表近似过程中产生的偏差,最简单情形为:
+\[Y=\beta_{0}+\beta_{1}X_{1}+\beta_{2}X_{2}+\cdots+\beta_{p}X_{p}+\epsilon\]
+其中\(\beta_{1},\beta_{2},\cdots,\beta_{p}\)称为 <b>回归系数</b> ,\(\beta_{0}\)称为 <b>截距</b>,它们是未知常数,称为模型的 <b>回归参数</b> ,这些参数可由数据确定(估计),通常希腊字母表示未知参数
+解释变量或预测变量也可以称为 <b>独立变量</b>, <b>协变量</b> ,*回归变量* 或 因素.
+      仅包含一个预测变量的称: <b>简单回归方程</b>,包含多于一个预测变量的方程称为 <b>多元回归方程</b> .
+      只有一个 <b>响应变量</b> 的回归分析称为 <b>单变量回归</b> ,一个以上的称 <b>多变量回归</b>.
+</p>
+</div>
+</div>
+<div id="outline-container-org614f403" class="outline-3">
+<h3 id="org614f403"><span class="section-number-3">1.2</span> 拟合方法</h3>
+<div class="outline-text-3" id="text-1-2">
+<p>
+利用数据估计模型参数称为 <b>参数估计</b> 或 <b>模型拟合</b>,最常见是 <b>最小二乘法</b> ,其他方法还有: 加权最小二乘法，最大似然估计法，岭回归法,主成分分析法
+</p>
+</div>
+</div>
+<div id="outline-container-org7b5a32c" class="outline-3">
+<h3 id="org7b5a32c"><span class="section-number-3">1.3</span> 模型拟合</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+   利用估算方法和收集到的数据进行回归参数估计,回归分析方程估计可以写成:
+\[\hat{Y}=\hat{\beta}_{0}+\hat{\beta}_{1}X_{1}+\cdots+\hat{\beta}_{p}X_{p}\]
+参数上方的记号"^"表示该参数的估计, \(\hat{Y}\)读作Y-hat,称为 <b>似合值</b> .利用上面的公式 可以对数据中的n个观测计算n个拟合值，第i个拟合值\(\hat{y}\)是
+\[\hat{Y}=\hat{\beta}_{0}+\hat{\beta}_{1}X_{i1}+\hat{\beta}_{2}X_{i2}+\cdots++\hat{\beta}_{p}X_{ip} ,  i = 1,2,\cdots,n,\] 
+其中，\(x_{i1},x_{i2},\cdots,x_{ip}\)是第i个观测中p个预测的变量的值,\(\hat{\beta}\)称为预测值
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org03c6869" class="outline-2">
+<h2 id="org03c6869"><span class="section-number-2">2</span> 简单线性回归</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-org973240b" class="outline-3">
+<h3 id="org973240b"><span class="section-number-3">2.1</span> 协方差与相关系数</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+见P26,我们希望度量Y和X之间关系方向和强度,于是引入 <b>协议差</b> 和 <b>相关系数</b> 两个工具
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">观测序号</th>
+<th scope="col" class="org-left">响应变量Y</th>
+<th scope="col" class="org-left">预测变量X</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">1</td>
+<td class="org-left">y1</td>
+<td class="org-left">x1</td>
+</tr>
+
+<tr>
+<td class="org-left">2</td>
+<td class="org-left">y2</td>
+<td class="org-left">x2</td>
+</tr>
+
+<tr>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">&#x2026;</td>
+<td class="org-left">&#x2026;</td>
+</tr>
+
+<tr>
+<td class="org-left">n</td>
+<td class="org-left">yn</td>
+<td class="org-left">xn</td>
+</tr>
+</tbody>
+</table>
+
+<p>
+  在Y对X散点图上,过\(\overline{x}\)作一条垂线，过\(\overline{y}\)过一条水平线
+\[\overline{y}=\frac{\sum_{i=1}^{n} y_{i}}{n}, \overline{x}=\frac{\sum_{i=1}^{n}x_{i}}{n}\]
+分别为Y,X的样本均值
+定义Y和X <b>协方差</b> 为:
+\[ Cov(Y,X) = \frac{\sum_{i=1}^{n}(y_i-\overline{y})(x_{i}-\overline{x})}{n-1} \]
+其符号反映了Y和X线性关系的方向，如果Cov(Y,X)&gt;0,则Y和X关系为正,如果Cov(Y,X)&lt;0，则Y和X关系为负,但是协方差所度量影响较大,在计算协方差前，对数据进行标准化,
+Cov(Y,X)受度量单位影响大,不能反应变量之间的线性强度.在计算协议差之前，要对数据进行标准化, 对Y数据标准化是指对每个观测值\(y_{i}\)减去均值\(\overline{y}\),再除以标准差,即
+\[z_{i}=\frac{y_{i}-\overline{y}}{s_y}\]
+</p>
+
+<p>
+其中
+</p>
+\begin{equation}
+s_y = \sqrt{\frac{\sum_{i=1}^{n}(y_i-\overline{y})^2}{n-1}}
+\end{equation}
+
+<p>
+是Y的 <b>样本标准差</b> ,同样对X,Y经标准化后再进行算协方差，就是Y和X的 <b>相关系数</b> :
+</p>
+\begin{equation}
+Cor(Y,X)=\frac{1}{n-1}\sum_{i=1}^{n}\left(\frac{y_{i}-\overline{y}}{s_{y}}\right)\left(\frac{x_{i}-\overline{x}}{s_{x}}\right).
+\end{equation}
+<p>
+<b>相关系数</b> 等价公式有:
+</p>
+\begin{eqnarray}
+Cor(Y,X) & = &  - \frac{Cov(Y,X)}{S_{y}S_{x}} \\
+         & = & \frac{\sum(y_{i}-\overline{y})(x_{i}-\overline{x})}{\sqrt{\sum(y_{i}-\overline{y})^2\sum(x_{i}-\overline{x})^2}}
+\end{eqnarray}
+<p>
+<b>相关系数</b> 具有对称性即 Cor(Y,X) = Cor(X,Y)
+\[ -1 \leq Cor(Y,X) \leq 1 \]
+相关系数成为度量Y和X之间线性关系与强度的重要工具，越靠近1或-1,说明Y和X之间的线性关系越强，Cor(Y,X)符号反映Y和X之间线性关系的方向，当Cor(Y,X)&gt;0说明Y和X是正相关,否则是负相关
+当Cor(Y,X)=0不意味Y和X没有相关性，只是他们之间没有线性相关性.P24
+</p>
+</div>
+</div>
+<div id="outline-container-org449ab82" class="outline-3">
+<h3 id="org449ab82"><span class="section-number-3">2.2</span> 简单线性回归模型</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+   响应变量 Y 与预测变量 X之间的关系可以用如下线性模型表示:
+\[Y = \beta_{0}+\beta_{1}X+\epsilon\]
+其中\(\beta_{0}\)是 <b>常数项</b> ,\(\beta_{1}\)是模型的 <b>回归系数</b> 它们都是常数，称为模型参数, \(\epsilon\)是 <b>随机扰动或误差</b> 也叫 <b>随机误差</b> ,不再包含Y与X之间的关系信息
+回归系数\(\beta_{1}\)称为 <b>斜率</b> \(\beta_{0}\)称为 <b>截距</b> 是当X=0时,Y的值
+每个观测都可以写为:
+\[y_{i} = \beta_{0}+\beta_{1}x_{i}+\epsilon_{i}, i = 1,2,\cdots,n.\]  
+其中\(y_{i}\)是响应变量Y的第i个观测值,\(x_{i}\)是预测变量X的第i个观察值,\(\epsilon_{i}\)是用\(x_{i}\)线性函数近似\(y_{i}\)的误差
+</p>
+</div>
+</div>
+<div id="outline-container-org0f17884" class="outline-3">
+<h3 id="org0f17884"><span class="section-number-3">2.3</span> 参数估计</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+    最小二乘法估计参数: 当每个点到直线的铅直距离(也可以用点到直线的垂直距离)的平方和达到最小时,对应的直线就是要找的直线 ，铅直距离代表响应变量的误差\(\epsilon_{i}\) ,误差表达式:
+\[\epsilon_{i} = y_{i}-\beta_{0}-\beta_{1}x_{i}, i = 1,2,\cdots,n.\]
+所有铅直距离的平方和可表示为:
+</p>
+\begin{equation}
+ S(\beta_{0},\beta_{1}) = \sum_{i=1}^{n}\epsilon_{i}^{2}=\sum_{i=1}^{n}(y_{i}-\beta_{0}-\beta_{1}x_{i})^2
+\end{equation}
+
+<p>
+最小化\(S(\beta_{0},\beta_{i})\)可以得到参数估计\(\hat{\beta}_{0}\) 和 \(\hat{\beta_{1}}\) 如下:
+</p>
+\begin{equation}
+\hat{\beta}_{1} = \frac{\sum(y_{i}-\overline{y})(x_{i}-\overline{x})}{\sum(x_{i}-\overline{x})^2}
+\end{equation}
+
+\begin{equation}
+\hat{\beta}_{0} = \overline{y} -\hat{b}_{1}\overline{x}
+\end{equation}
+<p>
+\(\hat{\beta}_{0}\)和\(\hat{\beta}_{1}\)称为\(\beta_{0}\)和\(\beta_{1}\)的最小二乘估计,分别是当点到直线的铅直距离的平方和达到最小时，对应的直线的截距和斜率，这条直线称为最小二乘回归直线,表示为:
+\[\hat{y}=\hat{\beta}_{0}+\hat{\beta}_{1}x\]
+第i个观测处的铅直距离是
+\[e_{i}=y_i-\hat{y}_{i}, i = 1,2,\cdots,n.\]
+这些铅直距离称为普通 <b>最小二乘残差</b> ,这些残差之和为0.
+</p>
+</div>
+</div>
+<div id="outline-container-org9eaa890" class="outline-3">
+<h3 id="org9eaa890"><span class="section-number-3">2.4</span> 假设检验</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+\(\delta^2\)的一个 <b>无偏估计</b> 是
+\[\delta^2 = \frac{\sum e_{i}^{2}}{n-2}=\frac{\sum(y_{i}-\hat{y_{i}})^2}{n-2}=\frac{SSE}{n-2}\]
+其中SSE是 <b>残差</b> 平方和,分母中的 n-2 是 <b>自由度</b> .自由度等于样本中观测个数减去待估的回归参数的个数
+标准差的估计量称为标准误，于是\(\beta_{0}\) 和 \(\beta_{1}\) 的标准误分别为:
+\[s.e.(\hat{\beta}_{0})= \hat{\delta}\sqrt{\frac{1}{n}+\frac{\overline{x}^2}{\sum(x_{i}-\overline{x})^2}}\]
+\[s.e.(\hat{\beta}_{1})= \frac{\delta}{\sqrt{\sum(x_{i}-\overline{x})^2}}\]
+其中\(\hat{\beta}_{1}\)标准误刻画斜率的估计精度，标准误越小估计精度越高
+    利用\(\hat{\beta}_{0}\)和\(\hat{\beta}_{1}\)的抽样分布,可以分析同预测变量X对响应变量Y的预测能力,在正态分布假设下,检验原假设 \(H_{0}:\beta_{1}=0\)对备择假设\(H_{1}:\beta_{1} \not 0 \) (简记为\(H_{0}:\beta_{1} = 0 \leftrightarrow H_{1}:\beta_{1} \not 0\)) 的检验是t检验,所用的统计量是
+\[t_{1}=\frac{\hat{\beta}_{1}}{s.e.(\hat{\beta}_{1})}\]
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: wlt</p>
+<p class="date">Created: 2017-06-11 日 17:06</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
