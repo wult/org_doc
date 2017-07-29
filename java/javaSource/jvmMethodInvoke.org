@@ -1,0 +1,73 @@
+** CallStub函数指针定义
+- java程序主函数调用链路必须经过call_stub函数指针.其在源码替换后为:
+  return (CallStub)(castalbe_address);
+- 在代码中转换过后为:
+  return (CallStub)castalbe_address(_call_stub_entry))
+  castalbe_address(_call_stub_entry) 返回的其实是address自定义类型,而编译器最终将转换为CallStub这种自定义类型
+*** castalbe_address()
+  call_stub()函数内部其实就是让函数指针指向某个地址,castalbe_address函数定义为:
+#+BEGIN_SRC c
+inline address_word castalbe_address (address x)
+{
+  return address_word(x);
+}
+#+END_SRC
+  address_word也是一种自定义类型,表示地址类型,该类型在globalDefinitions.hpp中定义如下:
+typedef uintpr_t address_word;
+  address_word 类型其实是uintptr_t,也是一种jvm自定义类型,与平台有关，不同平台定义在不同的hpp文件中
+  linux上,uintptr_t 类型定义如下:
+#+BEGIN_SRC c
+typedef unsigned int uintptr_t;
+#+END_SRC
+
+  uintptr_t在Linux平台上原型是 unsigned int ,所以call_stub()最终转换结果如下:
+#+BEGIN_SRC c
+static CallStub call_stub(){
+  return (CallStub)(unsigned int (_call_stub_entry));
+}
+#+END_SRC
+
+_call_stub_entry本身就是address类型,其原型为 unsigned int.
+*** CallStub() 入参
+| 参数                 | 含义                                                                                                                                                                                               |
+|----------------------+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| link                 | 连接器, 不是链接器                                                                                                                                                                                 |
+| result_val_address   | 函数返回值地址                                                                                                                                                                                     |
+| result_type          | 函数返回类型                                                                                                                                                                                       |
+| method()             | jvm内部表示java方法对象                                                                                                                                                                            |
+| entry_point          | jvm调用java方法的例程入口,jvm内部每一段例程都是在jvm启动过程中预先生成好的一段机器指令,要调用java方法，必须经过本例程，即需要先执行这段机器指令，然后 才能中转到java方法字节码对应的机器指令上执行 |
+| parameters()         | java方法入参数量                                                                                                                                                                                   |
+| size_of_parameters() | java方法入参数量                                                                                                                                                                                   |
+| CHECK                | 当前线程的对象                                                                                                                                                                                            |
+**** 连接器 link
+   连接器link类型为 JavaCallWrapper,在javaCalls.cpp文件定义P68
+ | 名             | 含义                     |
+ |----------------+--------------------------|
+ | _thread        | 当前 java函数所在线程    |
+ | _handles       | 本地调用句柄             |
+ | _callee_method | 调用者方法对象           |
+ | _receiver      | 被调用者(非静态java方法) |
+ | _anchor        | java线程堆栈对象         |
+ | _result        | java方法所返回的值              |
+
+ link在调用者与被调用者建立桥梁，通过这桥梁我们可以实现堆栈追踪，可以得到整个方法调用链路.`
+ 注: jvm内部有linker,是链接器，与link是不同对象
+**** method()
+    method()是当前java方法在jvm内部表示对象.包含： java函数名称，所属java类，入参，注解，继承，返回信息
+**** method()
+    method()是当前java方法在jvm内部表示对象.包含： java函数名称，所属java类，入参，注解，继承，返回信息
+**** entry_point
+     CallStub()函数指针的值是 _call_stub_entry ,jvm通过 _call_stub_entry 所指向的函数调用java函数之前，必经过 entry_point ,entry_point 例程真正从method() 对象拿到java函数编译后的字节码,jvm通过 entry_point 可以得到java函数对应的第一个字节码指令 ，开始调用函数
+**** parameters()
+    java函数的入参
+**** size_of_parameter()
+    parameters()只是保存了java函数入参数信息,其实是使用指针建立的数组模型，后面调用时，无法得知结束位置,根据size_of_parameter计算出堆栈空间大小.
+*** _call_stub_entry例程
+    见P73
+**** pc()函数
+#+BEGIN_SRC 
+     address start = _pc();
+#+END_SRC
+     jvm启动过程中,jvm会生成很多例程(即一段机器指令,能实现功能逻辑),例如函数调用,字节码例程,异常处理,函数返回...
+     每个例程都有这么一行代码(address start = __ pc()) ,jvm所有例程都在一段连续的内存中,可以想成一条线，当jvm启动时,线长度为0,没有例程,第一个例程生成时,__pc()返回0,线从0开始,第一个例程占20字节,则jvm生成第二个例程时,执行start= __pc(),将返回20.
+     注: jvm例程都写入jvm堆内存中,jvm初始化时，会初始化容量足够大的堆内存,例程会写入堆中靠近起始位置 ,当java程序开始运行后，jvm将java类对象实例陆续写入堆内存
