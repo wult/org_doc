@@ -5,7 +5,8 @@ cat<<EOF
 					#常用菜单
 			1. chrome
 			2. forticlient
-			3. 退出
+			3. remmina
+			0. 退出
 EOF
   echo -en "\t\t请输入"
   read -n 1 appsList
@@ -18,6 +19,10 @@ EOF
 				sh /opt/forticlient-sslvpn/forticlientsslvpn.sh &
 				clear;;
 		3)
+			
+				nohup remmina  >/dev/null 2>&1 &
+				clear;;
+		0)
 				break
 				;;
 		*)
