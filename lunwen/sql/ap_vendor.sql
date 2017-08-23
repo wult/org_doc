@@ -31,16 +31,16 @@ Create Table `inv_transaction`
  PRIMARY KEY (`id`),
  KEY `idx_inv_transaction_vendor_code`(`vendor_code`),
  KEY `idx_inv_transaction_item_no`(`item_no`),
- KEY `idx_inv_transaction_po_no`(`po_no`),
+ KEY `idx_inv_transaction_po_no`(`po_no`)
 )
 DEFAULT CHARACTER SET = utf8
-COMMENT = '表';
+COMMENT = '库存事务处理表';
 
 
-Create Table `ap_bill_detail`
+Create Table `bill_detail`
 (
  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表ID，自增',
- `line_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '行表ID',
+ `line_id` BIGINT  NOT NULL COMMENT '行表ID',
  `db_no` VARCHAR(30) NOT NULL Default '' COMMENT '分库编号',
  `vendor_code` VARCHAR(30) BINARY NOT NULL Default '' COMMENT '供应商编码',
  `transaction_id` BIGINT NOT NULL Default 0 COMMENT '事务处理ID',
@@ -73,15 +73,15 @@ Create Table `ap_bill_detail`
  `create_time` TIMESTAMP(3) NOT NULL Default CURRENT_TIMESTAMP(3) COMMENT '创建日期',
  `update_time` TIMESTAMP(3) NOT NULL Default CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '最后更新日期',
  PRIMARY KEY (`id`),
- KEY `idx_ap_bill_detail_vendor_code`(`vendor_code`),
- KEY `idx_ap_bill_detail_item_no`(`item_no`),
- KEY `idx_ap_bill_detail_po_no`(`po_no`),
- KEY `idx_ap_bill_detail_stage_bill_header_id`(`header_id`)
+ KEY `idx_bill_detail_vendor_code`(`vendor_code`),
+ KEY `idx_bill_detail_item_no`(`item_no`),
+ KEY `idx_bill_detail_po_no`(`po_no`),
+ KEY `idx_bill_detail_stage_bill_header_id`(`header_id`)
 )
 DEFAULT CHARACTER SET = utf8
 COMMENT = '账单明细表';
 
-Create Table `ap_bill_line`
+Create Table `bill_line`
 (
  `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '表ID，自增',
  `db_no` VARCHAR(30) NOT NULL Default '' COMMENT '分库编号',
@@ -105,9 +105,9 @@ Create Table `ap_bill_line`
  `create_time` TIMESTAMP(3) NOT NULL Default CURRENT_TIMESTAMP(3) COMMENT '创建日期',
  `update_time` TIMESTAMP(3) NOT NULL Default CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3) COMMENT '最后更新日期',
  PRIMARY KEY (`id`),
- KEY `idx_ap_bill_line_vendor_code`(`vendor_code`),
- KEY `idx_ap_bill_line_po_no`(`po_no`),
- KEY `idx_ap_bill_line_stage_bill_header_id`(`header_id`)
+ KEY `idx_bill_line_vendor_code`(`vendor_code`),
+ KEY `idx_bill_line_po_no`(`po_no`),
+ KEY `idx_bill_line_stage_bill_header_id`(`header_id`)
 )
 DEFAULT CHARACTER SET = utf8
 COMMENT = '账单行表';
