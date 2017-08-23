@@ -1,0 +1,26 @@
+** 方法调用 
+ #+BEGIN_SRC 
+  a+b
+ #+END_SRC
+ 是如下方法的简写
+#+BEGIN_SRC 
+a.+(b)
+#+END_SRC
+
+通常来说你可以用
+#+BEGIN_SRC 
+a 方法 b
+#+END_SRC
+
+作为以下代码的简写
+#+BEGIN_SRC 
+a.方法(b)
+#+END_SRC
+所以
+#+BEGIN_SRC 
+1.to(10)
+#+END_SRC
+可以写成为:
+#+BEGIN_SRC 
+1 to 10
+#+END_SRC
