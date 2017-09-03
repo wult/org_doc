@@ -1,0 +1,116 @@
+#+BEGIN_SRC plantuml :file summary01.png :cmdline -charset utf-8
+database "库存模块数据分库" {
+    folder "库存" {
+      [inv_transaction]
+    }
+}
+
+cloud {
+   [spark cluster]
+}
+
+
+
+database "应付模块数据库" {
+  folder "基础库"{
+    [bill_header]
+  }
+  
+  folder "供应商分库"{
+    [bill_line]
+    [bill_detail]
+  }
+}
+[inv_transaction]  -->  [spark cluster]: "1. 将库存事物处理数据加载到spark"
+[spark cluster] -->  [bill_header] : "2. 经过spark汇总计算后写入成账单头表"
+[spark cluster] -->  [bill_line] : "3. 写入账单行表"
+[spark cluster] -->  [bill_detail] : "4. 写入账单明细表"
+
+#+END_SRC
+** 网络架构图
+#+BEGIN_SRC plantuml :file .png :cmdline -charset utf-8
+database "库存模块数据分库" {
+    folder "库存分库1" {
+      [inv_transaction_000]
+    }
+    folder "库存分库2" {
+      [inv_transaction_001]
+    }
+
+    folder "库存分库..." {
+      [inv_transaction_...]
+    }
+}
+
+cloud {
+   [spark cluster]
+}
+
+
+
+database "应付模块基础数据库" {
+  folder "基础库"{
+    [bill_header]
+  }
+ } 
+database "应付模块分库数据库" {
+  folder "供应商000分库"{
+    [bill_line_000]
+    [bill_detail_000]
+  }
+  folder "供应商001分库"{
+    [bill_line_001]
+    [bill_detail_001]
+  }
+  folder "供应商...分库"{
+    [bill_line_...]
+    [bill_detail_...]
+  }
+}
+[inv_transaction_000]  -->  [spark cluster]: "1. 将库存事物处理数据加载到spark"
+[inv_transaction_001]  -->  [spark cluster]: "1. 将库存事物处理数据加载到spark"
+[inv_transaction_...]  -->  [spark cluster]: "1. 将库存事物处理数据加载到spark"
+[spark cluster] -->  [bill_header] : "2. 经过spark汇总计算后写入成账单头表"
+
+[spark cluster] -->  [bill_line_000] : "3. 写入行表"
+[spark cluster] -->  [bill_detail_000] : "4. 写入明细表"
+[spark cluster] -->  [bill_line_001] : "3. 写入行表"
+[spark cluster] -->  [bill_detail_001] : "4. 写入明细表"
+[spark cluster] -->  [bill_line_...] : "3. 写入行表"
+[spark cluster] -->  [bill_detail_...] : "4. 写入明细表"
+
+#+END_SRC
+
+
+** 系统基本框架图
+#+BEGIN_SRC plantuml :file ar.png :cmdline -charset utf-8
+actor User
+participant ApMain
+
+User -> ApMain : "调用 main"
+create ApSparkJob
+ApMain -> ApSparkJob : new
+ApSparkJob -> ApSparkJob : start
+activate ApSparkJob
+ApSparkJob -> ApSparkJob : initSparkContext
+ApSparkJob -> ApSparkJob : registerTablesSpark
+ApSparkJob -> ApSparkJob : execute
+activate ApSparkJob
+create SparkTask
+ApSparkJob -> SparkTask : new
+SparkTask -> SparkTask : execute
+activate SparkTask
+
+#+END_SRC
+
+** SparkTask
+
+#+BEGIN_SRC plantuml :file task.png :cmdline -charset utf-8
+(*) --> "loadInvTransactionFromDB"
+--> "calcBillDetailDf"
+--> "calcBillLineDf"
+--> "saveBillHeader"
+--> "saveBillLine"
+--> "saveBillDetail"
+--> (*) 
+#+END_SRC
