@@ -1,0 +1,103 @@
+#+OPTIONS: ^:{} H:3 num:t 
+inv_transaction(事物处理表)
+|-------------------+---------------+---------------------------------------------------------------------------------------+--------------|
+| 字段名            | 类型          | 备注                                                                                  | 是否允许为空 |
+|-------------------+---------------+---------------------------------------------------------------------------------------+--------------|
+| id                | bigint(20)    | 表ID，自增                                                                            | NO           |
+| db_no             | varchar(30)   | 分库编号                                                                              | NO           |
+| vendor_code       | varchar(30)   | 供应商编码                                                                            | NO           |
+| transaction_id    | bigint(20)    | 事务处理ID                                                                            | NO           |
+| warehouse         | varchar(20)   | 出货仓库代码                                                                          | NO           |
+| detail_line_type  | varchar(30)   | 明细行代码，即数据类型 如 DR_SUP（入库） CR_SUP（退供） DR_CUST（客退） OTHER（其他） | NO           |
+| detail_line_name  | varchar(240)  | 账单明细行名称 如：“其他”                                                           | NO           |
+| transaction_date  | timestamp     | 事务处理日期                                                                          | NO           |
+| trx_creation_date | timestamp     | 事务处理创建日期                                                                      | NO           |
+| vendor_name       | varchar(240)  | 供应商名称                                                                            | NO           |
+| order_num         | varchar(30)   | order_num                                                                             | NO           |
+| order_date        | timestamp     | 下单日期                                                                              | NO           |
+| po_no             | varchar(20)   | PO编号                                                                                | NO           |
+| item_no           | varchar(50)   | SKU                                                                                   | NO           |
+| item_description  | varchar(240)  | SKU名称                                                                               | NO           |
+| quantity          | decimal(10,4) | 事务处理数量                                                                          | NO           |
+| data_sign         | int(11)       | 数据标识，1，-1,0                                                                     | NO           |
+| bill_price        | decimal(20,6) | 结算不含税价                                                                          | YES          |
+| tax_code          | varchar(30)   | 税码                                                                                  | NO           |
+| tax_rate          | decimal(10,4) | 税率                                                                                  | NO           |
+| source_status     | varchar(20)   | NEW                                                                                   | NO           |
+| create_time       | timestamp(3)  | 创建日期                                                                              | NO           |
+| update_time       | timestamp(3)  | 最后更新日期                                                                          | NO           |
+
+bill_detail(账单明细表)
+|-------------------+---------------+---------------------------------------------------------------------------------------+--------------|
+| 字段名            | 类型          | 备注                                                                                  | 是否允许为空 |
+|-------------------+---------------+---------------------------------------------------------------------------------------+--------------|
+| id                | bigint(20)    | 表ID，自增                                                                            | NO           |
+| line_id           | bigint(20)    | 行表ID                                                                                | NO           |
+| source_id         | bigint(20)    |                                                                                       | NO           |
+| db_no             | varchar(30)   | 分库编号                                                                              | NO           |
+| vendor_code       | varchar(30)   | 供应商编码                                                                            | NO           |
+| transaction_id    | bigint(20)    | 事务处理ID                                                                            | NO           |
+| warehouse         | varchar(20)   | 出货仓库代码                                                                          | NO           |
+| detail_line_type  | varchar(30)   | 明细行代码，即数据类型 如 DR_SUP（入库） CR_SUP（退供） DR_CUST（客退） OTHER（其他） | NO           |
+| detail_line_name  | varchar(240)  | 账单明细行名称 如：“其他”                                                           | NO           |
+| transaction_date  | timestamp     | 事务处理日期                                                                          | NO           |
+| trx_creation_date | timestamp     | 事务处理创建日期                                                                      | NO           |
+| vendor_name       | varchar(240)  | 供应商名称                                                                            | NO           |
+| order_num         | varchar(30)   | order_num                                                                             | NO           |
+| order_date        | timestamp     | 下单日期                                                                              | NO           |
+| po_no             | varchar(20)   | PO编号                                                                                | NO           |
+| item_no           | varchar(50)   | SKU                                                                                   | NO           |
+| item_description  | varchar(240)  | SKU名称                                                                               | NO           |
+| quantity          | decimal(10,4) | 事务处理数量                                                                          | NO           |
+| data_sign         | int(11)       | 数据标识，1，-1,0                                                                     | NO           |
+| bill_price        | decimal(20,6) | 结算不含税价                                                                          | YES          |
+| bill_tax_price    | decimal(20,6) | 结算含税价                                                                            | YES          |
+| tax_code          | varchar(30)   | 税码                                                                                  | NO           |
+| tax_rate          | decimal(10,4) | 税率                                                                                  | NO           |
+| bill_amount       | decimal(20,8) | 结算不含税金额                                                                        | YES          |
+| total_bill_amount | decimal(20,8) | 结算含税金额                                                                          | YES          |
+| bill_number       | varchar(50)   | 账单编号                                                                              | NO           |
+| header_id         | bigint(20)    | 账单头ID                                                                              | NO           |
+| source_status     | varchar(20)   | NEW                                                                                   | NO           |
+| create_time       | timestamp(3)  | 创建日期                                                                              | NO           |
+| update_time       | timestamp(3)  | 最后更新日期                                                                          | NO           |
+
+bill_line(账单行表)
+|-------------------+---------------+---------------------------------------------------------------------------------------+--------------|
+| 字段名            | 类型          | 备注                                                                                  | 是否允许为空 |
+|-------------------+---------------+---------------------------------------------------------------------------------------+--------------|
+| id                | bigint(20)    | 表ID，自增                                                                            | NO           |
+| db_no             | varchar(30)   | 分库编号                                                                              | NO           |
+| vendor_code       | varchar(30)   | 供应商编码                                                                            | NO           |
+| detail_line_type  | varchar(30)   | 明细行代码，即数据类型 如 DR_SUP（入库） CR_SUP（退供） DR_CUST（客退） OTHER（其他） | NO           |
+| detail_line_name  | varchar(240)  | 账单明细行名称 如：“其他”                                                           | NO           |
+| vendor_name       | varchar(240)  | 供应商名称                                                                            | NO           |
+| po_no             | varchar(20)   | PO编号                                                                                | NO           |
+| data_sign         | int(11)       | 数据标识，1，-1,0                                                                     | NO           |
+| tax_code          | varchar(30)   | 税码                                                                                  | NO           |
+| tax_rate          | decimal(10,4) | 税率                                                                                  | NO           |
+| bill_amount       | decimal(20,8) | 结算不含税金额                                                                        | YES          |
+| total_bill_amount | decimal(20,8) | 结算含税金额                                                                          | YES          |
+| bill_number       | varchar(50)   | 账单编号                                                                              | NO           |
+| header_id         | bigint(20)    | 账单头ID                                                                              | NO           |
+| source_status     | varchar(20)   | NEW                                                                                   | NO           |
+| create_time       | timestamp(3)  | 创建日期                                                                              | NO           |
+| update_time       | timestamp(3)  | 最后更新日期                                                                          | NO           |
+
+bill_header(账单头表)
+|-------------------+---------------+---------------------------------------------------------------------------------------+--------------|
+| 字段名            | 类型          | 备注                                                                                  | 是否允许为空 |
+|-------------------+---------------+---------------------------------------------------------------------------------------+--------------|
+| id                | bigint(20)    | 表ID，自增            | NO          |
+| db_no             | varchar(30)   | 分库编号              | NO          |
+| bill_number       | varchar(50)   | 账单编号              | NO          |
+| bill_date         | date          | 账单日期              | NO          |
+| period_name       | varchar(20)   | 账单期间              | NO          |
+| vendor_code       | varchar(30)   | 供应商编码            | NO          |
+| vendor_name       | varchar(240)  | 供应商名称            | NO          |
+| bill_amount       | decimal(20,8) | 结算不含税金额        | YES         |
+| total_bill_amount | decimal(20,8) | 结算含税金额          | YES         |
+| source_status     | varchar(20)   | NEW                   | NO          |
+| create_time       | timestamp(3)  | 创建日期              | NO          |
+| update_time       | timestamp(3)  | 最后更新日期          | NO          |
+

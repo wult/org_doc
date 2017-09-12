@@ -114,3 +114,58 @@ activate SparkTask
 --> "saveBillDetail"
 --> (*) 
 #+END_SRC
+
+
+** 库存计算
+#+BEGIN_SRC plantuml :file inv.png :cmdline -charset utf-8
+package "driver" {
+  [执行spark sql]
+  [将spark sql 分解成tasks]
+  [分发到各个executor]
+  [接收处理结果]
+}
+node "Slave1" {
+  frame "executor11" {
+    folder "task11"{
+      [执行task11]
+      [task11生成计算结果rdd]
+    }
+    folder "task12"{
+    }
+    folder "task13"{
+    }
+  }
+  frame "executor12" {
+  }
+  frame "executor13" {
+  }
+}
+node "Slave2" {
+  frame "executor21" {
+    folder "task21"{
+      [执行task21]
+      [task21生成计算结果rdd]
+    }
+    folder "task22"{
+    }
+    folder "task23"{
+    }
+  }
+  frame "executor22" {
+  }
+  frame "executor23" {
+  }
+}
+
+[执行spark sql] -->  [将spark sql 分解成tasks]
+[将spark sql 分解成tasks] --> [分发到各个executor]
+[分发到各个executor] --> [执行task11] : "1.1 分配 各个executor 上执行"
+[分发到各个executor] --> [执行task21] : "1.1 分配 各个executor 上执行"
+
+[执行task11] --> [task11生成计算结果rdd]
+[执行task11] --> [task11生成计算结果rdd]
+[执行task21] --> [task21生成计算结果rdd]
+[执行task21] --> [task21生成计算结果rdd]
+[task11生成计算结果rdd] --> [接收处理结果] : "2.1 反馈处理结果"
+[task21生成计算结果rdd] --> [接收处理结果] : "2.1 反馈处理结果"
+#+END_SRC
