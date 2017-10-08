@@ -1,0 +1,15 @@
+** 方法调用
+*** 方法调用开始
+#+BEGIN_SRC 
+  pushl %ebp
+  movl %esp, %ebp
+#+END_SRC
+*** 方法结束
+#+BEGIN_SRC 
+  leave 
+  ret
+#+END_SRC
+*** 注意 
+#+BEGIN_EXAMPLE
+
+#+END_EXAMPLE

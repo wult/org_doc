@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2017-10-03 二 17:25 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="wlt" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#orgbf53a0a">1. 设备环境初始化及激活进程0</a>
+<ul>
+<li><a href="#org79c2e94">1.1. 设置根设备,硬盘</a></li>
+<li><a href="#org8e3a222">1.2. 规划物理内存格局,设置缓冲区,虚拟盘,主内存</a>
+<ul>
+<li><a href="#orgbbe2f36">1.2.1. 内核代码和数据占内存空间</a></li>
+<li><a href="#org1fb05de">1.2.2. 其余物理内存分为:</a></li>
+</ul>
+</li>
+<li><a href="#orgfc6c6c8">1.3. 设置虚拟盘空间并初始化</a></li>
+<li><a href="#org3564a7a">1.4. 内存管理结构mem<sub>map初始化</sub></a></li>
+<li><a href="#org62b0b0e">1.5. 初始化块设备请求项结构</a></li>
+<li><a href="#org6482aff">1.6. 开机启动时间设置</a></li>
+<li><a href="#orga36ed6d">1.7. 初始化进程0</a>
+<ul>
+<li><a href="#orgca5339e">1.7.1. 初始化进程0</a></li>
+</ul>
+</li>
+<li><a href="#orga024aa0">1.8. 初始化缓冲区管理结构</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgbf53a0a" class="outline-2">
+<h2 id="orgbf53a0a"><span class="section-number-2">1</span> 设备环境初始化及激活进程0</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-org79c2e94" class="outline-3">
+<h3 id="org79c2e94"><span class="section-number-3">1.1</span> 设置根设备,硬盘</h3>
+<div class="outline-text-3" id="text-1-1">
+<p>
+bootsect已写入机器系统数据0x901FC的根设备为软盘信息
+</p>
+<pre class="example">
+  //代码路径：init/main.c：
+……
+#define DRIVE_INFO（*（struct drive_info *）0x90080）//硬盘参数表，参看机器系统数据
+#define ORIG_ROOT_DEV（*（unsigned short *）0x901FC）//根设备号
+……
+struct drive_info{char dummy[32]；}drive_info；//存放硬盘参数表的数据结构
+void main（void）
+{
+  ROOT _DEV=ORIG_ROOT_DEV；//根据bootsect中写入机器系统数据的信息设置根设备为软盘
+  drive _info=DRIVE_INFO；//的信息，设置为根设备
+  ……
+}
+</pre>
+<p>
+设置根设备为软盘及硬盘参数表完成后数据在内存位置:<a href="./img/init_dev_addr.jpg ">./img/init_dev_addr.jpg </a>
+</p>
+</div>
+</div>
+<div id="outline-container-org8e3a222" class="outline-3">
+<h3 id="org8e3a222"><span class="section-number-3">1.2</span> 规划物理内存格局,设置缓冲区,虚拟盘,主内存</h3>
+<div class="outline-text-3" id="text-1-2">
+</div><div id="outline-container-orgbbe2f36" class="outline-4">
+<h4 id="orgbbe2f36"><span class="section-number-4">1.2.1</span> 内核代码和数据占内存空间</h4>
+</div>
+<div id="outline-container-org1fb05de" class="outline-4">
+<h4 id="org1fb05de"><span class="section-number-4">1.2.2</span> 其余物理内存分为:</h4>
+<div class="outline-text-4" id="text-1-2-2">
+</div><ol class="org-ol"><li><a id="org2e6d825"></a>主内存<br /><div class="outline-text-5" id="text-1-2-2-1">
+<p>
+主内存区是进程代码运行的空间，包括内核管理进程数据结构
+</p>
+</div></li>
+<li><a id="org281be6c"></a>缓冲区<br /><div class="outline-text-5" id="text-1-2-2-2">
+<p>
+主机与外设进行数据交互的中转站
+</p>
+</div></li>
+<li><a id="org0925b89"></a>虚拟盘<br /></li></ol>
+</div>
+</div>
+<div id="outline-container-orgfc6c6c8" class="outline-3">
+<h3 id="orgfc6c6c8"><span class="section-number-3">1.3</span> 设置虚拟盘空间并初始化</h3>
+<div class="outline-text-3" id="text-1-3">
+<p>
+我们设定本书所用计算机有16 MB的内存，有虚拟盘，且将虚拟盘大小设置为2 MB。操作系统从缓冲区的末端起开辟2 MB内存空间设置为虚拟盘，主内存起始位置后移2 MB至虚拟盘的末端
+</p>
+</div>
+</div>
+<div id="outline-container-org3564a7a" class="outline-3">
+<h3 id="org3564a7a"><span class="section-number-3">1.4</span> 内存管理结构mem<sub>map初始化</sub></h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+系统调用mem<sub>init</sub>()函数，对主内存区的管理结构进行设置
+</p>
+</div>
+</div>
+<div id="outline-container-org62b0b0e" class="outline-3">
+<h3 id="org62b0b0e"><span class="section-number-3">1.5</span> 初始化块设备请求项结构</h3>
+<div class="outline-text-3" id="text-1-5">
+<p>
+linux0.11将外设分两类: 一类是块设备,一类是字符设备.
+</p>
+<pre class="example">
+    进程要想与块设备进行沟通,必须经过主机内存的缓冲区,请求项管理结构request[32]就是操作系统管理缓冲区中的缓冲块与块设备上逻辑块之间读写关系的数据结构
+作系统根据所有进程读写任务的轻重缓急，决定缓冲块与块设备之间的读写操作，并把需要操作的缓冲块记录在请求项上，得到读写块设备操作指令后，只根据请求项中的记录来决定当前需要处理哪个设备的哪个逻辑块。
+</pre>
+</div>
+</div>
+<div id="outline-container-org6482aff" class="outline-3">
+<h3 id="org6482aff"><span class="section-number-3">1.6</span> 开机启动时间设置</h3>
+<div class="outline-text-3" id="text-1-6">
+<pre class="example">
+具体执行步骤是：CMOS是主板上的一个小存储芯片，系统通过调用time_init（）函数，先对它上面记录的时间数据进行采集，提取不同等级的时间要素，比如秒（time.tm_sec）、分（time.tm_min）、年（time.tm_year）等，然后对这些要素进行整合，并最终得出开机启动时间（startup_time）
+</pre>
+</div>
+</div>
+<div id="outline-container-orga36ed6d" class="outline-3">
+<h3 id="orga36ed6d"><span class="section-number-3">1.7</span> 初始化进程0</h3>
+<div class="outline-text-3" id="text-1-7">
+<p>
+进程0是linux操作系统中运行的第一个进程 ,也是linux父子进程创建机制的第一个父进程.
+</p>
+<ul class="org-ul">
+<li>系统初始化进程0.
+进程0管理结构task<sub>struct的母本</sub>(init<sub>task</sub>={INIT<sub>TASK</sub>,}),要将进程0的task<sub>struct中的LDT</sub>，TSS,GDT相挂接,并对GDT，task[64]以及进程调度相关的寄存器进行初始化设置.</li>
+<li>linux0.11作为一个现代操作系统，支持多进程轮流执行,这要求进程具备参与多进程轮询的能力.系统这里对时钟中断进程设置,以便在进程0运行后,为进程0以及后续由它直接,间接创建出的进程能参与轮转奠定基础</li>
+<li>进程0具备处理系统调用的能力.每个进程运算时都可能需要与内核进行交互，交互端口就是系统调用程序，系统通过函数set<sub>system</sub><sub>gate将sys</sub><sub>call与IDT相挂接.这样进程0就具备处理系统调用的能力了</sub>.</li>
+</ul>
+</div>
+<div id="outline-container-orgca5339e" class="outline-4">
+<h4 id="orgca5339e"><span class="section-number-4">1.7.1</span> 初始化进程0</h4>
+<div class="outline-text-4" id="text-1-7-1">
+
+<div class="figure">
+<p><img src="./img/init_pro0_gdt.jpg" alt="init_pro0_gdt.jpg" />
+</p>
+</div>
+
+<p>
+进程0的task<sub>struct由sched.h的INIT</sub><sub>TASK中定义得出,并用INIT</sub><sub>TASK指针初始化task</sub>[64]的0项
+<img src="./img/init_task_union.jpg" alt="init_task_union.jpg" />
+sched<sub>init</sub>（）函数接下来用for循环将task[64]除进程0占用的0项外的其余63项清空，同时将GDT的TSS1、LDT1往上的所有表项清零
+初始化进程0相关的管理结构的最后一步是非常重要的一步，是将TR寄存器指向TSS0、LDTR寄存器指向LDT0，这样，CPU就能通过TR、LDTR寄存器找到进程0的TSS0、LDT0，也能找到一切和进程0相关的管理信息。
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-orga024aa0" class="outline-3">
+<h3 id="orga024aa0"><span class="section-number-3">1.8</span> 初始化缓冲区管理结构</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: wlt</p>
+<p class="date">Created: 2017-10-03 二 17:25</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

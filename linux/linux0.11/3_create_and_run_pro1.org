@@ -1,0 +1,14 @@
+计算机中已经有了一个名副其实的、3特权级的进程——进程0。下面我们要详细讲解进程0做的第一项工作——创建进程1
+
+* 进程1的创建与运行
+
+** 进程0创建进程1
+从上面main.c的代码中对fork（）的声明，可知调用fork函数；实际上是执行到unistd.h中的宏函数syscall0中去
+[[file:./img/fork.process.jpg]]
+#+BEGIN_EXAMPLE
+详细的执行步骤如下：
+先执行："0"（__NR_fork）这一行，意思是将fork在sys_call_table[]中对应的函数编号__NR_fork（也就是2）赋值给eax。这个编号即sys_fork（）函数在sys_call_table中的偏移值。
+紧接着就执行"int$0x80"，产生一个软中断，CUP从3特权级的进程0代码跳到0特权级内核代码中执行。中断使CPU硬件自动将SS、ESP、EFLAGS、CS、EIP这5个寄存器的数值按照这个顺序压入图3-1所示的init_task中的进程0内核栈。注意其中init_task结构后面的红条，表示了刚刚压入内核栈的寄存器数值。前面刚刚提到的move_to_user_mode这个函数中做的压栈动作就是模仿中断的硬件压栈，这些压栈的数据将在后续的copy_process（）函数中用来初始化进程1的TSS。
+值得注意，压栈的EIP指向当前指令"int$0x80"的下一行，即if（__res＞=0）这一行。这一行就是进程0从fork函数系统调用中断返回后第一条指令的位置。在后续的3.3节将看到，这一行也将是进程1开始执行的第一条指令位置。请记住这一点！
+根据2.9节讲解的sched_init函数中set_system_gate（0x80，＆system_call）的设置，CPU自动压栈完成后，跳转到system_call.s中的_system_call处执行，继续将DS、ES、FS、EDX、ECX、EBX压栈（以上一系列的压栈操作都是为了后面调用copy_process函数中初始化进程1中的TSS做准备）。最终，内核通过刚刚设置的eax的偏移值“2”查询sys_call_table[]，得知本次系统调用对应的函数是sys_fork（）。因为汇编中对应C语言的函数名在前面多加一个下划线“_”（如C语言的sys_fork（）对应汇编的就是_sys_fork），所以跳转到_sys_fork处执行。
+#+END_EXAMPLE
