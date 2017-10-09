@@ -1,0 +1,227 @@
+* linux程序运行解析
+** 目标文件格式
+    PC平台流行的可执行文件格式(Executable)主要是Windows下的PE(Portable Executable)和Linux的ELF(Excutable Linkable Format),它们都是COFF(Common file format)格式的变种.目标文件就是源代码编译后但未进行链接的那些中间文件（windows的.obj和linux下的.o）,它们与可执行文件的内容与结构很相似,所以一般跟可执行文件格式一起采用一种格式存储.在Windows下，我们统称为PE-COFF文件格式，在linux下统称为ELF文件.
+    不光可执行(.exe或elf可执行文件)按照可执行文件格式存储，动态链接库(windows的.dll和linux的.so)及静态链接库(windows的.lib和linux的.a)都是按可执行文件格式存储
+#+BEGIN_EXAMPLE
+$ file /bin/bash
+/bin/bash: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 2.6.32, BuildID[sha1]=09da8296e93503eae0a86e6ce23e8ed56a8fb9bf, stripped
+#+END_EXAMPLE
+*** 目标文件与可执行文件格式的小历史
+#+BEGIN_EXAMPLE
+  COFF是由Unix System V Release 3 首先提出并使用的格式规范,后来微软基于COFF格式制定出PE格式标准，并用于当时的windows NT,System V Release 4 在COFF基础上引入ELF格式，所以PE格式与ELF格式很相似.
+  Unix最早的可执行文件格式a.out格式,后来共享库的概念出现后，a.out格式不支持，所以人们才设计出COFF来解决这个问题.
+#+END_EXAMPLE
+** 目标文件是什么
+  一般目标文件将不同属性以"节"(section)的形式存储,有时间也叫段(Segment).
+#+BEGIN_EXAMPLE
+int init_var = 84;                          //.data
+int uninit_var;                             //.bss
+void func1(int i){                          //.text
+  printf("%d\n",i);
+}                                           //.text
+
+int main(void){                             //.text
+  static int static_var = 85;               //.data
+  static int static_var2 ;                  //.bss
+  int a = 1;
+  func1(a);
+  return 0;
+}                                           //.text
+#+END_EXAMPLE
+  一般C语言编译后执行语句都编译成机器代码，保存在.text段;已初始化的全局变量和局部静态变量保存在.data段;未初始化全局变量和局部静态变量放在.bss段中..bss段只是为未初化的全局变量和局部静态变量预留位置而已,它并没有内容，所以在文件中不占据空间.
+  程序源代码被编译以后分两种：程序指令和程序数据，.text属于程序指令，而.data .bss属于程序数据.
+** 解析目标文件
+#+BEGIN_SRC 
+/**
+ * SimpleSection.c
+ * */
+#include<stdio.h>
+int global_init_var = 84;
+int global_uninit_var;
+
+void func1(int i){
+  printf("%d\n",i);
+}
+
+int main(void){
+	static int static_var = 85;
+	static int static_var2 ;
+	int a = 1;
+	int b;
+	func1(static_var+static_var2+a+b);
+	return a;
+}
+#+END_SRC
+使用GCC编译这个文件:
+#+BEGIN_EXAMPLE
+#gcc -c SimpleSection.c -m32
+#+END_EXAMPLE
+查看目标文件结构和内容:
+#+BEGIN_EXAMPLE
+#objdump -h SimpleSection.c
+#+END_EXAMPLE
+结果如下:
+#+BEGIN_EXAMPLE
+SimpleSection.o：     文件格式 elf32-i386
+
+节：
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000062  00000000  00000000  00000034  2**0
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .data         00000008  00000000  00000000  00000098  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000004  00000000  00000000  000000a0  2**2
+                  ALLOC
+  3 .rodata       00000004  00000000  00000000  000000a0  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  4 .comment      00000035  00000000  00000000  000000a4  2**0
+                  CONTENTS, READONLY
+  5 .note.GNU-stack 00000000  00000000  00000000  000000d9  2**0
+                  CONTENTS, READONLY
+  6 .eh_frame     00000064  00000000  00000000  000000dc  2**2
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+
+#+END_EXAMPLE
+*** 代码段
+#+BEGIN_EXAMPLE
+objdump -s -d SimpleSection.o
+#+END_EXAMPLE
+结果如下:
+#+BEGIN_EXAMPLE
+SimpleSection.o：     文件格式 elf32-i386
+
+Contents of section .text:
+ 0000 5589e583 ec0883ec 08ff7508 68000000  U.........u.h...
+ 0010 00e8fcff ffff83c4 1090c9c3 8d4c2404  .............L$.
+ 0020 83e4f0ff 71fc5589 e55183ec 14c745f0  ....q.U..Q....E.
+ 0030 01000000 8b150400 0000a100 00000001  ................
+ 0040 c28b45f0 01c28b45 f401d083 ec0c50e8  ..E....E......P.
+ 0050 fcffffff 83c4108b 45f08b4d fcc98d61  ........E..M...a
+ 0060 fcc3                                 ..              
+Contents of section .data:
+ 0000 54000000 55000000                    T...U...        
+Contents of section .rodata:
+ 0000 25640a00                             %d..            
+Contents of section .comment:
+ 0000 00474343 3a202855 62756e74 7520352e  .GCC: (Ubuntu 5.
+ 0010 342e302d 36756275 6e747531 7e31362e  4.0-6ubuntu1~16.
+ 0020 30342e34 2920352e 342e3020 32303136  04.4) 5.4.0 2016
+ 0030 30363039 00                          0609.           
+Contents of section .eh_frame:
+ 0000 14000000 00000000 017a5200 017c0801  .........zR..|..
+ 0010 1b0c0404 88010000 1c000000 1c000000  ................
+ 0020 00000000 1c000000 00410e08 8502420d  .........A....B.
+ 0030 0558c50c 04040000 28000000 3c000000  .X......(...<...
+ 0040 1c000000 46000000 00440c01 00471005  ....F....D...G..
+ 0050 02750043 0f03757c 06730c01 0041c543  .u.C..u|.s...A.C
+ 0060 0c040400                             ....            
+
+Disassembly of section .text:
+
+00000000 <func1>:
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	83 ec 08             	sub    $0x8,%esp
+   6:	83 ec 08             	sub    $0x8,%esp
+   9:	ff 75 08             	pushl  0x8(%ebp)
+   c:	68 00 00 00 00       	push   $0x0
+  11:	e8 fc ff ff ff       	call   12 <func1+0x12>
+  16:	83 c4 10             	add    $0x10,%esp
+  19:	90                   	nop
+  1a:	c9                   	leave  
+  1b:	c3                   	ret    
+
+0000001c <main>:
+  1c:	8d 4c 24 04          	lea    0x4(%esp),%ecx
+  20:	83 e4 f0             	and    $0xfffffff0,%esp
+  23:	ff 71 fc             	pushl  -0x4(%ecx)
+  26:	55                   	push   %ebp
+  27:	89 e5                	mov    %esp,%ebp
+  29:	51                   	push   %ecx
+  2a:	83 ec 14             	sub    $0x14,%esp
+  2d:	c7 45 f0 01 00 00 00 	movl   $0x1,-0x10(%ebp)
+  34:	8b 15 04 00 00 00    	mov    0x4,%edx
+  3a:	a1 00 00 00 00       	mov    0x0,%eax
+  3f:	01 c2                	add    %eax,%edx
+  41:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  44:	01 c2                	add    %eax,%edx
+  46:	8b 45 f4             	mov    -0xc(%ebp),%eax
+  49:	01 d0                	add    %edx,%eax
+  4b:	83 ec 0c             	sub    $0xc,%esp
+  4e:	50                   	push   %eax
+  4f:	e8 fc ff ff ff       	call   50 <main+0x34>
+  54:	83 c4 10             	add    $0x10,%esp
+  57:	8b 45 f0             	mov    -0x10(%ebp),%eax
+  5a:	8b 4d fc             	mov    -0x4(%ebp),%ecx
+  5d:	c9                   	leave  
+  5e:	8d 61 fc             	lea    -0x4(%ecx),%esp
+  61:	c3                   	ret    
+
+#+END_EXAMPLE
+*** 数据段和只读数据段
+.data 中的 0x54000000 0x55000000 对应84,85.
+*** 其他段
+   除了上面那几个常见段外还有.comment,.debug,.line,.strtab...
+*** 文件头
+#+BEGIN_EXAMPLE
+readelf -h SimpleSection.o
+#+END_EXAMPLE
+显示结果:
+#+BEGIN_EXAMPLE
+ELF 头：
+  Magic：   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00 
+  类别:                              ELF32
+  数据:                              2 补码，小端序 (little endian)
+  版本:                              1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI 版本:                          0
+  类型:                              REL (可重定位文件)
+  系统架构:                          Intel 80386
+  版本:                              0x1
+  入口点地址：               0x0
+  程序头起点：          0 (bytes into file)
+  Start of section headers:          832 (bytes into file)
+  标志：             0x0
+  本头的大小：       52 (字节)
+  程序头大小：       0 (字节)
+  Number of program headers:         0
+  节头大小：         40 (字节)
+  节头数量：         13
+  字符串表索引节头： 10
+#+END_EXAMPLE
+ELF魔数 最开始4个字节是所有ELF文件必须相同的标识码，分别为 7f 45 4c 46.
+接下来的一个字节标识ELF文件类,01表示32位，02表示64位.第6个字节规定ELF是大端(01)还是小端(02).第7个字节规定ELF主版本号，一般为1,因为ELF标准自1.2版后就没有更新，后面9个字节ELF标准没有定义.
+#+BEGIN_EXAMPLE
+a.out格式的魔数为 0x01 0x07
+UNIX是在PDP小型机上诞生的，当时的系统在加载一个可执行文件后直接从文件第一个字节开始执行，人们一般在文件的最开始放置一条跳转(jump)指令，这条指令负责跳过接下来的7个机器字的文件头到可执行文件的真正入口，而0x01 0x07这两个字节刚好是当时PDP-11机器的跳转7个机器字的指令。为了跟以前系统保持兼容性，这条跳转指令被当魔数一直保留到今天。
+#+END_EXAMPLE
+*** 段表
+#+BEGIN_EXAMPLE
+readelf -S SimpleSection.o
+#+END_EXAMPLE
+结果如下:
+#+BEGIN_EXAMPLE
+共有 13 个节头，从偏移量 0x340 开始：
+
+节头：
+  [Nr] Name              Type            Addr     Off    Size   ES Flg Lk Inf Al
+  [ 0]                   NULL            00000000 000000 000000 00      0   0  0
+  [ 1] .text             PROGBITS        00000000 000034 000062 00  AX  0   0  1
+  [ 2] .rel.text         REL             00000000 0002a8 000028 08   I 11   1  4
+  [ 3] .data             PROGBITS        00000000 000098 000008 00  WA  0   0  4
+  [ 4] .bss              NOBITS          00000000 0000a0 000004 00  WA  0   0  4
+  [ 5] .rodata           PROGBITS        00000000 0000a0 000004 00   A  0   0  1
+  [ 6] .comment          PROGBITS        00000000 0000a4 000035 01  MS  0   0  1
+  [ 7] .note.GNU-stack   PROGBITS        00000000 0000d9 000000 00      0   0  1
+  [ 8] .eh_frame         PROGBITS        00000000 0000dc 000064 00   A  0   0  4
+  [ 9] .rel.eh_frame     REL             00000000 0002d0 000010 08   I 11   8  4
+  [10] .shstrtab         STRTAB          00000000 0002e0 00005f 00      0   0  1
+  [11] .symtab           SYMTAB          00000000 000140 000100 10     12  11  4
+  [12] .strtab           STRTAB          00000000 000240 000066 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings)
+  I (info), L (link order), G (group), T (TLS), E (exclude), x (unknown)
+  O (extra OS processing required) o (OS specific), p (processor specific)
+
+#+END_EXAMPLE
+105
