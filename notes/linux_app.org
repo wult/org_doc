@@ -224,4 +224,107 @@ Key to Flags:
   O (extra OS processing required) o (OS specific), p (processor specific)
 
 #+END_EXAMPLE
-105
+** 链接
+创建a.c,b.c文件
+#+BEGIN_EXAMPLE
+/* a.c */
+extern int shared;
+int main(){
+	int a = 100;
+	fun(a,shared);
+}
+#+END_EXAMPLE
+
+#+BEGIN_EXAMPLE
+int shared = 1;
+void fun(int a,int b){
+	int c = a+b;
+}
+#+END_EXAMPLE
+将这两个文件编译成目标文件a.o,b.o:
+#+BEGIN_EXAMPLE
+gcc -c a.c b.c
+#+END_EXAMPLE
+** 相似段合并
+#+BEGIN_EXAMPLE
+ld a.o b.o -e main -o ab
+# -e main 表示将main函数作为程序入口,ld链接器默认程序入口为_start
+# -o ab 表示链接输出文件名为ab
+#+END_EXAMPLE
+用objdump查看链接前后分配情况:
+#+BEGIN_EXAMPLE
+$objdump -h a.o
+#+END_EXAMPLE
+#+BEGIN_EXAMPLE
+Idx Name          Size      VMA               LMA               File off  Algn
+  0 .text         0000002d  0000000000000000  0000000000000000  00000040  2**0
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .data         00000000  0000000000000000  0000000000000000  0000006d  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000000  0000000000000000  0000000000000000  0000006d  2**0
+                  ALLOC
+  3 .comment      00000035  0000000000000000  0000000000000000  0000006d  2**0
+                  CONTENTS, READONLY
+  4 .note.GNU-stack 00000000  0000000000000000  0000000000000000  000000a2  2**0
+                  CONTENTS, READONLY
+  5 .eh_frame     00000038  0000000000000000  0000000000000000  000000a8  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+#+END_EXAMPLE
+#+BEGIN_EXAMPLE
+$objdump -h b.o
+#+END_EXAMPLE
+#+BEGIN_EXAMPLE
+Idx Name          Size      VMA               LMA               File off  Algn
+  0 .text         00000018  0000000000000000  0000000000000000  00000040  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000004  0000000000000000  0000000000000000  00000058  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000000  0000000000000000  0000000000000000  0000005c  2**0
+                  ALLOC
+  3 .comment      00000035  0000000000000000  0000000000000000  0000005c  2**0
+                  CONTENTS, READONLY
+  4 .note.GNU-stack 00000000  0000000000000000  0000000000000000  00000091  2**0
+                  CONTENTS, READONLY
+  5 .eh_frame     00000038  0000000000000000  0000000000000000  00000098  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+#+END_EXAMPLE
+#+BEGIN_EXAMPLE
+$objdump -h ab
+#+END_EXAMPLE
+#+BEGIN_EXAMPLE
+Idx Name          Size      VMA               LMA               File off  Algn
+  0 .text         00000045  00000000004000e8  00000000004000e8  000000e8  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .eh_frame     00000058  0000000000400130  0000000000400130  00000130  2**3
+                  CONTENTS, ALLOC, LOAD, READONLY, DATA
+  2 .data         00000004  0000000000600188  0000000000600188  00000188  2**2
+                  CONTENTS, ALLOC, LOAD, DATA
+  3 .comment      00000034  0000000000000000  0000000000000000  0000018c  2**0
+                  CONTENTS, READONLY
+#+END_EXAMPLE
+   WMA表示 Virtual Memory Address 即虚拟地址,LMA表示Load Memory Address,即加载地址,正常情况下这两个值是一样的.Linux加载器分配虚拟页的一个连续的片，从虚拟地址0x08048000处开始（32位），或者从0x400000处开始（64位）.
+** 可执行文件的装载与进程
+*** 进程虚拟地址空间
+    每个进程有一套页表,每个进程都有一套页表用于线性地址到物理地址映射变换，这样每个进程都有一个4GB逻辑空间(两进程逻辑地址相同,但它们有不同的页表,所以最终会映射到不同的物理位置).
+  [[file:./imgs/linux_task_vm.jpg]]
+  内核为系统中每个进程维护一个单独的任务结构(task_struct).任务结构中元素包含或者指向运行该进程所需要的所有信息(PID,用户栈指针，程序计数器等)
+[[file:./imgs/task_struct.jpg]]
+- mm_struct描述虚拟存储器当前状态，pdg指向第一级页表的基址.mmap指向一个vm_area_structs(区域结构)的链表,当内核运行这个进程时，它就将pdg存放在CR3的控制寄存器中
+- vm_start:指向区域的起始处
+- vm_end:指向区域结束处
+- vm_prot:描述区域所有页的读写权限
+- vm_flags:描述这个区域的页面是否与其他进程共享
+- vm_next:指向链表中下个区域结构
+*** 进程的建立
+**** 创建一个独立虚拟地址空间
+     创建虚拟地址空间实际上只是分配一个页目录就可以.
+**** 读取可执行文件头,并且建立虚拟空间与可执行文件的映射关系
+     上一步页映射关系函数是虚拟空间到物理内存映射关系，这一步所做的是虚拟空间与可执行文件的映射,当程序执行发生页错误时，操作系统将从物理内存分配出一个物理页，然后将缺页从磁盘中读取到内存中，再设置缺页的虚拟页和物理页的映射关系。当操作系统捕获到缺页错误时，它知道程序当前所需要的页在可执行文件的哪个位置，这就是虚拟空间与可执行文件之间的映射关系。这一步是整个装载过程中最重要一步，也是传统“装载”的过程
+#+BEGIN_EXAMPLE
+由于可执行文件在装载时实际上是被映射的虚拟空间,所以可执行文件很多时候被叫映像文件
+#+END_EXAMPLE
+由于虚拟存储的页映射都是以页为单位，在32位的IA32下一般是4k,如果.text段大小不到一页，需要考虑对齐该段.
+**** 将CPU指令寄存器设置成可执行文件的入口地址，启动运行
+     操作系统通过设置CPU指令寄存器将控制权转交给进程,由此进程开始执行,从进程角度看这一步可以认为操作系统执行一条跳转指令，直接跳转到可执行文件的入口地址(ELF文件中的入口地址)
+*** 页错误
+    操作系统只是通过可执行文件头信息建立可执行文件和进程虚拟内存之间的映射关系，假设上面例子中，程序入口地址为0x0000000000400e8,即刚好是.text段起始地址,当CPU打算执行这个地址指令时，发现页0x0000000000400e8~0x0000000000410e8是个空页面,于是它就认为这是一个页错误，CPU将控制权交给操作系统，操作
