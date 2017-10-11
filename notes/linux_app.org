@@ -2,6 +2,7 @@
 * linux程序运行解析
 ** 目标文件格式
     PC平台流行的可执行文件格式(Executable)主要是Windows下的PE(Portable Executable)和Linux的ELF(Excutable Linkable Format),它们都是COFF(Common file format)格式的变种.目标文件就是源代码编译后但未进行链接的那些中间文件（windows的.obj和linux下的.o）,它们与可执行文件的内容与结构很相似,所以一般跟可执行文件格式一起采用一种格式存储.在Windows下，我们统称为PE-COFF文件格式，在linux下统称为ELF文件.
+
     不光可执行(.exe或elf可执行文件)按照可执行文件格式存储，动态链接库(windows的.dll和linux的.so)及静态链接库(windows的.lib和linux的.a)都是按可执行文件格式存储
 #+BEGIN_EXAMPLE
 $ file /bin/bash
