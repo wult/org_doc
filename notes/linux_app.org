@@ -94,7 +94,7 @@ int main(void){
 #+END_EXAMPLE
 查看目标文件结构和内容:
 #+BEGIN_EXAMPLE
-#objdump -h SimpleSection.c
+#objdump -h SimpleSection.o
 #+END_EXAMPLE
 结果如下:
 #+BEGIN_EXAMPLE
