@@ -1,12 +1,23 @@
 #+OPTIONS: ^:{} H:5 num:t
 ** 目录
 *** it
+**** cpu
+    [[file:it/cpu/arch.org][英特尔IA32-架构]]
+**** emacs
+     [[file:it/emacs/lisp/lisp_start.org][lisp入门]]
+**** 汇编
+
 **** scala
      [[file:it/scala/scalaActions/index.org][scala实战]]
 **** spark
      [[file:it/spark/note/index.org][spark笔记]] 
 **** 机器学习
+**** 
 *** 记忆
     [[file:memory/num_memory_.org][数字记忆]]
+*** 数学
+    [[file:maths/regression_analysis/first.org][统计学之回归分析]]
+*** 逻辑
+    [[file:logic/logic_in_writing_thinking_and_problem_solving][金字塔原理]]
 *** 其他
     
