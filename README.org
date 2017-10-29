@@ -1,3 +1,4 @@
+#+OPTIONS: ^:{} H:5 num:t
 ** 目录
 *** it
 **** scala
