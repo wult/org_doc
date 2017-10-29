@@ -6,13 +6,20 @@
 **** emacs
      [[file:it/emacs/lisp/lisp_start.org][lisp入门]]
 **** 汇编
-
+     [[file:it/foundation/assembly/skills.org][汇编技巧]]
+**** 计算机原理
+     [[file:it/foundation/computerSystems][深入理解计算机]]
+     [[file:it/foundation/howProgramWorks/01_cpu.org][程序是怎样跑起来的]]
+     [[file:it/foundation/programLinkingLoading/02_complie_linking.org][程序员自我修养]]
+**** java
+     [[file:it/java/javaSource][揭秘java虚拟机]]
+**** linux
+     [[file:it/linux/linux0.11][Linux内核设计的艺术]]
 **** scala
      [[file:it/scala/scalaActions/index.org][scala实战]]
 **** spark
      [[file:it/spark/note/index.org][spark笔记]] 
 **** 机器学习
-**** 
 *** 记忆
     [[file:memory/num_memory_.org][数字记忆]]
 *** 数学
@@ -20,4 +27,5 @@
 *** 逻辑
     [[file:logic/logic_in_writing_thinking_and_problem_solving][金字塔原理]]
 *** 其他
+    [[file:other/master_your_workday_now][高效能是训练出来的]]
     
