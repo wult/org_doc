@@ -1,6 +1,0 @@
-** 目录
-*** scala
-    [[file:scala/scalaActions/index.org]][scala实战]]
-*** spark
-    [[file:spark/note/index.org][spark笔记]] 
-*** 机器学习
