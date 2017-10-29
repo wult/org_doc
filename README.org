@@ -9,7 +9,9 @@
      [[file:it/foundation/assembly/skills.org][汇编技巧]]
 **** 计算机原理
      [[file:it/foundation/computerSystems][深入理解计算机]]
+
      [[file:it/foundation/howProgramWorks/01_cpu.org][程序是怎样跑起来的]]
+
      [[file:it/foundation/programLinkingLoading/02_complie_linking.org][程序员自我修养]]
 **** java
      [[file:it/java/javaSource][揭秘java虚拟机]]
