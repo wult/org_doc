@@ -1,0 +1,10 @@
+** 寄存器
+| 寄存器名 | 英文                    | 说明                           |
+|----------+-------------------------+--------------------------------|
+| CS       | Code Segment Register   | 代码段的段基值                 |
+| DS       | data segment Register   | 数据段段基值                   |
+| ES       | extra segment register  | 附加数据段的段基值             |
+| FS       | extra segment register  | 附加数据段的段基值，用途不固定 |
+| GS       | extra segemtnt register | 附加数据段的段基值             |
+| SS       | stack segment register  | 堆栈段的值                          |
+
