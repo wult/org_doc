@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-02-12 一 20:46 -->
+<!-- 2018-02-12 一 22:57 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -228,11 +228,11 @@ for the JavaScript code in this tag.
 </head>
 <body>
 <div id="content">
-<div id="outline-container-org1ca3ba2" class="outline-2">
-<h2 id="org1ca3ba2"><span class="section-number-2">1</span> innodb插件启动过程</h2>
+<div id="outline-container-org000269c" class="outline-2">
+<h2 id="org000269c"><span class="section-number-2">1</span> innodb插件启动过程</h2>
 <div class="outline-text-2" id="text-1">
-</div><div id="outline-container-orgbeeb52a" class="outline-3">
-<h3 id="orgbeeb52a"><span class="section-number-3">1.1</span> 类调用流程图</h3>
+</div><div id="outline-container-org854000c" class="outline-3">
+<h3 id="org854000c"><span class="section-number-3">1.1</span> 类调用流程图</h3>
 <div class="outline-text-3" id="text-1-1">
 
 <div class="figure">
@@ -243,27 +243,27 @@ for the JavaScript code in this tag.
 </div>
 </div>
 
-<div id="outline-container-org4eb901c" class="outline-2">
-<h2 id="org4eb901c"><span class="section-number-2">2</span> 说明</h2>
+<div id="outline-container-orgda353b8" class="outline-2">
+<h2 id="orgda353b8"><span class="section-number-2">2</span> 说明</h2>
 <div class="outline-text-2" id="text-2">
-</div><div id="outline-container-orgda3e70a" class="outline-3">
-<h3 id="orgda3e70a"><span class="section-number-3">2.1</span> innobase_init()</h3>
+</div><div id="outline-container-org5b0f476" class="outline-3">
+<h3 id="org5b0f476"><span class="section-number-3">2.1</span> innobase_init()</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 主要是初始化一些全局变量 ,为启动作准备
 </p>
 </div>
 </div>
-<div id="outline-container-org2e3c4f3" class="outline-3">
-<h3 id="org2e3c4f3"><span class="section-number-3">2.2</span> innobase_start_or_create_for_mysql()</h3>
+<div id="outline-container-orgd9ee762" class="outline-3">
+<h3 id="orgd9ee762"><span class="section-number-3">2.2</span> innobase_start_or_create_for_mysql()</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 主要完成 InnoDB启动过程
 </p>
 </div>
 </div>
-<div id="outline-container-orgf4b86fa" class="outline-3">
-<h3 id="orgf4b86fa"><span class="section-number-3">2.3</span> srv_boot()</h3>
+<div id="outline-container-orgb068511" class="outline-3">
+<h3 id="orgb068511"><span class="section-number-3">2.3</span> srv_boot()</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 包含有两个重要方法 :
@@ -274,8 +274,8 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
-<div id="outline-container-orga1814f7" class="outline-3">
-<h3 id="orga1814f7"><span class="section-number-3">2.4</span> buf_pool_init()</h3>
+<div id="outline-container-org91aac5c" class="outline-3">
+<h3 id="org91aac5c"><span class="section-number-3">2.4</span> buf_pool_init()</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
     InnoDB的Buffer Pool初始化,它是根据系统配置参数innodb_buffer_pool_size
@@ -283,24 +283,24 @@ for the JavaScript code in this tag.
 </p>
 </div>
 </div>
-<div id="outline-container-orgfb8bb2e" class="outline-3">
-<h3 id="orgfb8bb2e"><span class="section-number-3">2.5</span> log_init()</h3>
+<div id="outline-container-org4fbc6de" class="outline-3">
+<h3 id="org4fbc6de"><span class="section-number-3">2.5</span> log_init()</h3>
 <div class="outline-text-3" id="text-2-5">
 <p>
 初始化日志系统,这是关于整个InnoDB存储引擎所有日志相关的初始化工作
 </p>
 </div>
 </div>
-<div id="outline-container-orga409d88" class="outline-3">
-<h3 id="orga409d88"><span class="section-number-3">2.6</span> recv_sys_init()</h3>
+<div id="outline-container-org2197f28" class="outline-3">
+<h3 id="org2197f28"><span class="section-number-3">2.6</span> recv_sys_init()</h3>
 <div class="outline-text-3" id="text-2-6">
 <p>
 初始化日志恢复系统.当数据库异常关闭，再次启动时，会用初始化后系统存储，解析日志内容并做恢复 
 </p>
 </div>
 </div>
-<div id="outline-container-org67a7808" class="outline-3">
-<h3 id="org67a7808"><span class="section-number-3">2.7</span> io_handler_thread()</h3>
+<div id="outline-container-org6a36da5" class="outline-3">
+<h3 id="org6a36da5"><span class="section-number-3">2.7</span> io_handler_thread()</h3>
 <div class="outline-text-3" id="text-2-7">
 <p>
 创建IO异步线程,共创建innodb_write_io_threads+innodb_read_io_threads个 是当上层对Buffer Pool发出读写请求时,主操作线程会将这个操作交给异步IO线程来做，读写操作不同之处是 读操作需要在请求之后等待之后异步读的完成 ,才能继续后面的操作(只有读到完整数据，才能继续后面的工作) 而写操作不需要等待及通知 ,InnoDB不会对单独页面 写操作就不需要等待及通知了,
@@ -311,19 +311,32 @@ for the JavaScript code in this tag.
 </p>
 </div>
 </div>
-<div id="outline-container-orgc125430" class="outline-3">
-<h3 id="orgc125430"><span class="section-number-3">2.8</span> open_or_create()</h3>
+<div id="outline-container-org0462771" class="outline-3">
+<h3 id="org0462771"><span class="section-number-3">2.8</span> open_or_create()</h3>
 <div class="outline-text-3" id="text-2-8">
 <p>
 打开或创建系统数据文件(ibdata),如果文件存在,则打开，并且读取一些文件头信息,比如LSN,如果文件不存在,则会创建新文件 .
-此时相当初始化一个新的数据库实例.这个函数执行完后，就可以知道当前是在初始化一个新数据实例还是在启动一个已存在的数据库</p>
+此时相当初始化一个新的数据库实例.这个函数执行完后，就可以知道当前是在初始化一个新数据实例还是在启动一个已存在的数据库
+</p>
+</div>
+</div>
+<div id="outline-container-orgb48f089" class="outline-3">
+<h3 id="orgb48f089"><span class="section-number-3">2.9</span> srv_undo_tablespaces_init()</h3>
+<div class="outline-text-3" id="text-2-9">
+<p>
+mysql5.6引入新功能:srv_undo_tablespaces_init,主要涉及的模块是回滚段的存储 .在5.6之前回滚段被强制分配在ibdata,如果一个事务很大，长期不提交，这个事务回滚段就不能释放空间
+</p>
+
+<p>
+根据上面可能出现的问题，引入了回滚段分离出来使用单独文件存储功能,innodb_undo_tablespace来控制,如果设置为0，则使用5.6之前的方式，所有回滚段在ibdata中
+</p>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: wlt</p>
-<p class="date">Created: 2018-02-12 一 20:46</p>
+<p class="date">Created: 2018-02-12 一 22:57</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -23,6 +23,8 @@ srv0start.cc -> srv0start.cc : recv_sys_init()
 srv0start.cc -> srv0start.cc : io_handler_thread()
 srv0start.cc -> fsp0sysspace.cc : open_or_create()
 activate fsp0sysspace.cc
+fsp0sysspace.cc -> srv0start.cc :
+srv0start.cc -> srv0start.cc : srv_undo_tablespaces_init()
 #+END_SRC
 ** 说明
 *** innobase_init()
@@ -47,3 +49,9 @@ activate fsp0sysspace.cc
 *** open_or_create()
     打开或创建系统数据文件(ibdata),如果文件存在,则打开，并且读取一些文件头信息,比如LSN,如果文件不存在,则会创建新文件 .
     此时相当初始化一个新的数据库实例.这个函数执行完后，就可以知道当前是在初始化一个新数据实例还是在启动一个已存在的数据库
+*** srv_undo_tablespaces_init()   
+   mysql5.6引入新功能:srv_undo_tablespaces_init,主要涉及的模块是回滚段的存储 .在5.6之前回滚段被强制分配在ibdata,如果一个事务很大，长期不提交，这个事务回滚段就不能释放空间
+    
+   根据上面可能出现的问题，引入了回滚段分离出来使用单独文件存储功能,innodb_undo_tablespace来控制,如果设置为0，则使用5.6之前的方式，所有回滚段在ibdata中
+
+

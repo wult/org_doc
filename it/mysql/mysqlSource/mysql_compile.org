@@ -1,0 +1,58 @@
+* mysql编译
+** 准备 
+*** 安装包网上下载:
+- mysql-5.7.21.tar.gz
+- boost_1_59_0.tar.gz
+  将上面两个包解压缩到指定目录,例如
+/home/wlt/opensource/目录下
+*** 更新依赖
+- apt install cmake
+- apt install bison
+- apt install libaio-dev
+- apt install libncurses5-dev
+** 编译安装mysql
+*** make 配置
+#+BEGIN_SRC 
+cd mysql-5.7.21
+mkdir debug
+cd debug
+#+END_SRC
+创建cmake.sh,内容如下:
+#+BEGIN_SRC 
+cmake .. -DBUILD_CONFIG=mysql_release \
+-DINSTALL_LAYOUT=STANDALONE \
+-DCMAKE_BUILD_TYPE=DEBUG \
+-DENABLE_DTRACE=OFF \
+-DWITH_EMBEDDED_SERVER=OFF \
+-DWITH_INNODB_MEMCACHED=ON \
+-DWITH_SSL=bundled \
+-DWITH_ZLIB=system \
+-DWITH_PAM=ON \
+-DCMAKE_INSTALL_PREFIX=/var/mysql/ \
+-DINSTALL_PUGINDIR="/var/mysql/lib/plugin" \
+-DDEFAULT_CHARSET=utf8 \
+-DDEFAULT_COLLATION=utf8_general_ci \
+-DWITH_EDITLINE=bundled \
+-DFEATURE_SET=community \
+-DCOMPILATION_COMMENT="mysql server(GPL)" \
+-DWITH_DEBUG=YES \
+-DWITH_BOOST=/home/wlt/opensource/boost_1_59_0
+#+END_SRC
+需要保证当前用户有/var/mysql目录写的权限
+
+接下来生成Makefile配置
+#+BEGIN_SRC 
+sh cmake.sh
+#+END_SRC
+
+接下来编译 
+#+BEGIN_SRC 
+# 24表示使用24线程来编译
+make -j 24
+#+END_SRC
+
+接下来安装 
+#+BEGIN_SRC 
+make install
+#+END_SRC
+
