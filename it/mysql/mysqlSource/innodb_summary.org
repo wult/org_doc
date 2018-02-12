@@ -1,0 +1,7 @@
+
+#+BEGIN_SRC plantuml :file images/innodb_summary.png :cmdline -charset utf-8
+handler.cc -> ha_innodb.cc : innobase_init()
+ha_innodb.cc -> srv0start.cc : innobase_start_or_create_for_mysql()
+srv0start.cc -> srv0start.cc : srv_boot()
+
+#+END_SRC
