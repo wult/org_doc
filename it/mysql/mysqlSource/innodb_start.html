@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-02-13 二 09:25 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="wlt" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="outline-container-org4eadc1d" class="outline-2">
+<h2 id="org4eadc1d"><span class="section-number-2">1</span> innodb插件启动过程</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-org0d43b99" class="outline-3">
+<h3 id="org0d43b99"><span class="section-number-3">1.1</span> 类调用流程图</h3>
+<div class="outline-text-3" id="text-1-1">
+
+<div class="figure">
+<p><img src="images/innodb_summary.png" alt="innodb_summary.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org3336850" class="outline-2">
+<h2 id="org3336850"><span class="section-number-2">2</span> 说明</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-org2dd02e3" class="outline-3">
+<h3 id="org2dd02e3"><span class="section-number-3">2.1</span> innobase_init()</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+主要是初始化一些全局变量 ,为启动作准备
+</p>
+</div>
+</div>
+<div id="outline-container-org860ff61" class="outline-3">
+<h3 id="org860ff61"><span class="section-number-3">2.2</span> innobase_start_or_create_for_mysql()</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+主要完成 InnoDB启动过程
+</p>
+</div>
+</div>
+<div id="outline-container-org5ed862a" class="outline-3">
+<h3 id="org5ed862a"><span class="section-number-3">2.3</span> srv_boot()</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+包含有两个重要方法 :
+</p>
+<ul class="org-ul">
+<li>srv_general_init(): 初始化同步控制系统,内存管理 系统,日志 。。。</li>
+<li>srv_init(): 初始化后台线程同步控制系统</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org595211c" class="outline-3">
+<h3 id="org595211c"><span class="section-number-3">2.4</span> buf_pool_init()</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+    InnoDB的Buffer Pool初始化,它是根据系统配置参数innodb_buffer_pool_size
+(InnoDB Buffer Pool总大小)及innodb_buffer_pool_instances(InnoDB Buffer Pool实例个数)来初始化的
+</p>
+</div>
+</div>
+<div id="outline-container-org82fd75a" class="outline-3">
+<h3 id="org82fd75a"><span class="section-number-3">2.5</span> log_init()</h3>
+<div class="outline-text-3" id="text-2-5">
+<p>
+初始化日志系统,这是关于整个InnoDB存储引擎所有日志相关的初始化工作
+</p>
+</div>
+</div>
+<div id="outline-container-org64dadb5" class="outline-3">
+<h3 id="org64dadb5"><span class="section-number-3">2.6</span> recv_sys_init()</h3>
+<div class="outline-text-3" id="text-2-6">
+<p>
+初始化日志恢复系统.当数据库异常关闭，再次启动时，会用初始化后系统存储，解析日志内容并做恢复 
+</p>
+</div>
+</div>
+<div id="outline-container-org8ea495b" class="outline-3">
+<h3 id="org8ea495b"><span class="section-number-3">2.7</span> io_handler_thread()</h3>
+<div class="outline-text-3" id="text-2-7">
+<p>
+创建IO异步线程,共创建innodb_write_io_threads+innodb_read_io_threads个 是当上层对Buffer Pool发出读写请求时,主操作线程会将这个操作交给异步IO线程来做，读写操作不同之处是 读操作需要在请求之后等待之后异步读的完成 ,才能继续后面的操作(只有读到完整数据，才能继续后面的工作) 而写操作不需要等待及通知 ,InnoDB不会对单独页面 写操作就不需要等待及通知了,
+</p>
+
+<p>
+只有在做检查 点或批量刷盘操作时，才会等待这个批量操作完成 .只有完成 了,确实写入文件中，才能将对应的日志废弃.
+</p>
+</div>
+</div>
+<div id="outline-container-org251b706" class="outline-3">
+<h3 id="org251b706"><span class="section-number-3">2.8</span> open_or_create()</h3>
+<div class="outline-text-3" id="text-2-8">
+<p>
+打开或创建系统数据文件(ibdata),如果文件存在,则打开，并且读取一些文件头信息,比如LSN,如果文件不存在,则会创建新文件 .
+此时相当初始化一个新的数据库实例.这个函数执行完后，就可以知道当前是在初始化一个新数据实例还是在启动一个已存在的数据库
+</p>
+</div>
+</div>
+<div id="outline-container-org76c98aa" class="outline-3">
+<h3 id="org76c98aa"><span class="section-number-3">2.9</span> srv_undo_tablespaces_init()</h3>
+<div class="outline-text-3" id="text-2-9">
+<p>
+mysql5.6引入新功能:srv_undo_tablespaces_init,主要涉及的模块是回滚段的存储 .在5.6之前回滚段被强制分配在ibdata,如果一个事务很大，长期不提交，这个事务回滚段就不能释放空间
+</p>
+
+<p>
+根据上面可能出现的问题，引入了回滚段分离出来使用单独文件存储功能,innodb_undo_tablespace来控制,如果设置为0，则使用5.6之前的方式，所有回滚段在ibdata中
+</p>
+</div>
+</div>
+
+
+<div id="outline-container-org18e22f2" class="outline-3">
+<h3 id="org18e22f2"><span class="section-number-3">2.10</span> fsp_header_init()</h3>
+<div class="outline-text-3" id="text-2-10">
+<p>
+作用是在系统文件ibdata的一开始分配空间,以便可以存储管理一些系统模块,比如事务系统,Inode页面,回滚段系统页面及数据字典管理页面，这些页面者存储在ibdata头几个页面中.
+</p>
+</div>
+</div>
+<div id="outline-container-org2f0bae6" class="outline-3">
+<h3 id="org2f0bae6"><span class="section-number-3">2.11</span> trx_sys_create_sys_pages()</h3>
+<div class="outline-text-3" id="text-2-11">
+<p>
+上面提到事务系统存储初始化，事务系统使用页面为5号页面，也就是ibdata的第6个页面，这个页面存储一个比较重要的东西就是事务ID，因为事务ID在MVCC及事务的ACID管理中很重要，并且不能重复，所以这个值被固化在这个页面中
+</p>
+</div>
+</div>
+<div id="outline-container-orgdce45e2" class="outline-3">
+<h3 id="orgdce45e2"><span class="section-number-3">2.12</span> dict_create()</h3>
+<div class="outline-text-3" id="text-2-12">
+<p>
+新建库,需要新的数据字典.
+</p>
+
+<p>
+首先分配一个ibdata文件中的第8个页面，用来存储数据字典使用到的几个ID值，分别是ROWID，表ID，索引ID，当前最大的表空间ID等。这些与前面事务ID比较类似.所以有相同的处理.然后为每一个系统表创建一个B树，用来存储在系统启动之后，用户创建的数据库对象，比如表，索引等，最后通过调用函数dict_boot反所有系统表加载到内存中，以便后面处理用户 的DDL请求。这些表结构是常驻内存的，结构不会被修改。
+</p>
+</div>
+</div>
+<div id="outline-container-orgdc735e8" class="outline-3">
+<h3 id="orgdc735e8"><span class="section-number-3">2.13</span> recv_recovery_from_checkpoint_start()</h3>
+<div class="outline-text-3" id="text-2-13">
+<p>
+简称recovery_start,主要工作是扫描日志文件,将需要恢复的日志一块一块扫描出来，然后分析其完整性,将完整的日志按照页面号归类并且做REDO操作，这部分是InnoDB日志实现的核心部分。
+</p>
+</div>
+</div>
+<div id="outline-container-orge8cb6ea" class="outline-3">
+<h3 id="orge8cb6ea"><span class="section-number-3">2.14</span> dict_boot()</h3>
+<div class="outline-text-3" id="text-2-14">
+<p>
+这里与新建库不同的是,这里只将所有系统表加载到内存中，而不会创建数据库字典及初始化字典存储页面
+</p>
+</div>
+</div>
+<div id="outline-container-orgc2d24ef" class="outline-3">
+<h3 id="orgc2d24ef"><span class="section-number-3">2.15</span> trx_sys_init_at_db_start()</h3>
+<div class="outline-text-3" id="text-2-15">
+<p>
+用来初始化事务系统,并且将所有回滚段中需要处理的事务加载起来,包括INSERT回滚段及UPDATE回滚段,用来为后面操作做准备。因为马上要执行的是 recv_recovery_from_checkpoint_finish,这个函数主要作用是执行回滚操作(UNDO),从函数recovery_start开始，到recovery_finish为止,执行顺序是有逻辑关系的,首先 recovery_start是纯物理操作,因为它是完成的REDO操作，将所有没有写入到数据页面的日志重做一遍，后面在执行trx_sys_init_at_db_start()函数时，需要加载所有需要处理事务，要找到每个事务的回滚段.这些数据需要在恢复完成后才可以读取，因为在这之前，这些回滚段的页面和数据页面一样也是通过Buffer Pool来读写的，并不能保证这些数据的正确性
+</p>
+</div>
+</div>
+<div id="outline-container-org80bd76b" class="outline-3">
+<h3 id="org80bd76b"><span class="section-number-3">2.16</span> recv_recovery_from_checkpoint_finish()</h3>
+<div class="outline-text-3" id="text-2-16">
+<p>
+处理的是逻辑的操作,因为回滚操作是针对每一个事务而言，所以是逻辑的，需要在trx_sys_init_at_db_start执行之后,才能执行 recovery_finish(),在执行 recovery_finish时,需要保证回滚段数据的正确性,因为回滚段的读写也是通过Buffer Pool来实现的,所以必须要在REDO恢复完成之后,回滚段的数据才是完整的，才能做回滚操作.
+</p>
+</div>
+</div>
+<div id="outline-container-orgcd4f4a1" class="outline-3">
+<h3 id="orgcd4f4a1"><span class="section-number-3">2.17</span> buf_dblwr_create()</h3>
+<div class="outline-text-3" id="text-2-17">
+<p>
+不管新建库还是已打开存在的库，都需要做,首先是创建两次写缓存(double_write),对应函数为buf_dblwr_create(),它在InnoDB中是个比较具有InnoDB特色的功能,同时也是一个用来保证正确性很重要的功能.
+</p>
+</div>
+</div>
+<div id="outline-container-org8fa4da2" class="outline-3">
+<h3 id="org8fa4da2"><span class="section-number-3">2.18</span> srv_master_thread()</h3>
+<div class="outline-text-3" id="text-2-18">
+<p>
+每隔一秒钟进行一次后台循环，在空闲与繁忙阶段分别做不太相同的事情，但其根本而方是基本相同的,包括: 后台删除废弃表，检查日志空间是否足够，后台合并Insert Buffer缓存，日志刷盘,做检查点.
+</p>
+</div>
+</div>
+<div id="outline-container-org23460aa" class="outline-3">
+<h3 id="org23460aa"><span class="section-number-3">2.19</span> srv_purge_coordinator_thread()和 srv_worker_thread()</h3>
+<div class="outline-text-3" id="text-2-19">
+<p>
+这两个线程通过互相配合,来完成整个InnoDB系统的PURGE操作,它们类似生产者与消费者关系,第一个线程为生产者，后面的工作线程是消费者，但这个需要通过配置参数purge_threads,所有PURGE操作将由调度线程来完成，如果是创建多个工作线程，调度线程在产生任务之后，会从所有工作线程中找到空闲一个，然后交给它来处理这个任务
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: wlt</p>
+<p class="date">Created: 2018-02-13 二 09:25</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

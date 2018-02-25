@@ -1,0 +1,417 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-02-13 二 00:44 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="wlt" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="outline-container-org76d6e3e" class="outline-2">
+<h2 id="org76d6e3e"><span class="section-number-2">1</span> mysql编译</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-org0872d38" class="outline-3">
+<h3 id="org0872d38"><span class="section-number-3">1.1</span> 准备</h3>
+<div class="outline-text-3" id="text-1-1">
+</div><div id="outline-container-org2025bbe" class="outline-4">
+<h4 id="org2025bbe"><span class="section-number-4">1.1.1</span> 安装包网上下载:</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<ul class="org-ul">
+<li>mysql-5.7.21.tar.gz</li>
+<li>boost_1_59_0.tar.gz
+将上面两个包解压缩到指定目录,例如</li>
+</ul>
+<p>
+/home/wlt/opensource/目录下
+</p>
+</div>
+</div>
+<div id="outline-container-orgfa493f6" class="outline-4">
+<h4 id="orgfa493f6"><span class="section-number-4">1.1.2</span> 更新依赖</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<ul class="org-ul">
+<li>apt install cmake</li>
+<li>apt install bison</li>
+<li>apt install libaio-dev</li>
+<li>apt install libncurses5-dev</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org4e996d6" class="outline-3">
+<h3 id="org4e996d6"><span class="section-number-3">1.2</span> 编译安装mysql</h3>
+<div class="outline-text-3" id="text-1-2">
+</div><div id="outline-container-orgb6ea588" class="outline-4">
+<h4 id="orgb6ea588"><span class="section-number-4">1.2.1</span> make 配置</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<pre class="example">
+cd mysql-5.7.21
+mkdir debug
+cd debug
+</pre>
+<p>
+创建cmake.sh,内容如下:
+</p>
+<pre class="example">
+cmake .. -DBUILD_CONFIG=mysql_release \
+-DINSTALL_LAYOUT=STANDALONE \
+-DCMAKE_BUILD_TYPE=DEBUG \
+-DENABLE_DTRACE=OFF \
+-DWITH_EMBEDDED_SERVER=OFF \
+-DWITH_INNODB_MEMCACHED=ON \
+-DWITH_SSL=bundled \
+-DWITH_ZLIB=system \
+-DWITH_PAM=ON \
+-DCMAKE_INSTALL_PREFIX=/var/mysql/ \
+-DINSTALL_PUGINDIR="/var/mysql/lib/plugin" \
+-DDEFAULT_CHARSET=utf8 \
+-DDEFAULT_COLLATION=utf8_general_ci \
+-DWITH_EDITLINE=bundled \
+-DFEATURE_SET=community \
+-DCOMPILATION_COMMENT="mysql server(GPL)" \
+-DWITH_DEBUG=YES \
+-DWITH_BOOST=/home/wlt/opensource/boost_1_59_0
+</pre>
+<p>
+需要保证当前用户有/var/mysql目录写的权限
+</p>
+
+<p>
+接下来生成Makefile配置
+</p>
+<pre class="example">
+sh cmake.sh
+</pre>
+
+<p>
+接下来编译 
+</p>
+<pre class="example">
+# 24表示使用24线程来编译
+make -j 24
+</pre>
+</div>
+</div>
+<div id="outline-container-orgb76ba0c" class="outline-4">
+<h4 id="orgb76ba0c"><span class="section-number-4">1.2.2</span> 安装</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+接下来安装 
+</p>
+<pre class="example">
+make install
+</pre>
+<p>
+创建配置文件 
+</p>
+<pre class="example">
+cd /var/mysql
+mkdir data_3306
+</pre>
+<p>
+初始化db
+</p>
+<pre class="example">
+cd /var/mysql/bin
+./mysqld-debug --basedir=/var/mysql --datadir=/var/mysql/data_3306 --initialize --user=wlt
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org897c0fd" class="outline-3">
+<h3 id="org897c0fd"><span class="section-number-3">1.3</span> 配置eclipse</h3>
+<div class="outline-text-3" id="text-1-3">
+</div><div id="outline-container-orgd5745f9" class="outline-4">
+<h4 id="orgd5745f9"><span class="section-number-4">1.3.1</span> 新建项目</h4>
+<div class="outline-text-4" id="text-1-3-1">
+</div><ol class="org-ol"><li><a id="org55bd8be"></a>新建一个c++项目<br /></li>
+<li><a id="orgd8c843d"></a>如下图所示,将项目的地址选择为刚刚编译的mysql目录<br /><div class="outline-text-5" id="text-1-3-1-2">
+
+<div class="figure">
+<p><img src="./images/new_project.png" alt="new_project.png" /> 
+</p>
+</div>
+</div></li></ol>
+</div>
+
+<div id="outline-container-orgb75c97b" class="outline-4">
+<h4 id="orgb75c97b"><span class="section-number-4">1.3.2</span> 配置debug</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+ 如下图所示新建一个run configuration
+<img src="./images/run_config1.png" alt="run_config1.png" /> 
+<img src="./images/run_config2.png" alt="run_config2.png" />
+</p>
+<ul class="org-ul">
+<li>C/C++ Application:</li>
+</ul>
+
+<p>
+/home/wlt/opensource/mysql-5.7.21/debug/sql/mysqld-debug
+</p>
+
+<p>
+-Program arguments
+</p>
+<pre class="example">
+--datadir=/var/mysql/data_3306
+--basedir=/var/mysql/
+--socket=/tmp/mysql.socket
+--user=wlt
+</pre>
+</div>
+</div>
+
+<div id="outline-container-org4d3b959" class="outline-4">
+<h4 id="org4d3b959"><span class="section-number-4">1.3.3</span> 权限处理</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<p>
+mysql5.7安全策略作了调整,第一次启动时，会在log_error文件中生成 密码:
+</p>
+<pre class="example">
+2018-02-12T16:20:05.295589Z 0 [Warning] Gtid table is not ready to be used. Table 'mysql.gtid_executed' cannot be opened.
+2018-02-12T16:20:05.298436Z 1 [Note] A temporary password is generated for root@localhost: 7VLwehf?:j65
+</pre>
+<p>
+如上所示，密码为:  7VLwehf?:j65
+我们登录 mysql时
+</p>
+<pre class="example">
+mysql -uroot -h127.0.0.1 -p
+#输完密码后可以这样修改密码
+alter user 'root'@'localhost' identified by 'new password';
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: wlt</p>
+<p class="date">Created: 2018-02-13 二 00:44</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
