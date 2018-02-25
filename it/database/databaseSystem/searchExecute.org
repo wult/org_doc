@@ -1,0 +1,129 @@
+
+** 参数
+   B: 元组所需要块的数目
+   T: 元组的数目
+   V: 
+** 简单的物理操作符迭代器
+#+BEGIN_SRC 
+open(){
+    b:=R的第一块;
+    t:=b的第一元组;
+}
+
+getNext(){
+    if( t 已超过块B的最后一个元组){
+        将b前进到下一块;
+        if(没有下一块)
+            return notFound;
+        else
+            t:=块b上的第一个元组;
+    }
+    oldt:=t;
+    将t前进到b的下一元组;
+    return oldt;
+}
+
+close(){
+}
+#+END_SRC
+
+** RUS 的 迭代器
+   不考虑重复情况
+#+BEGIN_SRC 
+open(){
+    R.open();
+    curRel:=R;
+}
+getNext(){
+    if(curRel = R){
+        t:=R.getNext();
+        if(t<>Found) /* R尚未消耗完 */
+            return t;
+        else /* R已消耗完 */
+        {
+            S.open();
+            curRel := S;
+         }
+    }
+    return s.getNext();
+}
+close(){
+    r.close();
+    s.close();
+}
+#+END_SRC
+
+** 一趟算法
+*** 操作符分三类
+**** 一次单个元组,一元操作.
+**** 整个关系,一元操作
+**** 整个关系,二元操作
+** 基于元组嵌套循环连接的迭代器
+R关联S迭代器的处理
+#+BEGIN_SRC 
+open(){
+    R.open();
+    S.open();
+    s:=S.getNext();
+}
+
+getNext(){
+    repeat{
+        r:=R.getNext();
+        if(r = NotFound){
+            R.close();
+            s:=S.getNext();
+            if(s = NotFound) 
+                return;/* R和S都消耗完 */
+            R.open();
+            r:=R.getNext();
+        }
+    }until(r与s能连接);
+    return r和s的连接;
+}
+
+close(){
+    R.close();
+    S.close();
+}
+#+END_SRC
+** 基于块的嵌套循环连接算法
+#+BEGIN_SRC 
+for S中每个大小为M-1块的chunk
+    将这些块读入主存缓冲区中;
+    将其元组组织为查找结构,查找关键字是R和S的公共属性;
+    for R的每个块b
+        将b读入主存;
+        for 块b的每个元组t do begin
+            找出S在主存中的元组中那些能与t连接的元组;
+            输出t与这些元组每一个连接;
+        end;
+    end;
+end;
+#+END_SRC
+** 通过散列划分关系 
+#+BEGIN_SRC 
+用M-1个空的缓冲区初始化M-1个桶
+FOR 关系R的每个块b DO BEGIN
+    将块b读入第M个缓冲区中;
+    FOR b中的每个元组t DO BEGIN
+        IF 桶h(t)的缓冲区中没有容纳t的空间 THEN
+            BEGIN
+                将该缓冲区复制到磁盘;
+                用一个新的空块初始化该缓冲区;
+            END;
+        将t复制到桶h(t)的缓冲区中;
+    END;
+END;
+FOR 每个桶 DO
+    IF 此桶的缓冲块非空 THEN
+        将该缓冲区写到磁盘;
+#+END_SRC
+
+
+
+
+
+
+
+
