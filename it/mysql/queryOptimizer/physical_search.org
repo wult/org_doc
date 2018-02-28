@@ -1,0 +1,35 @@
+** 查询代价估算
+*** 代价模型
+    查询代价估算基于CPU代价和IO代价
+#+BEGIN_SRC 
+总代价=IO代价 + CPU代价
+COST = P*a_page_cpu_time +W*T
+#+END_SRC
+- P为计划运行时访问的页面数, a_page_cpu_time是每个页面读取的时间花费,其乘积反映IO花费
+- T为访问的元组数,反映CPU花费(存储是以页面为单位,数据以页面形式读入内存,每个页面上可能有多条元组,访问元组需要解析元组结构,才能把元组上字段读出,这消耗的是CPU).如果索引扫描,则还会包括索引读取的花费
+- W为权生因子,表明IO到CPU相关性，又称选择率，选择率用于表示在关系R中，满足条件"A op a "的元组数与N的比值.
+*** 选择率计算常用方法
+**** 无参数方法
+**** 参数法
+**** 曲线拟合法
+**** 抽样法
+**** 综合法
+** 单表扫描算法
+*** 顺序扫描(SeqScan)
+*** 索引扫描(IndexScan)
+*** 只读索引扫描(IndexOnlyScan)
+*** 行扫描(RowIdScan)
+*** 并行表扫描(ParallelIndexScan)
+*** 组合多个索引扫描(MultipleIndexScan)
+** 单表扫描代价计算
+| 扫描方式 | 代价估算公式                                      |
+|----------+---------------------------------------------------|
+| 顺序扫描 | N_page*a_tuple_IO_time + N_tuple*a_tuple_CPU_time |
+| 索引扫描 | C_index + N_page_index*a_tuple_IO_time            |
+- a_page_IO_time: 一个页面IO花费
+- N_page:数据页面数
+- N_page_index:索引页面数
+- a_tuple_CPU_time:一个元组从页面中解析的CPU花费
+- N_tuple:元组数
+- C_index:索引的IO花费，C_index = N_page_index * a_page_IO_time
+- N_tuple_index:索引作用下的可用元组数,N_tuple_index = N_tuple*索引选择率
