@@ -33,3 +33,25 @@ COST = P*a_page_cpu_time +W*T
 - N_tuple:元组数
 - C_index:索引的IO花费，C_index = N_page_index * a_page_IO_time
 - N_tuple_index:索引作用下的可用元组数,N_tuple_index = N_tuple*索引选择率
+** 两表连接算法
+*** 连接操作代价计算
+| 算法         | 代价估算公式                                            |
+|--------------+---------------------------------------------------------|
+| 嵌套循环连接 | 基本嵌套循环连接: C-outer+C-inner                       |
+|              | 内表使用索引改进嵌套循环: C-outer+C-inner-index         |
+|--------------+---------------------------------------------------------|
+| 归并         | 基本的归并连接: C-outer+C-inner+C-outersort+C-innersort |
+|              | 内外表使用索引,只影响排序,C-outsort,C-innersort可能变化 |
+|--------------+---------------------------------------------------------|
+| Hash连接     | C-createhash+(N-outer*N-inner*选择率)*a_tuple_cpu_time     |
+- a_tuple_cpu_time:获取一个元组消耗的CPU时间
+- N-outer:扫描获取外表元组数
+- N-inner:扫描获取内表元组数,N-inner=N-inner-all*选择率，其中N-inner-all表示内表的所有元组数
+- C-outer:扫描外表的代价,C-outer=N-outer*a_tuple_cpu_time
+- C-inner:扫描内表的代价,C-inner=N-inner*a_tuple_cpu_time
+- C-inner-index: 使用索引扫描内表代价，通常C-inner-index会小于C-inner
+- C-outersort: 外表排序的代价
+- C-innersort: 内表排序的代价
+- C-createhash: 创建hash的代价
+** 多表连接算法
+*** 常用的多表连接算法
