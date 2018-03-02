@@ -9,5 +9,38 @@
 **** 执行查询执行计划阶段
 *** 查询过程类
 **** sql_parse.cc
-**** 
+     词法分析，语法分析,语义检查
+**** sql_resolver.cc
+     JION.prepare预处理
+**** sql_optimizer.cc
+     JOIN.optimize查询优化
+     还会作代价估算器，统计信息
+***** sql_optimizer.cc
+      逻辑优化
+***** sql_planner.cc
+      greedy_search 物理优化
+**** sql_executor.cc
+     JOIN.exec执行器
+**** 执行结果
+** 表数据的访问方式
+*** 常量表   
+- system表: 表中只有一行数据
+- const表: 经where语句中限制条件(column=常数)筛选后只有一行数据，这表明column列上有索引，而且索引可能是主键列或唯一列,结果是0行或1行
+代码表示方式可参考:sql_opt_exec_shared.h的 enum join_type
+| 类型            | 代码表示方式       | 说明                                                                                                                                 |
+|-----------------+--------------------+--------------------------------------------------------------------------------------------------------------------------------------|
+| system          | JT_SYSTEM          | 常量表情况一,表上只有一条元组匹配                                                                                                    |
+| const           | JT_CONST           | 常量表情况二,最多有一条元组匹配                                                                                                      |
+| eq_ref          | JT_EQ_REF          | 参与连接运算的表,且是内表.基于索引(连接字段上存在唯一索引或主键索引，且操作符是"="的谓词,连接字段不能为NULL)做扫描,                  |
+|                 |                    | 使得对外表的一条元组内表只有一条元组与之对应                                                                                         |
+| ref             | JT_REF             | 可用于单表扫描或连接 ,参与连接运算的表是内表.基于索引(连接字段索引是非唯一索引,操作符是"="，)，使用外表一条元组,内表可有若干元组对应 |
+| ref_or_null     | JT_REF_OR_NULL     | 类似ref,只是搜索条件条件包括: 连接字段值可为NULL的情况,如where col=xx or col is null                                                 |
+| range           | JT_RANGE           | 范围扫描,基于索引做范围，为诸如between ,in ,>=,like类操作提供支持                                                                    |
+| index           | JT_INDEX_SCAN      | 索引做扫描,基于索引在索引的叶子结点上找满足条件的数据(不需要访问数据文件)                                                            |
+| ALL             | JT_ALL             | 全表扫描或范围扫描,不使用索引,顺序扫描                                                                                               |
+| unique_subquery | JT_UNIQUE_SUBQUERY | 在子查询中，基于唯一索引进行扫描,类似 eq_ref                                                                                         |
+| index_subquery  | JT_INDEX_SUBQUERY  | 在子查询中，基于除唯一索引之外索引进行扫描                                                                                           |
+| index_merge     | JT_INDEX_MERGE     | 在2个及2个以上索引存在且可用时，查询可以使用多个索引进行查找,然后 通过交集或并集合查询结果                                           |
+|                 | JT_FT              | FT,FullText全文检索                                                                                                                      |
+
 ** 
