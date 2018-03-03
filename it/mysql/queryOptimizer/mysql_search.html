@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-03-03 六 22:35 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="wlt" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="outline-container-org5082d28" class="outline-2">
+<h2 id="org5082d28"><span class="section-number-2">1</span> Mysql查询执行过程</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-orgd45b230" class="outline-3">
+<h3 id="orgd45b230"><span class="section-number-3">1.1</span> 查询执行过程</h3>
+<div class="outline-text-3" id="text-1-1">
+</div><div id="outline-container-orgfd73482" class="outline-4">
+<h4 id="orgfd73482"><span class="section-number-4">1.1.1</span> 语法分析阶段</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<p>
+将sql查询语句变换成为一查查询树st_select_lex传给优化器,并对sql表达语义进行检查
+</p>
+</div>
+</div>
+<div id="outline-container-org656f0cd" class="outline-4">
+<h4 id="org656f0cd"><span class="section-number-4">1.1.2</span> 生成逻辑查询执行计划阶段</h4>
+<div class="outline-text-4" id="text-1-1-2">
+<p>
+遍历查询树,确定关系是否是常量表,为每个关系查找可用索引,运用关系代数原理和启发式规则优化
+</p>
+</div>
+</div>
+<div id="outline-container-org622aba5" class="outline-4">
+<h4 id="org622aba5"><span class="section-number-4">1.1.3</span> 生成物理查询执行计划阶段</h4>
+<div class="outline-text-4" id="text-1-1-3">
+<p>
+对每个关系尽量利用索引计算其代价,找出代价最小的路径后保存到JOIN类的best_positions
+</p>
+</div>
+</div>
+<div id="outline-container-org2768646" class="outline-4">
+<h4 id="org2768646"><span class="section-number-4">1.1.4</span> 执行查询执行计划阶段</h4>
+</div>
+</div>
+<div id="outline-container-org0604978" class="outline-3">
+<h3 id="org0604978"><span class="section-number-3">1.2</span> 查询过程类</h3>
+<div class="outline-text-3" id="text-1-2">
+</div><div id="outline-container-orge0dc7f3" class="outline-4">
+<h4 id="orge0dc7f3"><span class="section-number-4">1.2.1</span> sql_parse.cc</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+词法分析，语法分析,语义检查
+</p>
+</div>
+</div>
+<div id="outline-container-org29458d7" class="outline-4">
+<h4 id="org29458d7"><span class="section-number-4">1.2.2</span> sql_resolver.cc</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+JION.prepare预处理
+</p>
+</div>
+</div>
+<div id="outline-container-org02856bd" class="outline-4">
+<h4 id="org02856bd"><span class="section-number-4">1.2.3</span> sql_optimizer.cc</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+JOIN.optimize查询优化
+还会作代价估算器，统计信息
+</p>
+</div>
+<ol class="org-ol"><li><a id="org1a743f3"></a>sql_optimizer.cc<br /><div class="outline-text-5" id="text-1-2-3-1">
+<p>
+逻辑优化
+</p>
+</div></li>
+<li><a id="org780c9e8"></a>sql_planner.cc<br /><div class="outline-text-5" id="text-1-2-3-2">
+<p>
+greedy_search 物理优化
+</p>
+</div></li></ol>
+</div>
+<div id="outline-container-orgf0bfd2d" class="outline-4">
+<h4 id="orgf0bfd2d"><span class="section-number-4">1.2.4</span> sql_executor.cc</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<p>
+JOIN.exec执行器
+</p>
+</div>
+</div>
+<div id="outline-container-org2d9721e" class="outline-4">
+<h4 id="org2d9721e"><span class="section-number-4">1.2.5</span> 执行结果</h4>
+</div>
+</div>
+</div>
+<div id="outline-container-org91eccbb" class="outline-2">
+<h2 id="org91eccbb"><span class="section-number-2">2</span> 表数据的访问方式</h2>
+<div class="outline-text-2" id="text-2">
+</div><div id="outline-container-org754aa83" class="outline-3">
+<h3 id="org754aa83"><span class="section-number-3">2.1</span> 常量表</h3>
+<div class="outline-text-3" id="text-2-1">
+<ul class="org-ul">
+<li>system表: 表中只有一行数据</li>
+<li>const表: 经where语句中限制条件(column=常数)筛选后只有一行数据，这表明column列上有索引，而且索引可能是主键列或唯一列,结果是0行或1行</li>
+</ul>
+<p>
+代码表示方式可参考:sql_opt_exec_shared.h的 enum join_type
+</p>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">类型</th>
+<th scope="col" class="org-left">代码表示方式</th>
+<th scope="col" class="org-left">说明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">system</td>
+<td class="org-left">JT_SYSTEM</td>
+<td class="org-left">常量表情况一,表上只有一条元组匹配</td>
+</tr>
+
+<tr>
+<td class="org-left">const</td>
+<td class="org-left">JT_CONST</td>
+<td class="org-left">常量表情况二,最多有一条元组匹配</td>
+</tr>
+
+<tr>
+<td class="org-left">eq_ref</td>
+<td class="org-left">JT_EQ_REF</td>
+<td class="org-left">参与连接运算的表,且是内表.基于索引(连接字段上存在唯一索引或主键索引，且操作符是"="的谓词,连接字段不能为NULL)做扫描, 使得对外表的一条元组内表只有一条元组与之对应</td>
+</tr>
+
+<tr>
+<td class="org-left">ref</td>
+<td class="org-left">JT_REF</td>
+<td class="org-left">可用于单表扫描或连接 ,参与连接运算的表是内表.基于索引(连接字段索引是非唯一索引,操作符是"="，)，使用外表一条元组,内表可有若干元组对应</td>
+</tr>
+
+<tr>
+<td class="org-left">ref_or_null</td>
+<td class="org-left">JT_REF_OR_NULL</td>
+<td class="org-left">类似ref,只是搜索条件条件包括: 连接字段值可为NULL的情况,如where col=xx or col is null</td>
+</tr>
+
+<tr>
+<td class="org-left">range</td>
+<td class="org-left">JT_RANGE</td>
+<td class="org-left">范围扫描,基于索引做范围，为诸如between ,in ,&gt;=,like类操作提供支持</td>
+</tr>
+
+<tr>
+<td class="org-left">index</td>
+<td class="org-left">JT_INDEX_SCAN</td>
+<td class="org-left">索引做扫描,基于索引在索引的叶子结点上找满足条件的数据(不需要访问数据文件)</td>
+</tr>
+
+<tr>
+<td class="org-left">ALL</td>
+<td class="org-left">JT_ALL</td>
+<td class="org-left">全表扫描或范围扫描,不使用索引,顺序扫描</td>
+</tr>
+
+<tr>
+<td class="org-left">unique_subquery</td>
+<td class="org-left">JT_UNIQUE_SUBQUERY</td>
+<td class="org-left">在子查询中，基于唯一索引进行扫描,类似 eq_ref</td>
+</tr>
+
+<tr>
+<td class="org-left">index_subquery</td>
+<td class="org-left">JT_INDEX_SUBQUERY</td>
+<td class="org-left">在子查询中，基于除唯一索引之外索引进行扫描</td>
+</tr>
+
+<tr>
+<td class="org-left">index_merge</td>
+<td class="org-left">JT_INDEX_MERGE</td>
+<td class="org-left">在2个及2个以上索引存在且可用时，查询可以使用多个索引进行查找,然后 通过交集或并集合查询结果</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">JT_FT</td>
+<td class="org-left">FT,FullText全文检索</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd2bba7a" class="outline-2">
+<h2 id="orgd2bba7a"><span class="section-number-2">3</span> 主要的类和数据结构</h2>
+<div class="outline-text-2" id="text-3">
+</div><div id="outline-container-orgd849c62" class="outline-3">
+<h3 id="orgd849c62"><span class="section-number-3">3.1</span> 查询树</h3>
+<div class="outline-text-3" id="text-3-1">
+
+<div class="figure">
+<p><img src="images/st_select_lex.png" alt="st_select_lex.png" />
+</p>
+</div>
+</div>
+
+<div id="outline-container-org1833017" class="outline-4">
+<h4 id="org1833017"><span class="section-number-4">3.1.1</span> st_select_lex</h4>
+<div class="outline-text-4" id="text-3-1-1">
+<p>
+语法分析器的结果是查询树,使用st_select_lex类表示 
+st_select_lex定义位于sql_lex.h文件,主要表示语法分析器的结果：查询树
+</p>
+</div>
+</div>
+<div id="outline-container-org42c8ce6" class="outline-4">
+<h4 id="org42c8ce6"><span class="section-number-4">3.1.2</span> TABLE_LIST</h4>
+<div class="outline-text-4" id="text-3-1-2">
+<p>
+查询关系表,位于table.h,关系表存放很多信息,有查询优化阶段需要的
+</p>
+</div>
+</div>
+</div>
+<div id="outline-container-org6a5da13" class="outline-3">
+<h3 id="org6a5da13"><span class="section-number-3">3.2</span> 索引类</h3>
+<div class="outline-text-3" id="text-3-2">
+
+<div class="figure">
+<p><img src="images/key.png" alt="key.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orga2257a7" class="outline-3">
+<h3 id="orga2257a7"><span class="section-number-3">3.3</span> 连接表</h3>
+<div class="outline-text-3" id="text-3-3">
+<p>
+连接表介于关系(TABLE_LIST类),与连接类(JOIN类)之间一个过渡对象,存放关系一些相关信息,也存放了连接操作操作的一些信息,所以称为连接表
+</p>
+
+<div class="figure">
+<p><img src="images/st_join_table.png" alt="st_join_table.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org53950b6" class="outline-3">
+<h3 id="org53950b6"><span class="section-number-3">3.4</span> 连接类(JOIN)</h3>
+<div class="outline-text-3" id="text-3-4">
+<p>
+JOIN类主要操作对应查询语句连接关系内容,是优化和执行的基本单位,也是优化结果(查询执行计划)的储存对象,本类在文件: sql_optimizer.h中
+</p>
+
+<div class="figure">
+<p><img src="images/join.png" alt="join.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org150cb26" class="outline-3">
+<h3 id="org150cb26"><span class="section-number-3">3.5</span> 约束条件</h3>
+<div class="outline-text-3" id="text-3-5">
+<p>
+约束条件是指Where或join/on或having子句谓词表达式,分两种,一种是限制条件,用来过滤元组;另一种是连接条件,满足连接条件的元组才会连接,连接条件表达式一般包括两个或两个以上的关系的常量 ,该类在:item.h中
+</p>
+
+<p>
+Mysql用Item类表示约束条件表达式,这是一个父类,由一系列子类继承这个父类,Item_equal类与Item类之间的关系如下图所示:
+</p>
+
+<div class="figure">
+<p><img src="images/item.png" alt="item.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9df2009" class="outline-3">
+<h3 id="org9df2009"><span class="section-number-3">3.6</span> 位置</h3>
+<div class="outline-text-3" id="text-3-6">
+<p>
+在连接顺序中,位置是指被连接的表的位置(一个表在多表连接构成的连接顺序中处于的位置),这个位置储存了被访问的表,被使用的访问方法,关连接策略的选择,半连接优化状态.Mysql的多表连接算法支付的是从左到右的类似左深树连接方式,但左深树是一个树型结构,而mysql多表连接算法连接表是一个平台结构,先对表进行排序，然后从左到右地连接排好序的表,然后确定当前连接方式的花费
+</p>
+
+<div class="figure">
+<p><img src="images/st_position.png" alt="st_position.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgde595c9" class="outline-3">
+<h3 id="orgde595c9"><span class="section-number-3">3.7</span> 代价估算</h3>
+<div class="outline-text-3" id="text-3-7">
+<p>
+Mysql提供代价估算类包括4个层面: IO花费,CPU花费,远程操作花费,内在操作花费,v5.6不考虑内存，远程花费
+</p>
+
+
+<div class="figure">
+<p><img src="images/cost_estimate.png" alt="cost_estimate.png" />
+</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: wlt</p>
+<p class="date">Created: 2018-03-03 六 22:35</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
