@@ -227,4 +227,30 @@ Item_func <|-- Item_int_func
 Item_int_func <|-- Item_bool_func
 Item_bool_func <|-- Item_equal
 #+END_SRC
+*** 位置
+    在连接顺序中,位置是指被连接的表的位置(一个表在多表连接构成的连接顺序中处于的位置),这个位置储存了被访问的表,被使用的访问方法,关连接策略的选择,半连接优化状态.Mysql的多表连接算法支付的是从左到右的类似左深树连接方式,但左深树是一个树型结构,而mysql多表连接算法连接表是一个平台结构,先对表进行排序，然后从左到右地连接排好序的表,然后确定当前连接方式的花费
+#+BEGIN_SRC plantuml :file images/st_position.png :cmdline -charset utf-8
+class st_position <<struct>>{
+    double read_time //访问表的花费
+    JOIN_TAB *table //访问连接对象
+    Key_use *key //索引信息
+    unit first_dupsweedout_table //一些半连接优化策略，如首次匹配，重复淘汰
+}
 
+note right of position
+如果表被访问,则表数据的读取方式(主要是依据索引的读取方式)有如下两种情况:
+空值: 意味是JT_RANGE,JT_INDEX_SCAN,JT_ALL,JT_INDEX_MERGE数据访问方式
+其他: 使用JT_EQ_REF,JT_REF,JT_REF_OR_NULL 
+end note
+#+END_SRC
+*** 代价估算
+    Mysql提供代价估算类包括4个层面: IO花费,CPU花费,远程操作花费,内在操作花费,v5.6不考虑内存，远程花费
+
+#+BEGIN_SRC plantuml :file images/cost_estimate.png :cmdline -charset utf-8
+class Cost_estimate{
+    double io_cost //IO操作花费
+    double cpu_cost //CPU操作花费
+    double import_cost //远程操作花费
+    double mem_cost //内存操作花费
+}
+#+END_SRC
