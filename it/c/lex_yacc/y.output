@@ -1,0 +1,394 @@
+语法
+
+    0 $accept: line_list $end
+
+    1 line_list: statement
+    2          | line_list statement
+
+    3 statement: expression SEMICOLON
+    4          | assgin_statement
+    5          | PRINT LP expression RP SEMICOLON
+
+    6 assgin_statement: identifier ASSIGN expression SEMICOLON
+
+    7 expression: term
+    8           | expression ADD term
+    9           | expression SUB term
+
+   10 term: primary_expression
+   11     | term MUL primary_expression
+   12     | term DIV primary_expression
+
+   13 primary_expression: DOUBLE_LITERAL
+   14                   | identifier
+   15                   | LP expression RP
+
+   16 identifier: IDENTIFIER
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+error (256)
+DOUBLE_LITERAL (258) 13
+ADD (259) 8
+SUB (260) 9
+MUL (261) 11
+DIV (262) 12
+LP (263) 5 15
+RP (264) 5 15
+SEMICOLON (265) 3 5 6
+PRINT (266) 5
+IDENTIFIER (267) 16
+ASSIGN (268) 6
+
+
+Nonterminals, with rules where they appear
+
+$accept (14)
+    左： 0
+line_list (15)
+    左： 1 2, 右： 0 2
+statement (16)
+    左： 3 4 5, 右： 1 2
+assgin_statement (17)
+    左： 6, 右： 4
+expression (18)
+    左： 7 8 9, 右： 3 5 6 8 9 15
+term (19)
+    左： 10 11 12, 右： 7 8 9 11 12
+primary_expression (20)
+    左： 13 14 15, 右： 10 11 12
+identifier (21)
+    左： 16, 右： 6 14
+
+
+State 0
+
+    0 $accept: . line_list $end
+
+    DOUBLE_LITERAL  shift, and go to state 1
+    LP              shift, and go to state 2
+    PRINT           shift, and go to state 3
+    IDENTIFIER      shift, and go to state 4
+
+    line_list           转到状态 5
+    statement           转到状态 6
+    assgin_statement    转到状态 7
+    expression          转到状态 8
+    term                转到状态 9
+    primary_expression  转到状态 10
+    identifier          转到状态 11
+
+
+State 1
+
+   13 primary_expression: DOUBLE_LITERAL .
+
+    $default  reduce using rule 13 (primary_expression)
+
+
+State 2
+
+   15 primary_expression: LP . expression RP
+
+    DOUBLE_LITERAL  shift, and go to state 1
+    LP              shift, and go to state 2
+    IDENTIFIER      shift, and go to state 4
+
+    expression          转到状态 12
+    term                转到状态 9
+    primary_expression  转到状态 10
+    identifier          转到状态 13
+
+
+State 3
+
+    5 statement: PRINT . LP expression RP SEMICOLON
+
+    LP  shift, and go to state 14
+
+
+State 4
+
+   16 identifier: IDENTIFIER .
+
+    $default  reduce using rule 16 (identifier)
+
+
+State 5
+
+    0 $accept: line_list . $end
+    2 line_list: line_list . statement
+
+    $end            shift, and go to state 15
+    DOUBLE_LITERAL  shift, and go to state 1
+    LP              shift, and go to state 2
+    PRINT           shift, and go to state 3
+    IDENTIFIER      shift, and go to state 4
+
+    statement           转到状态 16
+    assgin_statement    转到状态 7
+    expression          转到状态 8
+    term                转到状态 9
+    primary_expression  转到状态 10
+    identifier          转到状态 11
+
+
+State 6
+
+    1 line_list: statement .
+
+    $default  reduce using rule 1 (line_list)
+
+
+State 7
+
+    4 statement: assgin_statement .
+
+    $default  reduce using rule 4 (statement)
+
+
+State 8
+
+    3 statement: expression . SEMICOLON
+    8 expression: expression . ADD term
+    9           | expression . SUB term
+
+    ADD        shift, and go to state 17
+    SUB        shift, and go to state 18
+    SEMICOLON  shift, and go to state 19
+
+
+State 9
+
+    7 expression: term .
+   11 term: term . MUL primary_expression
+   12     | term . DIV primary_expression
+
+    MUL  shift, and go to state 20
+    DIV  shift, and go to state 21
+
+    $default  reduce using rule 7 (expression)
+
+
+State 10
+
+   10 term: primary_expression .
+
+    $default  reduce using rule 10 (term)
+
+
+State 11
+
+    6 assgin_statement: identifier . ASSIGN expression SEMICOLON
+   14 primary_expression: identifier .
+
+    ASSIGN  shift, and go to state 22
+
+    $default  reduce using rule 14 (primary_expression)
+
+
+State 12
+
+    8 expression: expression . ADD term
+    9           | expression . SUB term
+   15 primary_expression: LP expression . RP
+
+    ADD  shift, and go to state 17
+    SUB  shift, and go to state 18
+    RP   shift, and go to state 23
+
+
+State 13
+
+   14 primary_expression: identifier .
+
+    $default  reduce using rule 14 (primary_expression)
+
+
+State 14
+
+    5 statement: PRINT LP . expression RP SEMICOLON
+
+    DOUBLE_LITERAL  shift, and go to state 1
+    LP              shift, and go to state 2
+    IDENTIFIER      shift, and go to state 4
+
+    expression          转到状态 24
+    term                转到状态 9
+    primary_expression  转到状态 10
+    identifier          转到状态 13
+
+
+State 15
+
+    0 $accept: line_list $end .
+
+    $default  接受
+
+
+State 16
+
+    2 line_list: line_list statement .
+
+    $default  reduce using rule 2 (line_list)
+
+
+State 17
+
+    8 expression: expression ADD . term
+
+    DOUBLE_LITERAL  shift, and go to state 1
+    LP              shift, and go to state 2
+    IDENTIFIER      shift, and go to state 4
+
+    term                转到状态 25
+    primary_expression  转到状态 10
+    identifier          转到状态 13
+
+
+State 18
+
+    9 expression: expression SUB . term
+
+    DOUBLE_LITERAL  shift, and go to state 1
+    LP              shift, and go to state 2
+    IDENTIFIER      shift, and go to state 4
+
+    term                转到状态 26
+    primary_expression  转到状态 10
+    identifier          转到状态 13
+
+
+State 19
+
+    3 statement: expression SEMICOLON .
+
+    $default  reduce using rule 3 (statement)
+
+
+State 20
+
+   11 term: term MUL . primary_expression
+
+    DOUBLE_LITERAL  shift, and go to state 1
+    LP              shift, and go to state 2
+    IDENTIFIER      shift, and go to state 4
+
+    primary_expression  转到状态 27
+    identifier          转到状态 13
+
+
+State 21
+
+   12 term: term DIV . primary_expression
+
+    DOUBLE_LITERAL  shift, and go to state 1
+    LP              shift, and go to state 2
+    IDENTIFIER      shift, and go to state 4
+
+    primary_expression  转到状态 28
+    identifier          转到状态 13
+
+
+State 22
+
+    6 assgin_statement: identifier ASSIGN . expression SEMICOLON
+
+    DOUBLE_LITERAL  shift, and go to state 1
+    LP              shift, and go to state 2
+    IDENTIFIER      shift, and go to state 4
+
+    expression          转到状态 29
+    term                转到状态 9
+    primary_expression  转到状态 10
+    identifier          转到状态 13
+
+
+State 23
+
+   15 primary_expression: LP expression RP .
+
+    $default  reduce using rule 15 (primary_expression)
+
+
+State 24
+
+    5 statement: PRINT LP expression . RP SEMICOLON
+    8 expression: expression . ADD term
+    9           | expression . SUB term
+
+    ADD  shift, and go to state 17
+    SUB  shift, and go to state 18
+    RP   shift, and go to state 30
+
+
+State 25
+
+    8 expression: expression ADD term .
+   11 term: term . MUL primary_expression
+   12     | term . DIV primary_expression
+
+    MUL  shift, and go to state 20
+    DIV  shift, and go to state 21
+
+    $default  reduce using rule 8 (expression)
+
+
+State 26
+
+    9 expression: expression SUB term .
+   11 term: term . MUL primary_expression
+   12     | term . DIV primary_expression
+
+    MUL  shift, and go to state 20
+    DIV  shift, and go to state 21
+
+    $default  reduce using rule 9 (expression)
+
+
+State 27
+
+   11 term: term MUL primary_expression .
+
+    $default  reduce using rule 11 (term)
+
+
+State 28
+
+   12 term: term DIV primary_expression .
+
+    $default  reduce using rule 12 (term)
+
+
+State 29
+
+    6 assgin_statement: identifier ASSIGN expression . SEMICOLON
+    8 expression: expression . ADD term
+    9           | expression . SUB term
+
+    ADD        shift, and go to state 17
+    SUB        shift, and go to state 18
+    SEMICOLON  shift, and go to state 31
+
+
+State 30
+
+    5 statement: PRINT LP expression RP . SEMICOLON
+
+    SEMICOLON  shift, and go to state 32
+
+
+State 31
+
+    6 assgin_statement: identifier ASSIGN expression SEMICOLON .
+
+    $default  reduce using rule 6 (assgin_statement)
+
+
+State 32
+
+    5 statement: PRINT LP expression RP SEMICOLON .
+
+    $default  reduce using rule 5 (statement)
