@@ -1,0 +1,70 @@
+** 类的记录
+*** THD
+    THD是每个客户端连接都会创建一个独立的线程类作为线程连接和描述,线程和连接是一一对应关系,THD类包含线程的许多有用信息,处理客户端连接不是线程唯一用途,mysql还有一些系统线程，如复制服务器进程，信号处理...本类们于 sql_class.h
+*** LEX
+** sql源代码分析
+#+BEGIN_SRC plantuml :file images/lex_thd_rel.png :cmdline -charset utf-8
+Item -- LEX
+TABLE_LIST -- LEX
+SELECT_LEX -- LEX
+SELECT_UNIT -- LEX
+LEX -- THD
+THD -- Protocol
+THD -- NET
+TABLE -- THD
+TABLE -- TABLE_SHARE
+TABLE -- handle
+TABLE -- JOIN
+#+END_SRC
+- LEX,Item,SELECT_LEX,SELECT_UNIT,TABLE_LIST,SQL语法分析及SQL语句抽象表示
+   Item用于实现表达式，如查询,函数,where,order,group ,on 子句
+   SELECT_LEX,SELECT_UNIT用来表达select() 和 Union操作
+- TABLE_SHARE和TABLE
+   前者代表表的元信息,例如字段定义,索引定义,后者代表一个打开实例
+- handler 存储引擎接口
+- JOIN,Sql的执行引擎
+** 表定义和表
+*** TABLE_SHARE
+    TABLE_SHARE用来代表数据表的元数据,位于table.h
+#+BEGIN_SRC plantuml :file images/table_class.png :cmdline -charset utf-8
+class TABLE_SHARE <<struct>>{
+    Field **field;//字段定义
+    Key *key_info;//索引定义,这个指针指向一个KEY类型的数组,数组大小由keys决定
+    uint keys;//索引个数
+    unit key_parts;//索引分量个数
+    handlerton *db_type;//存储引擎
+    bool system;//是否系统表
+    bool is_view;//是否视图
+}
+#+END_SRC
+** SQL语法解析与执行
+*** LEX
+    语法分析结果存在LEX，本类的定义在sql_lex.h
+#+BEGIN_SRC plantuml :file images/lex_class.png :cmdline -charset utf-8
+class LEX <<struct>>{
+    SELECT_LEX_UNIT unit;//最顶层的SELECT_UNIT
+    SELECT_LEX select_lex;//最顶层的SELECT_LEX
+    SELECT_LEX *current_select;//当前解析的SELECT_LEX
+    List<key_part_spec> col_list;//索引分量
+    st_alter_tablespace alter_tablespace_info;//tablespace操作相关信息
+    enum_sql_command sql_command;//SQL命令类型
+    LEX_STRING name;//对象名称
+    sp_name *spname;//存储过程/函数名称
+    TABLE_LIST *query_tables;//TABLE_LIST的链表(通过next_global和prev_global)
+    TABLE_LIST **query_tables_last;//指向上面链表的尾巴，初始化为query_tables地址
+    SELECT_LEX *all_select_list;//全部SELECT_LEX结点 
+}
+#+END_SRC
+    解析sql时，顺序是:
+- sql_connect.cc的handle_one_connection()
+- sql_connect.cc的do_handle_one_connection()
+- sql_parse.cc的do_command()
+- sql_parse.cc的dispatch_command()
+- sql_parse.cc的mysql_parse()
+- sql_lex.cc的lex_start()
+sql_parse.cc的mysql_parse()执行完lex_start()方法后,调用parse_sql(),
+在parse_sql()中会调用MYSQLparse(thd)方法,这个方法执行yacc的语法解析,
+正常是应该调用yyparse不过sql_yacc.cc中有定义了: #define yyparse MYSQLparse
+*** SELECT_NODE,SELECT_LEX和SELECT_UNIT
+    st_select_lex_unit: unit of selects(UNION,INTERSET,...)
+    st_select_lex: 普通的select语句
