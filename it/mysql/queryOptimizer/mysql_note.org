@@ -24,37 +24,12 @@ TABLE -- JOIN
 - handler 存储引擎接口
 - JOIN,Sql的执行引擎
 ** 表定义和表
-*** TABLE_SHARE
-    TABLE_SHARE用来代表数据表的元数据,位于table.h
-#+BEGIN_SRC plantuml :file images/table_class.png :cmdline -charset utf-8
-class TABLE_SHARE <<struct>>{
-    Field **field;//字段定义
-    Key *key_info;//索引定义,这个指针指向一个KEY类型的数组,数组大小由keys决定
-    uint keys;//索引个数
-    unit key_parts;//索引分量个数
-    handlerton *db_type;//存储引擎
-    bool system;//是否系统表
-    bool is_view;//是否视图
-}
-#+END_SRC
 ** SQL语法解析与执行
-*** LEX
-    语法分析结果存在LEX，本类的定义在sql_lex.h
-#+BEGIN_SRC plantuml :file images/lex_class.png :cmdline -charset utf-8
-class LEX <<struct>>{
-    SELECT_LEX_UNIT unit;//最顶层的SELECT_UNIT
-    SELECT_LEX select_lex;//最顶层的SELECT_LEX
-    SELECT_LEX *current_select;//当前解析的SELECT_LEX
-    List<key_part_spec> col_list;//索引分量
-    st_alter_tablespace alter_tablespace_info;//tablespace操作相关信息
-    enum_sql_command sql_command;//SQL命令类型
-    LEX_STRING name;//对象名称
-    sp_name *spname;//存储过程/函数名称
-    TABLE_LIST *query_tables;//TABLE_LIST的链表(通过next_global和prev_global)
-    TABLE_LIST **query_tables_last;//指向上面链表的尾巴，初始化为query_tables地址
-    SELECT_LEX *all_select_list;//全部SELECT_LEX结点 
-}
-#+END_SRC
+*** SELECT_NODE,SELECT_LEX和SELECT_UNIT
+    st_select_lex_unit: unit of selects(UNION,INTERSET,...)
+    st_select_lex: 普通的select语句
+** 执行流程
+*** 解析sql流程
     解析sql时，顺序是:
 - sql_connect.cc的handle_one_connection()
 - sql_connect.cc的do_handle_one_connection()
@@ -65,6 +40,3 @@ class LEX <<struct>>{
 sql_parse.cc的mysql_parse()执行完lex_start()方法后,调用parse_sql(),
 在parse_sql()中会调用MYSQLparse(thd)方法,这个方法执行yacc的语法解析,
 正常是应该调用yyparse不过sql_yacc.cc中有定义了: #define yyparse MYSQLparse
-*** SELECT_NODE,SELECT_LEX和SELECT_UNIT
-    st_select_lex_unit: unit of selects(UNION,INTERSET,...)
-    st_select_lex: 普通的select语句

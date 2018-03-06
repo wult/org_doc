@@ -154,34 +154,6 @@ end note
 
 Sql_alloc <|-- JOIN
 #+END_SRC
-*** 约束条件
-    约束条件是指Where或join/on或having子句谓词表达式,分两种,一种是限制条件,用来过滤元组;另一种是连接条件,满足连接条件的元组才会连接,连接条件表达式一般包括两个或两个以上的关系的常量 ,该类在:item.h中
-
-    Mysql用Item类表示约束条件表达式,这是一个父类,由一系列子类继承这个父类,Item_equal类与Item类之间的关系如下图所示:
-#+BEGIN_SRC plantuml :file images/item.png :cmdline -charset utf-8
-class Item{
-
-}
-
-class COND_EQUAL{
-    unit max_members;//本层及本层以下的成员个数
-    COND_EQUAL *upper_levels//上层所有等值判断约束条件
-    List<Item_equal> current_level //当前等式表达式
-}
-
-class Item_equal{
-    List<Item_field> fields //表达式的因子
-    Item *const_item //常量因子
-}
-
-
-Sql_alloc <|-- COND_EQUAL
-Item <|-- Item_result_field
-Item_result_field <|-- Item_func
-Item_func <|-- Item_int_func
-Item_int_func <|-- Item_bool_func
-Item_bool_func <|-- Item_equal
-#+END_SRC
 *** 位置
     在连接顺序中,位置是指被连接的表的位置(一个表在多表连接构成的连接顺序中处于的位置),这个位置储存了被访问的表,被使用的访问方法,关连接策略的选择,半连接优化状态.Mysql的多表连接算法支付的是从左到右的类似左深树连接方式,但左深树是一个树型结构,而mysql多表连接算法连接表是一个平台结构,先对表进行排序，然后从左到右地连接排好序的表,然后确定当前连接方式的花费
 #+BEGIN_SRC plantuml :file images/st_position.png :cmdline -charset utf-8
@@ -209,3 +181,45 @@ class Cost_estimate{
     double mem_cost //内存操作花费
 }
 #+END_SRC
+
+*** TABLE_SHARE
+    TABLE_SHARE用来代表数据表的元数据,位于table.h
+#+BEGIN_SRC plantuml :file images/table_class.png :cmdline -charset utf-8
+class TABLE_SHARE <<struct>>{
+    Field **field;//字段定义
+    Key *key_info;//索引定义,这个指针指向一个KEY类型的数组,数组大小由keys决定
+    uint keys;//索引个数
+    unit key_parts;//索引分量个数
+    handlerton *db_type;//存储引擎
+    bool system;//是否系统表
+    bool is_view;//是否视图
+}
+#+END_SRC
+
+*** LEX
+    语法分析结果存在LEX，本类的定义在sql_lex.h
+#+BEGIN_SRC plantuml :file images/lex_class.png :cmdline -charset utf-8
+class LEX <<struct>>{
+    SELECT_LEX_UNIT unit;//最顶层的SELECT_UNIT
+    SELECT_LEX select_lex;//最顶层的SELECT_LEX
+    SELECT_LEX *current_select;//当前解析的SELECT_LEX
+    List<key_part_spec> col_list;//索引分量
+    st_alter_tablespace alter_tablespace_info;//tablespace操作相关信息
+    enum_sql_command sql_command;//SQL命令类型
+    LEX_STRING name;//对象名称
+    sp_name *spname;//存储过程/函数名称
+    TABLE_LIST *query_tables;//TABLE_LIST的链表(通过next_global和prev_global)
+    TABLE_LIST **query_tables_last;//指向上面链表的尾巴，初始化为query_tables地址
+    SELECT_LEX *all_select_list;//全部SELECT_LEX结点 
+}
+#+END_SRC
+    解析sql时，顺序是:
+- sql_connect.cc的handle_one_connection()
+- sql_connect.cc的do_handle_one_connection()
+- sql_parse.cc的do_command()
+- sql_parse.cc的dispatch_command()
+- sql_parse.cc的mysql_parse()
+- sql_lex.cc的lex_start()
+sql_parse.cc的mysql_parse()执行完lex_start()方法后,调用parse_sql(),
+在parse_sql()中会调用MYSQLparse(thd)方法,这个方法执行yacc的语法解析,
+正常是应该调用yyparse不过sql_yacc.cc中有定义了: #define yyparse MYSQLparse

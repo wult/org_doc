@@ -1,0 +1,87 @@
+** ITEM
+    约束条件是指Where或join/on或having子句谓词表达式,分两种,一种是限制条件,用来过滤元组;另一种是连接条件,满足连接条件的元组才会连接,连接条件表达式一般包括两个或两个以上的关系的常量 ,该类在:item.h中
+
+    Mysql用Item类表示约束条件表达式,这是一个父类,由一系列子类继承这个父类,Item_equal类与Item类之间的关系如下图所示:
+    Item_cond类在: item_cmpfunc.h
+#+BEGIN_SRC plantuml :file images/item.png :cmdline -charset utf-8
+class Item{
+
+}
+
+class COND_EQUAL{
+    unit max_members;//本层及本层以下的成员个数
+    COND_EQUAL *upper_levels//上层所有等值判断约束条件
+    List<Item_equal> current_level //当前等式表达式
+}
+
+class Item_equal{
+    List<Item_field> fields //表达式的因子
+    Item *const_item //常量因子
+}
+
+
+Sql_alloc <|-- COND_EQUAL
+Item <|-- Item_result_field
+Item_result_field <|-- Item_func
+Item_func <|-- Item_int_func
+Item_int_func <|-- Item_bool_func
+Item_bool_func <|-- Item_equal
+#+END_SRC
+
+*** 调试
+**** functype()
+#+BEGIN_SRC 
+(gdb) p ((Item_cond_or *)((Item_cond_and *)conds)->list->first->info)->list->first
+$39 = (list_node *) 0x7facfc005698
+(gdb) p ((Item_cond_or *)((Item_cond_and *)conds)->list->first->info)->list->first->info
+$40 = (void *) 0x7facfc005150
+(gdb) p (Item *)$40
+$41 = (Item *) 0x7facfc005150
+(gdb) p ((Item *)$40)->type()
+$42 = Item::FUNC_ITEM
+(gdb) p ((Item_func *)$40)->functype()
+$43 = Item_func::EQ_FUNC
+(gdb) p ((Item_func_eq *)$40)->arg_count
+$44 = 2
+(gdb) p ((Item_func_eq *)$40)->args[0]
+$45 = (Item *) 0x7facfc004fe0
+#+END_SRC
+** 不同的Item打印信息
+*** Item_func_eq
+**** ->args[0]//字段名
+**** ->args[1]//值
+*** Item_field
+    在item.h
+**** *field : Field
+**** *result_field: Field
+**** ->info
+*** Item_string
+**** ((Item_string *)$22).str_value
+*** Field_varstring
+    在Field.h
+**** (char *)(Field_varstring *)$13->field_name
+*** Field_long
+**** ((Field_long *)$35)->field_name
+**** ((Field_long *)$35)->val_real()
+*** Item_equal
+#+BEGIN_SRC 
+p ((((((class base_list) (((*(class Item_cond*) ((((this)->select_lex))->where))).list))).first))->next)
+$27 = (list_node *) 0x7fff98006b08
+p $27->info
+$28 = (void *) 0x7fff98006938
+p (Item *)$28
+$29 = (Item_equal *) 0x7fff98006938
+p ((Item_equal *)$29)->fields
+$30 = {<base_list> = {<Sql_alloc> = {<No data fields>}, first = 0x7fff98006af8, last = 0x7fff98006af8, elements = 1}, <No data fields>}
+p ((class base_list)$30).first
+$31 = (list_node *) 0x7fff98006af8
+p ((class base_list)$30).first->info
+$32 = (void *) 0x7fff980057d0
+p (Item *) $32
+$33 = (Item_field *) 0x7fff980057d0
+p (Item_field *)$33->field
+$35 = (Field_long *) 0x7fff980110b0
+p ((Field_long *)$35)->val_real()
+p ((Field_long *)$35)->field_name
+$36 = 0
+#+END_SRC
