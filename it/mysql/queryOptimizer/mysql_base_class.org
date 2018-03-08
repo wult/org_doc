@@ -137,10 +137,12 @@ class JOIN{
     SELECT_LEX *select_lex //语法分析之后得到的查询树
     Key_use_array keyuse //索引
     List<Item> all_fields //查询语句中所有表达式
-
+    ORDER_with_src order;//order by 的列表
+    ORDER_with_src group_list;//group by 的列表
     Item *conds //where子句
     Item *having //having子句
-    
+    bool select_distinct //select中是否有distinct
+
     int prepare() //准备阶段,主要完成语法分析,部分子查询优化工作
     int optimize()//正式优化阶段,使用逻辑,物理优化的方式,进行查询各种操作估算
     void exec()//得到查询执行计划,按计划执行查询
