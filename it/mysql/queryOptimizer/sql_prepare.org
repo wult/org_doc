@@ -1,0 +1,2 @@
+** JOIN::prepare
+   实现位于sql_resolver.cc
