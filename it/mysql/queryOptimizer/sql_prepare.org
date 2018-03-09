@@ -1,2 +1,46 @@
 ** JOIN::prepare
    实现位于sql_resolver.cc
+*** remove_redundant_subquery_clauses
+    去除子查询中冗余子句
+*** resolve_subquery
+    预处理各种子查询
+**** select_transformer
+     Item_subselect.select_transformer位于item_subselect.cc
+     其子类有Item_singlerow_subselect,Item_in_subselect,Item_allany_subselect,Item_exists_subselect继承.
+**** Item_singlerow_subselect:返回值是单行的子查询进行处理,通过它是一个标量子查询
+**** Item_exist_subselect:形式上看，处理带有EXISTS谓词,但是因子查询结果是一个布尔值,而in谓词可转换为EXISTS，所以处理这些查询在方式上有共同之处
+**** Item_exist_subselect子类
+***** Item_in_subselect : 处理带有IN谓词子查询
+***** Item_allany_subselect:处理带有ALL,ANY,SOME谓词子查询
+**** mysql支持的子查询优化类型:
+- Scalar IN subquery 标量IN子查询
+- Row IN Subquery 行子查询
+- Item_allany_subselect 谓词为ALL，any,some类型子查询
+- Item_singlerow_subselect,单行子查询，相当标量子查询
+**** select_max_min_finder_subselect 是类select_subselect的子类
+     继承关系:
+- sql_alloc
+- select_result
+- select_result_interceptor
+- select_subselect
+- select_max_min_finder_subselect
+**** select_in_like_transformer ,In子查询优化
+     用于带有in谓词的子查询优化
+     对于没有from子句简单select,mysql交给Item_singlerow_subselect类的select_transformer函数处理,不在本函数内
+**** single_value_transformer,单列IN/ALL/ANY子查询优化
+     对带有IN/ALL/ANY谓词单列子查询进行优化
+***** 步骤1
+#+BEGIN_SRC 
+oe <op> (select ie from .. where subq_where ..having subq_having)
+可作如下优化(结果为标量类型子查询)
+oe <op> (select max()) //调用Item_singlerow_subselect类
+oe <op> <max>(select ..)//调用Item_maxmin_subselect类
+
+#+END_SRC
+***** 步骤2
+      如果步骤1失败了,则使用Item_in_optimizer类优化子查询,这时要处理的情况有如下两种
+****** 情况1:如果子查询被物化 ,子查询将不再进行其他优化尝试
+****** 情况2：如果是IN子查询则向exists类型转换
+***** 步骤 3
+      处理步骤2 中IN子查询则向EXISTS类型转换,分两种情况
+****** 情况1 如果子查询中存在聚焦函数,groupby子句,having子句,转换为带有trigcond条件子查询
