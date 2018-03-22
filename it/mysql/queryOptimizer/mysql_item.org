@@ -85,3 +85,8 @@ p ((Field_long *)$35)->val_real()
 p ((Field_long *)$35)->field_name
 $36 = 0
 #+END_SRC
+*** 有用的
+#+BEGIN_SRC 
+cond->type() == Item::FUNC_TIME
+
+#+END_SRC
