@@ -1,0 +1,55 @@
+** 流程图
+#+BEGIN_SRC plantuml :file images/simple_sql_run_flow1.png :cmdline -charset utf-8
+participant SQL查询请求
+SQL查询请求 -> sql_connect.cc : do_handle_one_connection()
+note left 
+创建一个线程来处理:
+"select * from wlt_tab1 where 1=0 and id=0"
+的查询请求
+end note
+activate sql_connect.cc
+sql_connect.cc -> sql_parse.cc : do_command()
+activate sql_parse.cc
+sql_parse.cc -> sql_parse.cc : dispatch_command()
+activate sql_parse.cc
+sql_parse.cc -> sql_parse.cc : mysql_parse()
+activate sql_parse.cc
+sql_parse.cc -> sql_parse.cc : mysql_execute_command()
+activate sql_parse.cc
+sql_parse.cc -> sql_parse.cc : execute_sqlcom_select()
+activate sql_parse.cc
+sql_parse.cc -> sql_select.cc : handle_select()
+activate sql_select.cc
+sql_select.cc -> sql_select.cc : mysql_select()
+activate sql_select.cc
+
+sql_select.cc -> sql_select.cc : mysql_prepare_select()
+activate sql_select.cc 
+sql_select.cc -> sql_resolver.cc : JOIN::prepare()
+activate sql_resolver.cc
+sql_resolver.cc -> sql_select.cc
+deactivate sql_select.cc
+
+sql_select.cc -> sql_select.cc : mysql_execute_select()
+activate sql_select.cc
+sql_select.cc -> sql_optimizer.cc : JOIN::optimize()
+activate sql_optimizer.cc
+sql_optimizer.cc -> sql_select.cc
+deactivate sql_optimizer.cc 
+sql_select.cc -> sql_executor.cc : JOIN::exec()
+activate sql_executor.cc
+sql_executor.cc -> sql_executor.cc : return_zero_rows()
+activate sql_executor.cc
+deactivate sql_executor.cc
+#+END_SRC
+** sql解析过程
+#+BEGIN_SRC plantuml :file images/simple_sql_parse1.png :cmdline -charset utf-8
+[*] -> yylex : 传入sql
+yylex -> sql_yacc.cc : 将已解析好的词法传给MYSQLparse语法解析
+sql_yacc.yy -up-> sql_yacc.cc : 通过Bison(yacc)将sql语法规则描述转为c程序
+sql_yacc.cc -> lex : 转成sql语法树 
+#+END_SRC
+** mysql_select()
+#+BEGIN_SRC plantuml :file images/simple_sql_mysql_select1.png :cmdline -charset utf-8
+
+#+END_SRC

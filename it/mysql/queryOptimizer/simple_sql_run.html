@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-03-26 一 00:43 -->
+<!-- 2018-03-26 一 08:09 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -232,196 +232,48 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgd408164">1. 主要的类和数据结构</a>
-<ul>
-<li><a href="#orgdc2d808">1.1. 查询树</a>
-<ul>
-<li><a href="#org3c77c3d">1.1.1. st<sub>select</sub><sub>lex</sub></a></li>
-<li><a href="#orgaae83dc">1.1.2. TABLE<sub>LIST</sub></a></li>
-</ul>
-</li>
-<li><a href="#org60f6cf0">1.2. 索引类</a></li>
-<li><a href="#orgf708960">1.3. 连接表</a></li>
-<li><a href="#org47db023">1.4. 连接类(JOIN)</a></li>
-<li><a href="#org3991592">1.5. 位置</a></li>
-<li><a href="#org221a5e2">1.6. 代价估算</a></li>
-<li><a href="#orge609759">1.7. TABLE<sub>SHARE</sub></a></li>
-<li><a href="#org2030bf9">1.8. LEX</a></li>
-<li><a href="#org8077677">1.9. 表定义</a></li>
-</ul>
-</li>
+<li><a href="#org37afcd6">1. 流程图</a></li>
+<li><a href="#org99552a8">2. sql解析过程</a></li>
+<li><a href="#org98e6583">3. mysql<sub>select</sub>()</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd408164" class="outline-2">
-<h2 id="orgd408164"><span class="section-number-2">1</span> 主要的类和数据结构</h2>
+<div id="outline-container-org37afcd6" class="outline-2">
+<h2 id="org37afcd6"><span class="section-number-2">1</span> 流程图</h2>
 <div class="outline-text-2" id="text-1">
-</div><div id="outline-container-orgdc2d808" class="outline-3">
-<h3 id="orgdc2d808"><span class="section-number-3">1.1</span> 查询树</h3>
-<div class="outline-text-3" id="text-1-1">
 
 <div class="figure">
-<p><img src="images/st_select_lex.png" alt="st_select_lex.png" />
+<p><img src="images/simple_sql_run_flow1.png" alt="simple_sql_run_flow1.png" />
 </p>
+</div>
+</div>
 </div>
 
-<p>
-TABLE<sub>LIST位于table.h</sub>
-</p>
-</div>
-<div id="outline-container-org3c77c3d" class="outline-4">
-<h4 id="org3c77c3d"><span class="section-number-4">1.1.1</span> st<sub>select</sub><sub>lex</sub></h4>
-<div class="outline-text-4" id="text-1-1-1">
-<p>
-语法分析器的结果是查询树,使用st<sub>select</sub><sub>lex类表示</sub> 
-st<sub>select</sub><sub>lex定义位于sql</sub><sub>lex.h文件,主要表示语法分析器的结果：查询树</sub>
-</p>
-</div>
-</div>
-<div id="outline-container-orgaae83dc" class="outline-4">
-<h4 id="orgaae83dc"><span class="section-number-4">1.1.2</span> TABLE<sub>LIST</sub></h4>
-<div class="outline-text-4" id="text-1-1-2">
-<p>
-查询关系表,位于table.h,关系表存放很多信息,有查询优化阶段需要的
-</p>
-</div>
-</div>
-</div>
-<div id="outline-container-org60f6cf0" class="outline-3">
-<h3 id="org60f6cf0"><span class="section-number-3">1.2</span> 索引类</h3>
-<div class="outline-text-3" id="text-1-2">
-<p>
-Key<sub>use位于sql</sub><sub>select.h</sub>
-</p>
+<div id="outline-container-org99552a8" class="outline-2">
+<h2 id="org99552a8"><span class="section-number-2">2</span> sql解析过程</h2>
+<div class="outline-text-2" id="text-2">
 
 <div class="figure">
-<p><img src="images/key.png" alt="key.png" />
+<p><img src="images/simple_sql_parse1.png" alt="simple_sql_parse1.png" />
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-orgf708960" class="outline-3">
-<h3 id="orgf708960"><span class="section-number-3">1.3</span> 连接表</h3>
-<div class="outline-text-3" id="text-1-3">
-<p>
-连接表介于关系(TABLE<sub>LIST类</sub>),与连接类(JOIN类)之间一个过渡对象,存放关系一些相关信息,也存放了连接操作操作的一些信息,所以称为连接表
-</p>
+<div id="outline-container-org98e6583" class="outline-2">
+<h2 id="org98e6583"><span class="section-number-2">3</span> mysql<sub>select</sub>()</h2>
+<div class="outline-text-2" id="text-3">
 
 <div class="figure">
-<p><img src="images/st_join_table.png" alt="st_join_table.png" />
+<p><img src="images/simple_sql_mysql_select1.png" alt="simple_sql_mysql_select1.png" />
 </p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org47db023" class="outline-3">
-<h3 id="org47db023"><span class="section-number-3">1.4</span> 连接类(JOIN)</h3>
-<div class="outline-text-3" id="text-1-4">
-<p>
-JOIN类主要操作对应查询语句连接关系内容,是优化和执行的基本单位,也是优化结果(查询执行计划)的储存对象,本类在文件: sql<sub>optimizer.h中</sub>
-</p>
-
-<div class="figure">
-<p><img src="images/join.png" alt="join.png" />
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org3991592" class="outline-3">
-<h3 id="org3991592"><span class="section-number-3">1.5</span> 位置</h3>
-<div class="outline-text-3" id="text-1-5">
-<p>
-在连接顺序中,位置是指被连接的表的位置(一个表在多表连接构成的连接顺序中处于的位置),这个位置储存了被访问的表,被使用的访问方法,关连接策略的选择,半连接优化状态.Mysql的多表连接算法支付的是从左到右的类似左深树连接方式,但左深树是一个树型结构,而mysql多表连接算法连接表是一个平台结构,先对表进行排序，然后从左到右地连接排好序的表,然后确定当前连接方式的花费
-</p>
-
-<div class="figure">
-<p><img src="images/st_position.png" alt="st_position.png" />
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org221a5e2" class="outline-3">
-<h3 id="org221a5e2"><span class="section-number-3">1.6</span> 代价估算</h3>
-<div class="outline-text-3" id="text-1-6">
-<p>
-Mysql提供代价估算类包括4个层面: IO花费,CPU花费,远程操作花费,内在操作花费,v5.6不考虑内存，远程花费
-</p>
-
-
-<div class="figure">
-<p><img src="images/cost_estimate.png" alt="cost_estimate.png" />
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-orge609759" class="outline-3">
-<h3 id="orge609759"><span class="section-number-3">1.7</span> TABLE<sub>SHARE</sub></h3>
-<div class="outline-text-3" id="text-1-7">
-<p>
-TABLE<sub>SHARE用来代表数据表的元数据,位于table.h</sub>
-</p>
-
-<div class="figure">
-<p><img src="images/table_class.png" alt="table_class.png" />
-</p>
-</div>
-</div>
-</div>
-
-<div id="outline-container-org2030bf9" class="outline-3">
-<h3 id="org2030bf9"><span class="section-number-3">1.8</span> LEX</h3>
-<div class="outline-text-3" id="text-1-8">
-<p>
-语法分析结果存在LEX，本类的定义在sql<sub>lex.h</sub>
-</p>
-
-<div class="figure">
-<p><img src="images/lex_class.png" alt="lex_class.png" />
-</p>
-</div>
-
-<p>
-解析sql时，顺序是:
-</p>
-<ul class="org-ul">
-<li>sql<sub>connect.cc的handle</sub><sub>one</sub><sub>connection</sub>()</li>
-<li>sql<sub>connect.cc的do</sub><sub>handle</sub><sub>one</sub><sub>connection</sub>()</li>
-<li>sql<sub>parse.cc的do</sub><sub>command</sub>()</li>
-<li>sql<sub>parse.cc的dispatch</sub><sub>command</sub>()</li>
-<li>sql<sub>parse.cc的mysql</sub><sub>parse</sub>()</li>
-<li>sql<sub>lex.cc的lex</sub><sub>start</sub>()</li>
-</ul>
-<p>
-sql<sub>parse.cc的mysql</sub><sub>parse</sub>()执行完lex<sub>start</sub>()方法后,调用parse<sub>sql</sub>(),
-在parse<sub>sql</sub>()中会调用MYSQLparse(thd)方法,这个方法执行yacc的语法解析,
-正常是应该调用yyparse不过sql<sub>yacc.cc中有定义了</sub>: #define yyparse MYSQLparse
-</p>
-</div>
-</div>
-
-<div id="outline-container-org8077677" class="outline-3">
-<h3 id="org8077677"><span class="section-number-3">1.9</span> 表定义</h3>
-<div class="outline-text-3" id="text-1-9">
-<p>
-TABLE<sub>SHARE和TABLE,TABLE是</sub>
-位于table.h文件
-</p>
-
-<div class="figure">
-<p><img src="images/table_share_class.png" alt="table_share_class.png" />
-</p>
-</div>
 </div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: wlt</p>
-<p class="date">Created: 2018-03-26 一 00:43</p>
+<p class="date">Created: 2018-03-26 一 08:09</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
