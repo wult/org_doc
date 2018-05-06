@@ -1,0 +1,87 @@
+** 准备
+*** 数据库及表准备
+#+BEGIN_SRC sql
+create database sample1;
+use sample1;
+create table sample1( id int not null auto_increment primary key, name varchar(8) );
+insert into sample1(name) values('aa');
+#+END_SRC
+** Inno数据存储结构说明
+*** 表空间文件组成
+    在/var/lib/mysql目录下执行: tree -a sample1  可以看到如下结果:
+#+BEGIN_SRC 
+sample1/
+├── db.opt
+├── sample1.frm
+└── sample1.ibd
+#+END_SRC
+    可以看到在准备环节创建的sample1表的对应的文件 : sample1.ibd
+    InnoDB存储引擎的逻辑存储结构和Oracle大致相同,所有数据都被逻辑地存放在表空间中(tablespace),表空间又由段(segment)，簇(extend),页(page)组成,一些文档又称为块(block). 一个表空间可以有多个文件,每个文件都各自编号.创建一个表空间时，至少有一个文件,称为0号文件,这个文件的第一个页面(page_no为0)存储了这个表空间中所有段簇页管理入口,表空间,段，簇，页的关系如下图所示:
+#+BEGIN_SRC plantuml :file images/file_tablespace_rel.png :cmdline -charset utf-8
+node 表空间
+storage 段1 {
+  rectangle 段头指针1
+}
+
+storage 段2 {
+  rectangle 段头指针2
+}
+
+folder 簇1_1 {
+    artifact 页面1_1_1
+    artifact 页面1_1_2
+    artifact 页面1_1_n
+    artifact 页面1_1_64
+}
+note left of 簇1_1
+簇 是物理连续的分配的一段空间
+簇空间是固定的,一般是64个页面 
+每个页面默认16kB
+一个簇占1MB空间
+end note
+
+
+folder 簇1_2 {
+    artifact 页面1_2_1
+    artifact 页面1_2_2
+    artifact 页面1_2_n
+    artifact 页面1_2_64
+}
+
+
+folder 簇2_1 {
+    artifact 页面2_1_1
+    artifact 页面2_1_2
+    artifact 页面2_1_n
+    artifact 页面2_1_64
+}
+
+
+folder 簇2_2 {
+    artifact 页面2_2_1
+    artifact 页面2_2_2
+    artifact 页面2_2_n
+    artifact 页面2_2_64
+}
+
+表空间 --o 段1
+表空间 --o 段2
+
+段头指针1 --> 簇1_1
+簇1_1 --> 簇1_2
+
+
+段头指针2 --> 簇2_1
+簇2_1 --> 簇2_2
+
+
+#+END_SRC
+*** 段
+段是表空间中的主要组织结构,它是逻辑概念，用来管理物理文件,是构成索引,表,回滚段的基本元素.创建一个索引(B+树)时会同时创建两个段,分别是内节点段和叶子段,内节点段用来管理(存储)B+树中非叶子节点(页面)的数据,叶子段用来管理(存储)B+树中叶子节点数据.
+*** 簇
+段由若干簇构成,创建一个段会创建一个默认簇.一个簇存不下来会从段分配多一个新的簇.
+*** 页面
+页是簇组成单位,也是数据库管理的最小单位,也是能分配的最小单位.
+
+
+[[file:images/page_logic.jpg]]
