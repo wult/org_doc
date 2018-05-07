@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-05-06 日 18:04 -->
+<!-- 2018-05-07 一 23:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -232,27 +232,27 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orgc3e93c5">1. 准备</a>
+<li><a href="#orgab7fdfb">1. 准备</a>
 <ul>
-<li><a href="#orga565bac">1.1. 数据库及表准备</a></li>
+<li><a href="#org4c9cda5">1.1. 数据库及表准备</a></li>
 </ul>
 </li>
-<li><a href="#orgf00331d">2. Inno数据存储结构说明</a>
+<li><a href="#orgf1a35ea">2. Inno数据存储结构说明</a>
 <ul>
-<li><a href="#org1485b8d">2.1. 表空间文件组成</a></li>
-<li><a href="#orgdc089da">2.2. 段</a></li>
-<li><a href="#orgb86445d">2.3. 簇</a></li>
-<li><a href="#org7c9d776">2.4. 页面</a></li>
+<li><a href="#orgb912e16">2.1. 表空间文件组成</a></li>
+<li><a href="#orgd778978">2.2. 段</a></li>
+<li><a href="#orgd4b6e8b">2.3. 簇</a></li>
+<li><a href="#orgf71ff6f">2.4. 页面</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgc3e93c5" class="outline-2">
-<h2 id="orgc3e93c5"><span class="section-number-2">1</span> 准备</h2>
+<div id="outline-container-orgab7fdfb" class="outline-2">
+<h2 id="orgab7fdfb"><span class="section-number-2">1</span> 准备</h2>
 <div class="outline-text-2" id="text-1">
-</div><div id="outline-container-orga565bac" class="outline-3">
-<h3 id="orga565bac"><span class="section-number-3">1.1</span> 数据库及表准备</h3>
+</div><div id="outline-container-org4c9cda5" class="outline-3">
+<h3 id="org4c9cda5"><span class="section-number-3">1.1</span> 数据库及表准备</h3>
 <div class="outline-text-3" id="text-1-1">
 <div class="org-src-container">
 <pre class="src src-sql">create database sample1;
@@ -264,11 +264,11 @@ insert into sample1(name) values('aa');
 </div>
 </div>
 </div>
-<div id="outline-container-orgf00331d" class="outline-2">
-<h2 id="orgf00331d"><span class="section-number-2">2</span> Inno数据存储结构说明</h2>
+<div id="outline-container-orgf1a35ea" class="outline-2">
+<h2 id="orgf1a35ea"><span class="section-number-2">2</span> Inno数据存储结构说明</h2>
 <div class="outline-text-2" id="text-2">
-</div><div id="outline-container-org1485b8d" class="outline-3">
-<h3 id="org1485b8d"><span class="section-number-3">2.1</span> 表空间文件组成</h3>
+</div><div id="outline-container-orgb912e16" class="outline-3">
+<h3 id="orgb912e16"><span class="section-number-3">2.1</span> 表空间文件组成</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
 在/var/lib/mysql目录下执行: tree -a sample1  可以看到如下结果:
@@ -291,24 +291,24 @@ InnoDB存储引擎的逻辑存储结构和Oracle大致相同,所有数据都被�
 </div>
 </div>
 
-<div id="outline-container-orgdc089da" class="outline-3">
-<h3 id="orgdc089da"><span class="section-number-3">2.2</span> 段</h3>
+<div id="outline-container-orgd778978" class="outline-3">
+<h3 id="orgd778978"><span class="section-number-3">2.2</span> 段</h3>
 <div class="outline-text-3" id="text-2-2">
 <p>
 段是表空间中的主要组织结构,它是逻辑概念，用来管理物理文件,是构成索引,表,回滚段的基本元素.创建一个索引(B+树)时会同时创建两个段,分别是内节点段和叶子段,内节点段用来管理(存储)B+树中非叶子节点(页面)的数据,叶子段用来管理(存储)B+树中叶子节点数据.
 </p>
 </div>
 </div>
-<div id="outline-container-orgb86445d" class="outline-3">
-<h3 id="orgb86445d"><span class="section-number-3">2.3</span> 簇</h3>
+<div id="outline-container-orgd4b6e8b" class="outline-3">
+<h3 id="orgd4b6e8b"><span class="section-number-3">2.3</span> 簇</h3>
 <div class="outline-text-3" id="text-2-3">
 <p>
 段由若干簇构成,创建一个段会创建一个默认簇.一个簇存不下来会从段分配多一个新的簇.
 </p>
 </div>
 </div>
-<div id="outline-container-org7c9d776" class="outline-3">
-<h3 id="org7c9d776"><span class="section-number-3">2.4</span> 页面</h3>
+<div id="outline-container-orgf71ff6f" class="outline-3">
+<h3 id="orgf71ff6f"><span class="section-number-3">2.4</span> 页面</h3>
 <div class="outline-text-3" id="text-2-4">
 <p>
 页是簇组成单位,也是数据库管理的最小单位,也是能分配的最小单位.
@@ -326,7 +326,7 @@ InnoDB存储引擎的逻辑存储结构和Oracle大致相同,所有数据都被�
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: wlt</p>
-<p class="date">Created: 2018-05-06 日 18:04</p>
+<p class="date">Created: 2018-05-07 一 23:04</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
