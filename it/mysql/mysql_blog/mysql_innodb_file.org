@@ -16,6 +16,9 @@ sample1/
 └── sample1.ibd
 #+END_SRC
     可以看到在准备环节创建的sample1表的对应的文件 : sample1.ibd
+
+    (.frm文件对于InnoDB来说只是一个为了与mysql兼容的附属品而已,Mysql是一个插件式的数据库管理系统,它的结构分两层,分别是server层和存储层,server层只有一个,而存储层可以有多个存储引擎)
+
     InnoDB存储引擎的逻辑存储结构和Oracle大致相同,所有数据都被逻辑地存放在表空间中(tablespace),表空间又由段(segment)，簇(extend),页(page)组成,一些文档又称为块(block). 一个表空间可以有多个文件,每个文件都各自编号.创建一个表空间时，至少有一个文件,称为0号文件,这个文件的第一个页面(page_no为0)存储了这个表空间中所有段簇页管理入口,表空间,段，簇，页的关系如下图所示:
 #+BEGIN_SRC plantuml :file images/file_tablespace_rel.png :cmdline -charset utf-8
 node 表空间
