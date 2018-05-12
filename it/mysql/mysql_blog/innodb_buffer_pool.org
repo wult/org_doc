@@ -3,4 +3,58 @@
 
     InnoDB存储引擎中的数据访问是按页(默认16KB)的方式从数据库文件读取到Buffer Pool中的.数据库预先分配很多空间,用来与文件数据进行交换.按LRU算法实现Buffer Pool页面管理.
 
-    Buffer Pool大小可在配置文件中配置,由参数innodb_buffer_pool_size的大小来决定，默认是128MB.
+    Buffer Pool大小可在配置文件中配置,由参数innodb_buffer_pool_size的大小来决定，默认是128MB.可通过调整innodb_buffer_pool_instances设置pool的实例数.
+
+#+BEGIN_SRC plantuml :file images/innodb_buffer_pool_class_uml.png :cmdline -charset utf-8
+class buf_pool_t <<struct>>{
+    	UT_LIST_BASE_NODE_T(buf_page_t) free; //free链表,存储实例中所有空闲页面 
+      UT_LIST_BASE_NODE_T(buf_page_t) flush_list;//存储所有被修改过且需要刷到文件中的页面 
+      BufPoolMutex	mutex;		//保护Buffer Pool实例,一个实例只能由一个线程访问
+      buf_chunk_t*	chunks;		//指向Buffer Pool实例的第一个真正内存页面首地址
+
+
+}
+
+class buf_page_t {
+    
+}
+
+class buf_chunk_t <<struct>> {
+	buf_block_t*	blocks;		/*!< array of buffer control blocks */
+
+}
+
+class buf_block_t {
+    	buf_page_t	page; //关联buf_page_t
+}
+
+
+buf_pool_t <--* buf_page_t
+buf_pool_t <-- buf_chunk_t
+buf_block_t <-- buf_chunk_t
+buf_page_t --> buf_block_t
+#+END_SRC
+
+
+#+BEGIN_SRC plantuml :file images/innodb_buffer_pool_class_memory.png :cmdline -charset utf-8
+digraph mm {
+    node [ shape="record", width=2];
+    buf_node [label=<
+    <table border="0" cellborder="1" cellspacing="0" >
+    <tr>
+    <td>buf_block_t</td>
+    <td>buf_block_t</td>
+    <td>buf_block_t</td>
+    <td>buf_block_t</td>
+    <td>...</td>
+    <td>碎片空间不能使用,小于page+block大小</td>
+    <td>...</td>
+    <td>buf_page_t</td>
+    <td>buf_page_t</td>
+    <td>buf_page_t</td>
+    <td>buf_page_t</td>
+    </tr>
+    </table>
+    >];
+}
+#+END_SRC
