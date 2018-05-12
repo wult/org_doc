@@ -1,0 +1,6 @@
+** Buffer Pool
+    主要是用来存储访问过的数据页面,是一块连续内存.它是数据库中拥有最大块内在的系统模块.
+
+    InnoDB存储引擎中的数据访问是按页(默认16KB)的方式从数据库文件读取到Buffer Pool中的.数据库预先分配很多空间,用来与文件数据进行交换.按LRU算法实现Buffer Pool页面管理.
+
+    Buffer Pool大小可在配置文件中配置,由参数innodb_buffer_pool_size的大小来决定，默认是128MB.
