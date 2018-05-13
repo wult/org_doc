@@ -5,6 +5,7 @@
 
     Buffer Pool大小可在配置文件中配置,由参数innodb_buffer_pool_size的大小来决定，默认是128MB.可通过调整innodb_buffer_pool_instances设置pool的实例数.
 
+
 #+BEGIN_SRC plantuml :file images/innodb_buffer_pool_class_uml.png :cmdline -charset utf-8
 class buf_pool_t <<struct>>{
     	UT_LIST_BASE_NODE_T(buf_page_t) free; //free链表,存储实例中所有空闲页面 
@@ -26,6 +27,10 @@ class buf_chunk_t <<struct>> {
 
 class buf_block_t {
     	buf_page_t	page; //关联buf_page_t
+      byte*		frame;	//页面地址frame	
+      BPageMutex	mutex; //保护页面的互斥量
+      BPageLock	lock; //这个页面上的锁,read/write
+
 }
 
 
@@ -58,3 +63,4 @@ digraph mm {
     >];
 }
 #+END_SRC
+    对于InnoDB任何修改都会首先在buf pool的page上进行,然后 这样的页面将被标记为dirty并被放到专门的flush_list上,后续由master thread或专门刷脏线程的阶段性将这些页面写入磁盘(落盘细节后面会再讲)
