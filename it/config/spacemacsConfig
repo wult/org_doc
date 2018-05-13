@@ -1,0 +1,52 @@
+
+(setq-default dotspacemacs-configuration-layers '(plantuml))
+(setq org-plantuml-jar-path
+      (expand-file-name "/home/apps/libs/plantuml.jar"))
+
+
+(with-eval-after-load 'org
+  (org-babel-do-load-languages 'org-babel-load-languages '((ruby . t)
+                                                           (plantuml . t)
+                                                           )))
+
+(setq org-capture-templates '(("t" "计划" entry (file+headline "/home/document/org_doc/notes/todos.org" "todos")
+                               "* %?\n %i\n %a")
+                              ("j" "日记" entry (file+datetree "/home/document/org_doc/notes/journal.org")
+                               "* %?\n输入于: %U\n %i\n %a") 
+                              ))
+
+(setq org-confirm-babel-evaluate nil)
+(setq org-export-backends (quote (ascii html icalendar odt latex md)))
+(setq org-todo-keywords
+      '(
+        (sequence "TODO(t!)"  "|" "DONE(d!)")
+        ))
+(setq org-todo-keyword-faces
+      '(
+        ("TODO" .      (:background "DarkOrange" :foreground "black" :weight bold))
+        ("DONE" .      (:background "azure" :foreground "Darkgreen" :weight bold)) 
+        ("ABORT" .     (:background "gray" :foreground "black"))
+        ))
+
+;; 优先级范围和默认任务的优先级
+(setq org-highest-priority ?A)
+(setq org-lowest-priority  ?E)
+(setq org-default-priority ?E)
+;; 优先级醒目外观
+(setq org-priority-faces
+      '((?A . (:background "red" :foreground "white" :weight bold))
+        (?B . (:background "DarkOrange" :foreground "white" :weight bold))
+        (?C . (:background "yellow" :foreground "DarkGreen" :weight bold))
+        (?D . (:background "DodgerBlue" :foreground "black" :weight bold))
+        (?E . (:background "SkyBlue" :foreground "black" :weight bold))
+        ))
+;;定义plantuml片段
+(
+ defun insertPlantUml()
+  (interactive)
+  (insert "#+BEGIN_SRC plantuml :file images/x.png :cmdline -charset utf-8")
+  (insert "\n\n")
+  (insert "#+END_SRC")
+)
+
+(global-set-key "\C-cu" 'insertPlantUml)
