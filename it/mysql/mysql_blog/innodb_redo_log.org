@@ -8,3 +8,8 @@
     物理事务是Buffer Pool的内存Page与文件之间的一个桥梁。物理事务开始是对事物结构体mtr_struct初始化
 
 
+#+BEGIN_SRC plantuml :file images/innodb_redo_log_mtr_struct.png :cmdline -charset utf-8
+class mtr_struct <<struct>> {
+    
+}
+#+END_SRC
