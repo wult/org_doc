@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-05-15 二 08:18 -->
+<!-- 2018-05-15 二 22:52 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -232,20 +232,28 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#orga1862be">1. 10.2 事务管理基础</a>
+<li><a href="#org76f7c7d">1. 10.2 事务管理基础</a>
 <ul>
-<li><a href="#org64a73c8">1.1. 事务状态</a></li>
-<li><a href="#org664ca41">1.2. 表示事务的数据结构</a></li>
+<li><a href="#orgfd62aa0">1.1. 事务状态</a></li>
+<li><a href="#orgf6c41c0">1.2. 表示事务的数据结构</a></li>
+<li><a href="#orgd4caa98">1.3. redo日志</a>
+<ul>
+<li><a href="#orga58fea0">1.3.1. 数据结构</a></li>
+<li><a href="#org41cf062">1.3.2. REDO日志文件的管理方式</a></li>
+<li><a href="#orgaaee370">1.3.3. REDO日志与binlog日志的区别</a></li>
+</ul>
+</li>
+<li><a href="#org1f7c2a7">1.4. Mini-Transaction</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orga1862be" class="outline-2">
-<h2 id="orga1862be"><span class="section-number-2">1</span> 10.2 事务管理基础</h2>
+<div id="outline-container-org76f7c7d" class="outline-2">
+<h2 id="org76f7c7d"><span class="section-number-2">1</span> 10.2 事务管理基础</h2>
 <div class="outline-text-2" id="text-1">
-</div><div id="outline-container-org64a73c8" class="outline-3">
-<h3 id="org64a73c8"><span class="section-number-3">1.1</span> 事务状态</h3>
+</div><div id="outline-container-orgfd62aa0" class="outline-3">
+<h3 id="orgfd62aa0"><span class="section-number-3">1.1</span> 事务状态</h3>
 <div class="outline-text-3" id="text-1-1">
 
 <div class="figure">
@@ -258,8 +266,8 @@ for the JavaScript code in this tag.
 </p>
 </div>
 </div>
-<div id="outline-container-org664ca41" class="outline-3">
-<h3 id="org664ca41"><span class="section-number-3">1.2</span> 表示事务的数据结构</h3>
+<div id="outline-container-orgf6c41c0" class="outline-3">
+<h3 id="orgf6c41c0"><span class="section-number-3">1.2</span> 表示事务的数据结构</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 事务的数据结构中,把事务的属性如隔离级别和事务状态,与并发相关的锁如MVCC机制的快照隔离,UNDO日志关联起来
@@ -278,11 +286,111 @@ for the JavaScript code in this tag.
 </ul>
 </div>
 </div>
+<div id="outline-container-orgd4caa98" class="outline-3">
+<h3 id="orgd4caa98"><span class="section-number-3">1.3</span> redo日志</h3>
+<div class="outline-text-3" id="text-1-3">
+</div><div id="outline-container-orga58fea0" class="outline-4">
+<h4 id="orga58fea0"><span class="section-number-4">1.3.1</span> 数据结构</h4>
+<div class="outline-text-4" id="text-1-3-1">
+<p>
+redo日志作用:
+</p>
+<ul class="org-ul">
+<li>一是可以作为故障崩溃的时候，做系统恢复使用.以保证已经提交的事务的原子性和持久性。</li>
+<li>二是可以作为流的方式实现数据同步和复制的功能(尽管Mysql数据同步和复制是使用binlog)</li>
+</ul>
+
+<div class="figure">
+<p><img src="images/transaction_base_log_t.png" alt="transaction_base_log_t.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org41cf062" class="outline-4">
+<h4 id="org41cf062"><span class="section-number-4">1.3.2</span> REDO日志文件的管理方式</h4>
+<div class="outline-text-4" id="text-1-3-2">
+<p>
+REDO日志从缓存区中被刷出后，保存在日志文件组(group),每个日志文件组至少有两个REDO日志文件，ib<sub>logfile0,ib</sub><sub>logfile1的文件,文件个数可以通过innodb</sub><sub>log</sub><sub>files</sub><sub>in</sub><sub>group参数调节</sub>
+每个REDO日志文件大小相同，当文件满了的时候 ,会自动切换到下个日志文件以循环使  每个REDO日志文件大小相同，当文件满了的时候 ,会自动切换到下个日志文件以循环使用.
+</p>
+</div>
+</div>
+<div id="outline-container-orgaaee370" class="outline-4">
+<h4 id="orgaaee370"><span class="section-number-4">1.3.3</span> REDO日志与binlog日志的区别</h4>
+<div class="outline-text-4" id="text-1-3-3">
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">比较项</th>
+<th scope="col" class="org-left">REDO日志</th>
+<th scope="col" class="org-left">binglog日志</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">记录范围</td>
+<td class="org-left">记录事务操作过程中产生的事务日志`</td>
+<td class="org-left">记录Mysql所有存储引擎日志记录</td>
+</tr>
+
+<tr>
+<td class="org-left">记录内容</td>
+<td class="org-left">记录的关于每个页的更改物理情况</td>
+<td class="org-left">文件记录格式可以为STATEMENT或ROW</td>
+</tr>
+
+<tr>
+<td class="org-left">写入的时间</td>
+<td class="org-left">事务进行的过程中，不断有REDO日志被写入到REDO日志文件中</td>
+<td class="org-left">事务提交前进行记录</td>
+</tr>
+
+<tr>
+<td class="org-left">记录作用</td>
+<td class="org-left">系统故障做恢复，物理复制</td>
+<td class="org-left">逻辑复制</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="outline-container-org1f7c2a7" class="outline-3">
+<h3 id="org1f7c2a7"><span class="section-number-3">1.4</span> Mini-Transaction</h3>
+<div class="outline-text-3" id="text-1-4">
+<p>
+Mini Transaction用于实现事务的执行，REDO日志的写入,页数据刷盘,故障恢复时的页恢复。REDO日志需要基于Mini Transaction
+</p>
+
+<p>
+Mini Transaction的数据结构mtr<sub>t表示</sub> ,主要标识日志相关信息以及相关锁信息.
+</p>
+
+<div class="figure">
+<p><img src="images/transaction_base_mtr_t.png" alt="transaction_base_mtr_t.png" />
+</p>
+</div>
+
+<p>
+Mini Transaction是InnoDB事务处理的最核心部分,是管理引擎内部操作基础
+</p>
+</div>
+</div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: wlt</p>
-<p class="date">Created: 2018-05-15 二 08:18</p>
+<p class="date">Created: 2018-05-15 二 22:52</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

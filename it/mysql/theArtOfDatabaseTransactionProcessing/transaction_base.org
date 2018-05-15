@@ -60,7 +60,11 @@ class trx_rseg_t <<struct>> {
     page_size_t page_size;/** page size of the relevant tablespace **/
     ulint max_size;//max allowed size in pages;
     ulint curr_size;//current size in pages
+    UT_LIST_BASE_NODE_T(trx_undo_t) update_undo_list;/list of update undo logs
+    UT_LIST_BASE_NODE_T(trx_undo_t) update_undo_cached;/list of update undo log segments cached for fast reuse
 
+    UT_LIST_BASE_NODE_T(trx_undo_t) insert_undo_list;/list of insert undo logs
+    UT_LIST_BASE_NODE_T(trx_undo_t) insert_undo_cached;/list of insert undo log segments cached for fast reuse
 }
 trx_undo_ptr_t --> trx_rsegs_t
 trx_rsegs_t --> trx_t
@@ -69,3 +73,54 @@ trx_rsegs_t --> trx_t
 - 与事务管理相关的是“trx_state_t state”或"ulint isolation_level"等 
 - 与事务管理相关的另外一个主要结构体成员是"trx_savept_t last_sql_stat_start",即事务在执行过程中，通过保存点机制使用SQL语句的失败不会导致整个事务回滚，这如同使用栈(但不是栈，可以把一串UNDO日志视为一个逻辑栈)
 - 与事务回滚相关的是"trx_rsegs_t rsegs"->"trx_undo_ptr_tm_redo/m_noredo" ->"trx_rseg_t* rseg"
+*** redo日志
+**** 数据结构    
+ redo日志作用:
+ - 一是可以作为故障崩溃的时候，做系统恢复使用.以保证已经提交的事务的原子性和持久性。
+ - 二是可以作为流的方式实现数据同步和复制的功能(尽管Mysql数据同步和复制是使用binlog)
+ #+BEGIN_SRC plantuml :file images/transaction_base_log_t.png :cmdline -charset utf-8
+ class log_t <<struct>> {
+     lsn_t lsn;//log sequence number
+     ulint buf_free;//在日志缓冲中，第一个空闲位置
+     byte* buf_ptr;//REDO缓存区相关定义
+     byte* buf;//log buffer
+     ulint buf_size;//log buffer size in bytes;
+     ulint max_buf_free;
+     UT_LIST_BASE_NODE_T(log_group_t) log_groups;//日志组
+     lsn_t write_lsn; //last written lsn
+     lsn_t current_flush_lsn;//end lsn for the current runningwrite flush operation
+     lsn_t flushed_to_disk_lsn;//从缓存区到存储，实现REDO的重要标识
+
+ }
+ #+END_SRC
+**** REDO日志文件的管理方式
+     REDO日志从缓存区中被刷出后，保存在日志文件组(group),每个日志文件组至少有两个REDO日志文件，ib_logfile0,ib_logfile1的文件,文件个数可以通过innodb_log_files_in_group参数调节
+     每个REDO日志文件大小相同，当文件满了的时候 ,会自动切换到下个日志文件以循环使  每个REDO日志文件大小相同，当文件满了的时候 ,会自动切换到下个日志文件以循环使用.
+**** REDO日志与binlog日志的区别
+| 比较项     | REDO日志                                               | binglog日志                      |
+|------------+--------------------------------------------------------+----------------------------------|
+| 记录范围   | 记录事务操作过程中产生的事务日志`                      | 记录Mysql所有存储引擎日志记录    |
+| 记录内容   | 记录的关于每个页的更改物理情况                         | 文件记录格式可以为STATEMENT或ROW |
+| 写入的时间 | 事务进行的过程中，不断有REDO日志被写入到REDO日志文件中 | 事务提交前进行记录               |
+| 记录作用   | 系统故障做恢复，物理复制                               | 逻辑复制                             |
+*** Mini-Transaction
+    Mini Transaction用于实现事务的执行，REDO日志的写入,页数据刷盘,故障恢复时的页恢复。REDO日志需要基于Mini Transaction
+    
+    Mini Transaction的数据结构mtr_t表示 ,主要标识日志相关信息以及相关锁信息.
+#+BEGIN_SRC plantuml :file images/transaction_base_mtr_t.png :cmdline -charset utf-8
+class mtr_t <<struct>> {
+   mtr_buf_t  m_memo;
+   mtr_buf_t m_log;//管理日志信息
+   bool m_made_dirty;//true if mtr has made at least one buffer pool page dirty
+   mtr_log_t m_log_mode;//mtr提供四种类型
+   file_space_t* m_user_space;//指向mini-transaction修改用户表空间
+   file_space_t* m_undo_space;//指向mini-transaction修改UNDO日志空间
+   file_space_t* m_sys_space;//指向mini-transaction修改系统表空间
+   mtr_state_t m_state;//mtr状态
+   mtr_t* m_mtr;//owning mini-transaction
+}
+#+END_SRC
+    Mini Transaction是InnoDB事务处理的最核心部分,是管理引擎内部操作基础
+    
+
+

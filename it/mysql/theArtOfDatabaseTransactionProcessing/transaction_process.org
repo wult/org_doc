@@ -1,0 +1,17 @@
+** 事务过程
+*** 开始事务
+**** 事务初始化
+     通过调用 trx_init()函数完成事务的初始化工作.在这函数中设置了事务的结构体(trx_t* trx)中的各个元素值(见trx0trx.cc文件)
+***** 一。事务工厂TrxFactory调用初始化init()
+****** 事务工厂就是事务池,预先创建,初始化好一些事务对象,避免事务对象池频繁创建和删除
+****** 事务工厂在InnoDB被初始化时通过innobase_init()->..srv_boot()->..trx_pool_init()逐层实现多个事务池化
+****** 被池化的事务通过调用trx_create_low()函数从事务池内获取一个事务,如返回内部某项操作一个事务对象
+****** 事务被初始化时候,事务状态被设置为TRX_STATE_NOT_STARTED,表示事务没有开始
+****** TrxFactory做初始化init()时，调用 lock_trx_lock_list_init(&trx->lock.trx_locks)初始化这个事务的已表注到的锁的list
+****** TrxFactory做初始化init(0时，还调用lock_trx_alloc_locks(trx)为事务初始化这个事务对应的记录锁池(trx->lock.rec_pool)和表锁池(trx->lock.table_pool)
+***** 二是用于系统恢复时，调用trx_free_resurrected()->trx_init()实现事务初始状态设置
+***** 三是事务提交或回滚之后,在某个session上事务c地象被重新初始化,以备后用
+**** 事务启动
+    事务的启动函数比较简单,根据用户命令做简单区分,然后设置事务的基本属性信息,如读写事务分配回滚段,对于只读事务进行事务ID的分配等.trx_start_low()
+
+
