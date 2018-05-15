@@ -1,2 +1,71 @@
+
 ** 10.2 事务管理基础
 ***  事务状态
+#+BEGIN_SRC plantuml :file images/transaction_trx_state.png :cmdline -charset utf-8
+enum trx_state_t {
+	TRX_STATE_NOT_STARTED, //没有事务,即事务没有开始
+	TRX_STATE_FORCED_ROLLBACK, //事务被回滚,这是从ACTIVE状态变迁过来。并发机制经常会通过主动回滚事务来防止数据不一致
+	TRX_STATE_ACTIVE,//处于ACTIVE状态，表明事务正在执行过程中
+	TRX_STATE_PREPARED,//事务提交阶段,为支持XA，引入2PC技术,这是2PC第一阶段即PREPARE阶段
+	TRX_STATE_COMMITTED_IN_MEMORY//事务已提交,只有事务被设置为提交标识后,才可以释放锁等资源，这是SS2PL定义的
+}
+
+enum trx_que_t {
+  TRX_QUE_RUNNING,		/*!< transaction is running */
+	TRX_QUE_LOCK_WAIT,		/*!< transaction is waiting for a lock */
+	TRX_QUE_ROLLING_BACK,		/*!< transaction is rolling back */
+	TRX_QUE_COMMITTING		/*!< transaction is committing */
+}
+
+trx_que_t --> trx_state_t
+#+END_SRC
+以上文件位于trx0types.h
+*** 表示事务的数据结构
+    事务的数据结构中,把事务的属性如隔离级别和事务状态,与并发相关的锁如MVCC机制的快照隔离,UNDO日志关联起来
+#+BEGIN_SRC plantuml :file images/transaction_trx_t.png :cmdline -charset utf-8
+class trx_t <<struct>> {
+    bool abort;//事务被Abort
+    trx_id_t id;//事务的标识,事务ID
+    trx_id_t no;//事务的序列号
+    trx_state_t state;//事务的状态
+    ReadView* read_view;//活动事务的快照,与并发控制的MVCC机制关联
+    trx_lock_t lock;//事务上的锁信息,与并发控制的封锁机制关联,包括了元数据表和记录锁表
+    ulint isolation_level;//事务的隔离级别
+    bool is_registered;//有XA协调器注册
+    lsn_t commit_lsn;//事务提交时刻的lsn,与REDO日志紧密相关,要求REDO日志遵守WAL规则，事务结束前REDO日志落盘
+    que_t* graph;//查询图
+    undo_no_t undo_no;//下一个UNDO日志记录号,表示事务被修改或插入的行
+    trx_savept_t last_sql_stat_start;//保存点,记录上一个SQL的UNDO日志的记录号
+    trx_rsegs_t rsegs;//指向系统表空间和临时表空间,通过表空间与回滚段建立关联
+    bool ddl;//如果是DDL语句则内部开启一个子事务完成DDL操作。
+    bool internal;//是否是一个内部事务
+    XID* xid;//X/Open XA transaction 的标识
+}
+
+class trx_rsegs_t <<struct>> {
+   trx_undo_ptr_t m_redo;//回滚段,每个事务都有一个回滚段 
+   trx_undo_ptr_t m_noredo;//系统的临时表空间
+}
+
+class trx_undo_ptr_t <<struct>> {
+    trx_rseg_t* rseg;//指向内存回滚段
+    trx_undo_t* insert_undo;//指向insert undo log
+    trx_undo_t* update_undo;//指向update undo log
+}
+
+class trx_rseg_t <<struct>> {
+    ulint id;//回滚段的标识
+    ulint space;//回滚段的头信息在表空间中的位置,表空间标识 
+    ulint page_no;//回滚段的头信息在表空间中的位置 ,页号
+    page_size_t page_size;/** page size of the relevant tablespace **/
+    ulint max_size;//max allowed size in pages;
+    ulint curr_size;//current size in pages
+
+}
+trx_undo_ptr_t --> trx_rsegs_t
+trx_rsegs_t --> trx_t
+#+END_SRC
+- 表示事务的数据结构是trx_t,在事务的结构体中,与并发控制紧密相关的是"ReadView *read_view" 和"trx_lock_t lock"
+- 与事务管理相关的是“trx_state_t state”或"ulint isolation_level"等 
+- 与事务管理相关的另外一个主要结构体成员是"trx_savept_t last_sql_stat_start",即事务在执行过程中，通过保存点机制使用SQL语句的失败不会导致整个事务回滚，这如同使用栈(但不是栈，可以把一串UNDO日志视为一个逻辑栈)
+- 与事务回滚相关的是"trx_rsegs_t rsegs"->"trx_undo_ptr_tm_redo/m_noredo" ->"trx_rseg_t* rseg"
