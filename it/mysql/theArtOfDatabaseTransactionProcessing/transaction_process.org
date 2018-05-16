@@ -104,3 +104,22 @@ bt
 #25 0x00007ffff65f63dd in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
 
 #+END_SRC
+**** 事务ID管理 
+      InnoDB引擎需要使用事务ID区分事务，对于事务ID的管理方式有其生命周期
+      
+      首先是事务ID的初始化,这是InnoDB引擎启动时需要为整个引擎完整准备环境(如各种数据结构化初始化,缓存区准备,元数据加载)的步骤之一,所以在引擎启动时,从外存加载上次系统生命周期内最大的事务ID，然后增加一段空余范围，生成新的事务ID供本次生命周期使用,通过trx_sys_init_at_db_start()函数完成.
+      其次每个新事务需要获取事务ID，这是通过trx_sys_get_new_trx_id()函数完成,大部分情况下是通过trx_start_low()函数调用.
+***** 事务ID作用
+- 作为标志写入日志,如调用row_upd_write_sys_vals_to_log()写REDO日志
+- 标识对象生命状态与事务关系：如调用dict_build_index_def_step()标识索引是被本次生命周期(系统从启动到停止为一个生命周期)内某个事务创建还是在其他什么周期则创建
+- 被用于检测某个事务的存活状态:如调用trx_rw_is_active_low()
+- 被用于MVCC技术中求解事务快照,如调用ReadView::prepare(trx_id_t id)
+- 被用于统计信息中:如调用row_update_for_mysql_using_upd_graph()再调用srv_stats.n_rows_deleted.add((size_t)trx->id,1)对某个事务删除操作进行统计(所使用到的"srv_stats_stats"是内部的全局计数器)
+- 被用于并发控制技术中,如调用row_unlock_for_mysql()函数判断是否无级是否可以解锁
+- 被用于系统恢复中：如调用trx_resurrect_insert()从UNDO日志中恢复事务状态
+***** 其他特殊情况
+- 读写事务不赋于事务ID
+- PURGE事务不赋于事务ID
+  
+
+
