@@ -17,3 +17,90 @@
 ***** 事务提交整体过程
 ***** ha_commit_low 
       Server层通过handle接口对底层存储进行事务管理操作,通过函数指针ht->commit()调用Innodb的innobase_commit函数
+***** innobase_commit
+      1. 调用innobase_commit_low()完成事务提交(设置事务提交标志并释放事务相关的锁)
+      2. 调用trx_commit_complete_for_mysql()刷出日志
+      方法实现见ha_innodb.cc
+***** innobase_commit_low
+      调用trx_commit_for_mysql()完成事务提交
+***** trx_commit_for_mysql
+      1. 根据事务的状态，执行不同的操作调用trx_commit是因为事务的状态需要从TRX_STATE_PREPRED或TRX_STATE_ACTIVE转变为TRX_STATE_COMMITTED_IN_MEMORY
+***** trx_commit
+      1. 调用trx_commit_low()完成事务
+      2. 也会被trx_rollback_finish()调用,用于回滚操作
+***** trx_commit_low
+      1. 释放锁Mini-Transaction事务提交
+      2. 调用trx_commit_in_memory()完成事务在内存中的提交操作
+***** trx_commit_in_memory
+      1. 调用lock_trx_release_locks()释放锁
+      2. 断言事务的状态是在内存中已经完成(标志是上一步完成设置的)
+      3. 调用trx_undo_insert_cleanup()释放插入的UNDO日志
+      4. 生成新的lsn
+      5. 根据innodb_flush_log_at_trx_commit参数值的情况确定是否调用trx_flash_log_if_needed() 刷出日志到物理存储
+      6. 如果是回滚操作,则为回滚操作设置一些值,如设置事务状态为宏TRX_STATE_FORCED_ROLLBACK
+      7. 重新初始化事务对象结构体值以备再用
+      
+#+BEGIN_SRC bt
+insert过程中的read:
+#0  mtr_t::commit (this=0x7fffec16bfe0) at /home/opensource/mysql-5.7.21/storage/innobase/mtr/mtr0mtr.cc:559
+#1  0x0000000001b573e1 in ibuf_mtr_commit (mtr=0x7fffec16bfe0) at /home/opensource/mysql-5.7.21/storage/innobase/include/ibuf0ibuf.ic:60
+#2  0x0000000001b624de in ibuf_merge_or_delete_for_page (block=0x7fffdf9eb608, page_id=..., page_size=0x7fffdf9eb618, update_ibuf_bitmap=1) at /home/opensource/mysql-5.7.21/storage/innobase/ibuf/ibuf0ibuf.cc:4491
+#3  0x0000000001da436e in buf_page_io_complete (bpage=0x7fffdf9eb608, evict=false) at /home/opensource/mysql-5.7.21/storage/innobase/buf/buf0buf.cc:5827
+#4  0x0000000001dcae18 in buf_read_page_low (err=0x7fffec16c984, sync=true, type=0, mode=132, page_id=..., page_size=..., unzip=false) at /home/opensource/mysql-5.7.21/storage/innobase/buf/buf0rea.cc:226
+#5  0x0000000001dcb6d9 in buf_read_page (page_id=..., page_size=...) at /home/opensource/mysql-5.7.21/storage/innobase/buf/buf0rea.cc:447
+#6  0x0000000001d9f55e in buf_page_get_gen (page_id=..., page_size=..., rw_latch=1, guess=0x0, mode=10, file=0x23faa10 "/home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc", line=2493, mtr=0x7fffec16e290, dirty_with_no_latch=false) at /home/opensource/mysql-5.7.21/storage/innobase/buf/buf0buf.cc:4196
+#7  0x0000000001d651c1 in btr_cur_search_to_nth_level (index=0x7fff9c023490, level=0, tuple=0x7fff9c0230b0, mode=PAGE_CUR_LE, latch_mode=2, cursor=0x7fffec16de70, has_search_latch=0, file=0x23faa10 "/home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc", line=2493, mtr=0x7fffec16e290) at /home/opensource/mysql-5.7.21/storage/innobase/btr/btr0cur.cc:1107
+#8  0x0000000001c21424 in btr_pcur_open_low (index=0x7fff9c023490, level=0, tuple=0x7fff9c0230b0, mode=PAGE_CUR_LE, latch_mode=2, cursor=0x7fffec16de70, file=0x23faa10 "/home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc", line=2493, mtr=0x7fffec16e290) at /home/opensource/mysql-5.7.21/storage/innobase/include/btr0pcur.ic:465
+#9  0x0000000001c272d4 in row_ins_clust_index_entry_low (flags=0, mode=2, index=0x7fff9c023490, n_uniq=0, entry=0x7fff9c0230b0, n_ext=0, thr=0x7fff9c01ad20, dup_chk_only=false) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc:2493
+#10 0x0000000001c29a33 in row_ins_clust_index_entry (index=0x7fff9c023490, entry=0x7fff9c0230b0, thr=0x7fff9c01ad20, n_ext=0, dup_chk_only=false) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc:3321
+#11 0x0000000001c29f3c in row_ins_index_entry (index=0x7fff9c023490, entry=0x7fff9c0230b0, thr=0x7fff9c01ad20) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc:3457
+#12 0x0000000001c2a4cd in row_ins_index_entry_step (node=0x7fff9c01aac8, thr=0x7fff9c01ad20) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc:3607
+#13 0x0000000001c2a88c in row_ins (node=0x7fff9c01aac8, thr=0x7fff9c01ad20) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc:3749
+#14 0x0000000001c2aecb in row_ins_step (thr=0x7fff9c01ad20) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc:3934
+#15 0x0000000001c4a6d3 in row_insert_for_mysql_using_ins_graph (mysql_rec=0x7fff9c011d60 "\375\001", prebuilt=0x7fff9c01a560) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0mysql.cc:1738
+#16 0x0000000001c4acf1 in row_insert_for_mysql (mysql_rec=0x7fff9c011d60 "\375\001", prebuilt=0x7fff9c01a560) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0mysql.cc:1862
+#17 0x0000000001ae2a28 in ha_innobase::write_row (this=0x7fff9c011a70, record=0x7fff9c011d60 "\375\001") at /home/opensource/mysql-5.7.21/storage/innobase/handler/ha_innodb.cc:7562
+#18 0x0000000000fc6288 in handler::ha_write_row (this=0x7fff9c011a70, buf=0x7fff9c011d60 "\375\001") at /home/opensource/mysql-5.7.21/sql/handler.cc:7992
+#19 0x0000000001874d1d in write_record (thd=0x7fff9c000b70, table=0x7fff9c0110c0, info=0x7fffec16f190, update=0x7fffec16f210) at /home/opensource/mysql-5.7.21/sql/sql_insert.cc:1873
+#20 0x0000000001871b91 in Sql_cmd_insert::mysql_insert (this=0x7fff9c0068a0, thd=0x7fff9c000b70, table_list=0x7fff9c0061f0) at /home/opensource/mysql-5.7.21/sql/sql_insert.cc:769
+#21 0x0000000001878c15 in Sql_cmd_insert::execute (this=0x7fff9c0068a0, thd=0x7fff9c000b70) at /home/opensource/mysql-5.7.21/sql/sql_insert.cc:3107
+#22 0x000000000163350e in mysql_execute_command (thd=0x7fff9c000b70, first_level=true) at /home/opensource/mysql-5.7.21/sql/sql_parse.cc:3566
+#23 0x0000000001639418 in mysql_parse (thd=0x7fff9c000b70, parser_state=0x7fffec170550) at /home/opensource/mysql-5.7.21/sql/sql_parse.cc:5582
+#24 0x000000000162e1b6 in dispatch_command (thd=0x7fff9c000b70, com_data=0x7fffec170e00, command=COM_QUERY) at /home/opensource/mysql-5.7.21/sql/sql_parse.cc:1458
+#25 0x000000000162d054 in do_command (thd=0x7fff9c000b70) at /home/opensource/mysql-5.7.21/sql/sql_parse.cc:999
+#26 0x000000000176ed39 in handle_connection (arg=0x3b4a3c0) at /home/opensource/mysql-5.7.21/sql/conn_handler/connection_handler_per_thread.cc:300
+#27 0x00000000019c6831 in pfs_spawn_thread (arg=0x3b394d0) at /home/opensource/mysql-5.7.21/storage/perfschema/pfs.cc:2190
+#28 0x00007ffff71616ba in start_thread (arg=0x7fffec171700) at pthread_create.c:333
+#29 0x00007ffff65f63dd in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
+
+index:
+
+bt
+#0  mtr_t::commit (this=0x7fffec16cf20) at /home/opensource/mysql-5.7.21/storage/innobase/mtr/mtr0mtr.cc:559
+#1  0x0000000001d339a9 in trx_undo_assign_undo (trx=0x7fffeccb48d0, undo_ptr=0x7fffeccb4c20, type=1) at /home/opensource/mysql-5.7.21/storage/innobase/trx/trx0undo.cc:1831
+#2  0x0000000001d0e677 in trx_undo_report_row_operation (flags=0, op_type=1, thr=0x7fff9c01ad20, index=0x7fff9c023490, clust_entry=0x7fff9c0230b0, update=0x0, cmpl_info=0, rec=0x0, offsets=0x0, roll_ptr=0x7fffec16dad0) at /home/opensource/mysql-5.7.21/storage/innobase/trx/trx0rec.cc:1932
+#3  0x0000000001d6a5e3 in btr_cur_ins_lock_and_undo (flags=0, cursor=0x7fffec16de70, entry=0x7fff9c0230b0, thr=0x7fff9c01ad20, mtr=0x7fffec16e290, inherit=0x7fffec16db70) at /home/opensource/mysql-5.7.21/storage/innobase/btr/btr0cur.cc:2984
+#4  0x0000000001d6afb0 in btr_cur_optimistic_insert (flags=0, cursor=0x7fffec16de70, offsets=0x7fffec16de20, heap=0x7fffec16de18, entry=0x7fff9c0230b0, rec=0x7fffec16de28, big_rec=0x7fffec16de10, n_ext=0, thr=0x7fff9c01ad20, mtr=0x7fffec16e290) at /home/opensource/mysql-5.7.21/storage/innobase/btr/btr0cur.cc:3210
+#5  0x0000000001c277dc in row_ins_clust_index_entry_low (flags=0, mode=2, index=0x7fff9c023490, n_uniq=0, entry=0x7fff9c0230b0, n_ext=0, thr=0x7fff9c01ad20, dup_chk_only=false) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc:2598
+#6  0x0000000001c29a33 in row_ins_clust_index_entry (index=0x7fff9c023490, entry=0x7fff9c0230b0, thr=0x7fff9c01ad20, n_ext=0, dup_chk_only=false) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc:3321
+#7  0x0000000001c29f3c in row_ins_index_entry (index=0x7fff9c023490, entry=0x7fff9c0230b0, thr=0x7fff9c01ad20) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc:3457
+#8  0x0000000001c2a4cd in row_ins_index_entry_step (node=0x7fff9c01aac8, thr=0x7fff9c01ad20) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc:3607
+#9  0x0000000001c2a88c in row_ins (node=0x7fff9c01aac8, thr=0x7fff9c01ad20) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc:3749
+#10 0x0000000001c2aecb in row_ins_step (thr=0x7fff9c01ad20) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0ins.cc:3934
+#11 0x0000000001c4a6d3 in row_insert_for_mysql_using_ins_graph (mysql_rec=0x7fff9c011d60 "\375\001", prebuilt=0x7fff9c01a560) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0mysql.cc:1738
+#12 0x0000000001c4acf1 in row_insert_for_mysql (mysql_rec=0x7fff9c011d60 "\375\001", prebuilt=0x7fff9c01a560) at /home/opensource/mysql-5.7.21/storage/innobase/row/row0mysql.cc:1862
+#13 0x0000000001ae2a28 in ha_innobase::write_row (this=0x7fff9c011a70, record=0x7fff9c011d60 "\375\001") at /home/opensource/mysql-5.7.21/storage/innobase/handler/ha_innodb.cc:7562
+#14 0x0000000000fc6288 in handler::ha_write_row (this=0x7fff9c011a70, buf=0x7fff9c011d60 "\375\001") at /home/opensource/mysql-5.7.21/sql/handler.cc:7992
+#15 0x0000000001874d1d in write_record (thd=0x7fff9c000b70, table=0x7fff9c0110c0, info=0x7fffec16f190, update=0x7fffec16f210) at /home/opensource/mysql-5.7.21/sql/sql_insert.cc:1873
+#16 0x0000000001871b91 in Sql_cmd_insert::mysql_insert (this=0x7fff9c0068a0, thd=0x7fff9c000b70, table_list=0x7fff9c0061f0) at /home/opensource/mysql-5.7.21/sql/sql_insert.cc:769
+#17 0x0000000001878c15 in Sql_cmd_insert::execute (this=0x7fff9c0068a0, thd=0x7fff9c000b70) at /home/opensource/mysql-5.7.21/sql/sql_insert.cc:3107
+#18 0x000000000163350e in mysql_execute_command (thd=0x7fff9c000b70, first_level=true) at /home/opensource/mysql-5.7.21/sql/sql_parse.cc:3566
+#19 0x0000000001639418 in mysql_parse (thd=0x7fff9c000b70, parser_state=0x7fffec170550) at /home/opensource/mysql-5.7.21/sql/sql_parse.cc:5582
+#20 0x000000000162e1b6 in dispatch_command (thd=0x7fff9c000b70, com_data=0x7fffec170e00, command=COM_QUERY) at /home/opensource/mysql-5.7.21/sql/sql_parse.cc:1458
+#21 0x000000000162d054 in do_command (thd=0x7fff9c000b70) at /home/opensource/mysql-5.7.21/sql/sql_parse.cc:999
+#22 0x000000000176ed39 in handle_connection (arg=0x3b4a3c0) at /home/opensource/mysql-5.7.21/sql/conn_handler/connection_handler_per_thread.cc:300
+#23 0x00000000019c6831 in pfs_spawn_thread (arg=0x3b394d0) at /home/opensource/mysql-5.7.21/storage/perfschema/pfs.cc:2190
+#24 0x00007ffff71616ba in start_thread (arg=0x7fffec171700) at pthread_create.c:333
+#25 0x00007ffff65f63dd in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:109
+
+#+END_SRC
