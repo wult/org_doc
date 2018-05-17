@@ -1,0 +1,358 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-05-17 四 22:01 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="wlt" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org13efa75">1. 简介</a>
+<ul>
+<li><a href="#org3d8567b">1.1. 系统锁: 是保护共享的内存数据结构 不被并发的session同时修改.如各种MUTEX(如trx_sys-&gt;mutex,事务锁管理需要使用的lock_sys-&gt;mutex,回滚段内存结构管理需要使用rseg-&gt;mutex)</a></li>
+<li><a href="#org6fa87c4">1.2. 事务锁: 用户 SQL执行过程中,保护用户表中数据不被并发的session同时修改,如我们常提及的读锁,写锁,意向锁.事务锁是事务并发访问控制技术中基于技术中基于锁的并发控制技术所指的锁。</a></li>
+</ul>
+</li>
+<li><a href="#org20eb1f1">2. 锁的概述</a>
+<ul>
+<li><a href="#org60a2a47">2.1. 全局锁表</a>
+<ul>
+<li><a href="#org059d3fb">2.1.1. 第一阶段,初始化,Mysql Server 层会初始化出两个全局变量,InnoDB初始化一个全局变量:</a></li>
+<li><a href="#org71120f4">2.1.2. 第二阶段 运行态.接受用户sql语句，进行语法分析，得到sql语句的加锁语义</a></li>
+<li><a href="#orgccea8d5">2.1.3. 第三阶段 结束 有两层含义 1. 事务结束 需要释放锁(体现两阶段锁的思想),2.数据库引擎系统结束，释放系统资源包括释放锁</a></li>
+</ul>
+</li>
+<li><a href="#org2e929ee">2.2. MDL_request 来自SQL语句语义的加锁请求,不同的sql语句暗含不同的加锁语义,语义解析阶段即把加锁语义分析获得</a></li>
+</ul>
+</li>
+<li><a href="#org1cd1fc8">3. 系统锁</a>
+<ul>
+<li><a href="#orgd5641c1">3.1. 读写锁</a></li>
+<li><a href="#orgb9a6618">3.2. 读写锁的创建与释放见rw_lock_create_func()</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org13efa75" class="outline-2">
+<h2 id="org13efa75"><span class="section-number-2">1</span> 简介</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-org3d8567b" class="outline-3">
+<h3 id="org3d8567b"><span class="section-number-3">1.1</span> 系统锁: 是保护共享的内存数据结构 不被并发的session同时修改.如各种MUTEX(如trx_sys-&gt;mutex,事务锁管理需要使用的lock_sys-&gt;mutex,回滚段内存结构管理需要使用rseg-&gt;mutex)</h3>
+</div>
+<div id="outline-container-org6fa87c4" class="outline-3">
+<h3 id="org6fa87c4"><span class="section-number-3">1.2</span> 事务锁: 用户 SQL执行过程中,保护用户表中数据不被并发的session同时修改,如我们常提及的读锁,写锁,意向锁.事务锁是事务并发访问控制技术中基于技术中基于锁的并发控制技术所指的锁。</h3>
+</div>
+</div>
+<div id="outline-container-org20eb1f1" class="outline-2">
+<h2 id="org20eb1f1"><span class="section-number-2">2</span> 锁的概述</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+从技术本质上看，加锁操作就是为特定对象设置一个标志位,然后 使用锁机制(对象上存在标志位则不能改写,放弃加锁请求或等待锁释放后再进行操作)和释放锁
+锁的另外一层含义是抑制并发,保护共享资源即在抑制并发。
+</p>
+</div>
+<div id="outline-container-org60a2a47" class="outline-3">
+<h3 id="org60a2a47"><span class="section-number-3">2.1</span> 全局锁表</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+ 全局锁表: 1 元数据锁表;2行级锁表
+Mysql Server层提供了一个全局的元数据锁表"MDL_map_ m_locks",用以处理DDL之间的并发,处理DDL和DML之间的并发,并发冲突根源在于对于数据的竞争 
+</p>
+</div>
+<div id="outline-container-org059d3fb" class="outline-4">
+<h4 id="org059d3fb"><span class="section-number-4">2.1.1</span> 第一阶段,初始化,Mysql Server 层会初始化出两个全局变量,InnoDB初始化一个全局变量:</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<ul class="org-ul">
+<li>Mysql Server 层初始化出一个个全局事务管理器,对系统全局事务进行管理，如一致性读要使用MVCC管理器,回滚段等.</li>
+<li>Mysql Server层初始化出另一个全局中的元数据锁表，对系统全部元素锁进行管理.其中 Hash表"m_locks"上注册了全部元数据(GLOBAL和COMMIT元数据锁除外)</li>
+</ul>
+<ul class="org-ul">
+<li>InnoDB 层初始化出一个全局行级锁表,对InnoDB层内全部行级锁进行管理，包括记录锁,谓词锁,谓词页锁,其中 lock_sys上有三个hash表，注册了全部各类型的行级锁</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org71120f4" class="outline-4">
+<h4 id="org71120f4"><span class="section-number-4">2.1.2</span> 第二阶段 运行态.接受用户sql语句，进行语法分析，得到sql语句的加锁语义</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<ul class="org-ul">
+<li>如果是DDL语句,则交给MYSQL SERVER 层处理，对应的锁是元数据锁</li>
+<li>如果是DML或DQL语句，则交给InnoDB层处理,对应的锁是行级锁</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-orgccea8d5" class="outline-4">
+<h4 id="orgccea8d5"><span class="section-number-4">2.1.3</span> 第三阶段 结束 有两层含义 1. 事务结束 需要释放锁(体现两阶段锁的思想),2.数据库引擎系统结束，释放系统资源包括释放锁</h4>
+</div>
+</div>
+<div id="outline-container-org2e929ee" class="outline-3">
+<h3 id="org2e929ee"><span class="section-number-3">2.2</span> MDL_request 来自SQL语句语义的加锁请求,不同的sql语句暗含不同的加锁语义,语义解析阶段即把加锁语义分析获得</h3>
+<div class="outline-text-3" id="text-2-2">
+<ul class="org-ul">
+<li>MDL_request : 每个会话即用户连接(物理线程)上存在一个元数据锁的上下文，用以表示本会话生命周期内(实则是本会话的当前事务生命期内)的各种锁的施加,获得等情况</li>
+<li>MDL_ticket: 表示接收到加锁申请,加锁者买到一张ticket,但需要准备接受安检,安检结果是: 一个加锁请求即MDL_request对象来临后，锁被授予也可以被拒绝(被拒绝则发出加锁请求会话处于等待设置其MDL_context上的"m_wait"),如果被授予,则生成一个MDL_lock对象,绑定在MDL_ticket对象上,此时加锁请求完成.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="outline-container-org1cd1fc8" class="outline-2">
+<h2 id="org1cd1fc8"><span class="section-number-2">3</span> 系统锁</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+InnoDB提供两种系统锁,用于多线程间同步与互斥。第一是读写锁,使用读锁和写锁实现互斥并发会话对同一个内存的对象(如数据缓存区)的修改操作.第二是mutex锁,利用操作系统的mutex功能对共享对象加锁,以完全互斥的方式保护内存中的数据结构.
+</p>
+</div>
+<div id="outline-container-orgd5641c1" class="outline-3">
+<h3 id="orgd5641c1"><span class="section-number-3">3.1</span> 读写锁</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+InnoDB提供一种自施锁,是基于操作系统的Test-And-Sety原子指令实现.称为read-write-lock
+</p>
+
+<div class="figure">
+<p><img src="images/transaction_2pc_rw_lock_t.png" alt="transaction_2pc_rw_lock_t.png" />
+</p>
+</div>
+
+<p>
+读销可以有多个施加者,写锁只有一个施加者,排它锁/写锁,写操作加x锁,本类在sync0rw.h
+</p>
+</div>
+</div>
+<div id="outline-container-orgb9a6618" class="outline-3">
+<h3 id="orgb9a6618"><span class="section-number-3">3.2</span> 读写锁的创建与释放见rw_lock_create_func()</h3>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: wlt</p>
+<p class="date">Created: 2018-05-17 四 22:01</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
