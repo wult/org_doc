@@ -2,4 +2,47 @@
 *** 系统锁: 是保护共享的内存数据结构 不被并发的session同时修改.如各种MUTEX(如trx_sys->mutex,事务锁管理需要使用的lock_sys->mutex,回滚段内存结构管理需要使用rseg->mutex)
 *** 事务锁: 用户 SQL执行过程中,保护用户表中数据不被并发的session同时修改,如我们常提及的读锁,写锁,意向锁.事务锁是事务并发访问控制技术中基于技术中基于锁的并发控制技术所指的锁。
 ** 锁的概述
-   从技术本质上看，加锁操作就是为特定对象设置一个标志位,然后 使用锁机制
+   从技术本质上看，加锁操作就是为特定对象设置一个标志位,然后 使用锁机制(对象上存在标志位则不能改写,放弃加锁请求或等待锁释放后再进行操作)和释放锁
+   锁的另外一层含义是抑制并发,保护共享资源即在抑制并发。
+*** 全局锁表
+  全局锁表: 1 元数据锁表;2行级锁表
+ Mysql Server层提供了一个全局的元数据锁表"MDL_map_ m_locks",用以处理DDL之间的并发,处理DDL和DML之间的并发,并发冲突根源在于对于数据的竞争 
+**** 第一阶段,初始化,Mysql Server 层会初始化出两个全局变量,InnoDB初始化一个全局变量:
+ -  Mysql Server 层初始化出一个个全局事务管理器,对系统全局事务进行管理，如一致性读要使用MVCC管理器,回滚段等.
+ -  Mysql Server层初始化出另一个全局中的元数据锁表，对系统全部元素锁进行管理.其中 Hash表"m_locks"上注册了全部元数据(GLOBAL和COMMIT元数据锁除外)
+-   InnoDB 层初始化出一个全局行级锁表,对InnoDB层内全部行级锁进行管理，包括记录锁,谓词锁,谓词页锁,其中 lock_sys上有三个hash表，注册了全部各类型的行级锁
+**** 第二阶段 运行态.接受用户sql语句，进行语法分析，得到sql语句的加锁语义
+- 如果是DDL语句,则交给MYSQL SERVER 层处理，对应的锁是元数据锁
+- 如果是DML或DQL语句，则交给InnoDB层处理,对应的锁是行级锁
+**** 第三阶段 结束 有两层含义 1. 事务结束 需要释放锁(体现两阶段锁的思想),2.数据库引擎系统结束，释放系统资源包括释放锁
+*** MDL_request 来自SQL语句语义的加锁请求,不同的sql语句暗含不同的加锁语义,语义解析阶段即把加锁语义分析获得
+- MDL_request : 每个会话即用户连接(物理线程)上存在一个元数据锁的上下文，用以表示本会话生命周期内(实则是本会话的当前事务生命期内)的各种锁的施加,获得等情况
+- MDL_ticket: 表示接收到加锁申请,加锁者买到一张ticket,但需要准备接受安检,安检结果是: 一个加锁请求即MDL_request对象来临后，锁被授予也可以被拒绝(被拒绝则发出加锁请求会话处于等待设置其MDL_context上的"m_wait"),如果被授予,则生成一个MDL_lock对象,绑定在MDL_ticket对象上,此时加锁请求完成.
+** 系统锁
+   InnoDB提供两种系统锁,用于多线程间同步与互斥。第一是读写锁,使用读锁和写锁实现互斥并发会话对同一个内存的对象(如数据缓存区)的修改操作.第二是mutex锁,利用操作系统的mutex功能对共享对象加锁,以完全互斥的方式保护内存中的数据结构.
+*** 读写锁
+    InnoDB提供一种自施锁,是基于操作系统的Test-And-Sety原子指令实现.称为read-write-lock
+#+BEGIN_SRC plantuml :file images/transaction_2pc_rw_lock_t.png :cmdline -charset utf-8
+class rw_lock_t {
+    volatile lintlock_work;//锁的值,真正的记录锁的状态标志变量,读写锁设置不同值
+    volatile ulint waiters;//谁在等待本锁
+    volatile ibool recursive;//number of granted SX locks
+    volatile os_thread_id_t writer_thread;//写操作的线程ID
+    os_event_t event;//os事件
+    os_event_t wait_ex_event;//下一个写操作等待者正
+    mutable imutex_tmutex;//mutex锁
+    UT_LIST_NODE_T(rw_lock_t) list;//所有读写锁list
+}
+
+enum rw_lock_type_t {
+  RW_S_LATCH = 1,//共享锁
+	RW_X_LATCH = 2,//排它锁
+	RW_SX_LATCH = 4,//意向排它锁,阻塞写操作,不阴塞读操作
+	RW_NO_LATCH = 8 //没有锁
+
+}
+#+END_SRC
+读销可以有多个施加者,写锁只有一个施加者,排它锁/写锁,写操作加x锁,本类在sync0rw.h
+*** 读写锁的创建与释放见rw_lock_create_func()
+    
+
