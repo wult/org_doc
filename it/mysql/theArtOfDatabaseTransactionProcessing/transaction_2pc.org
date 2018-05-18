@@ -138,3 +138,54 @@ lock_clust_rec_modify_check_and_lock();//国为修改(更新,删除)操作主键
 lock_sec_rec_read_check_and_lock();//因为读操作在二级索引上加记录锁
 lock_sec_rec_modify_check_and_lock();//因为修改操作在二级索引上加记录锁
 #+END_SRC
+** SQL语义定义锁
+   MYSQL 上层是Server,提供词法分析,语法分析,SQL优化和执行器的执行框架,InnoDB就是负责事务和存储的插件
+
+   对于事务的处理,并不是简单地交由各个插件独立处理,而是在Mysql Server层开始,就做了宏观的规定,这些规定落在thr_lock.h,thr_lock.c,handler.cc,handler.h这些文件中
+*** 锁的粒度
+    在thr_lock.h中,定义了Mysql Server层的锁的粒度.
+#+BEGIN_SRC plantuml :file images/transaction_thr_lock_type.png :cmdline -charset utf-8
+enum thr_lock_type {
+    TL_IGNORE  = -1;
+    TL_UNLOCK,
+    TL_READ_DEFAULT,
+    TL_READ,//读锁
+    TL_READ_HIGH_SHARED_LOCKS,//
+}
+#+END_SRC
+*** 重要的数据结构
+    innoDB的row0mysql.h中定义了一些重要的结构体,存放了一个表的元组操作相关的一些重要信息,这个结构起了cache作用,其主要作用还是汇集row上的相关操作
+    其他三个重要的结构体,属于mysql server层
+#+BEGIN_SRC plantuml :file images/transaction_mysql_lock.png :cmdline -charset utf-8
+class st_mysql_lock <<struct>> {
+  TABLE **table;
+  uint table_count,lock_count;
+  THR_LOCK_DATA **locks;
+}
+#+END_SRC
+    线程Session中锁整体相关信息
+#+BEGIN_SRC plantuml :file images/x.png :cmdline -charset utf-8
+class st_thr_lock_data <<struct>> {
+  THR_LOCK_INFO *owner;//属主要哪个线程,隶属哪个session
+  struct st_thr_lock_data *next,**prev;//前后指针
+  struct st_thr_lock *lock;
+  mysql_cond_t *cond;
+  enum thr_lock_type type;//锁的粒度
+  void *status_param;			/* Param to status functions */
+  void *debug_print_param;
+  struct PSI_table *m_psi;
+
+}
+
+class st_thr_lock{
+  LIST list;
+  mysql_mutex_t mutex;
+  struct st_lock_list read_wait;//等待本线程Session的读等待
+  struct st_lock_list read;//本线程Session所有读锁
+  struct st_lock_list write_wait;//等待本线程session的写等待
+  struct st_lock_list write;//本线程session所有写锁
+
+}
+
+#+END_SRC
+*** InnoDB对接Mysql Server
