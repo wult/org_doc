@@ -164,7 +164,7 @@ class st_mysql_lock <<struct>> {
 }
 #+END_SRC
     线程Session中锁整体相关信息
-#+BEGIN_SRC plantuml :file images/x.png :cmdline -charset utf-8
+#+BEGIN_SRC plantuml :file images/transaction_st_thr_lock_data.png :cmdline -charset utf-8
 class st_thr_lock_data <<struct>> {
   THR_LOCK_INFO *owner;//属主要哪个线程,隶属哪个session
   struct st_thr_lock_data *next,**prev;//前后指针
@@ -189,3 +189,43 @@ class st_thr_lock{
 
 #+END_SRC
 *** InnoDB对接Mysql Server
+*** 事务与锁
+    锁发生在一个事务内部,所以锁信息依附于一个事务,一个会话上,同一时刻只能有一个事务
+#+BEGIN_SRC plantuml :file images/transaction_trx_lock_t.png :cmdline -charset utf-8
+class trx_lock_t {
+	ulint		n_active_thrs;	/*!< number of active query threads */
+	trx_que_t	que_state;	//包含四种状态
+	lock_t*		wait_lock;	//指向请求锁
+	ib_uint64_t	deadlock_mark;	//死锁标志
+	bool		was_chosen_as_deadlock_victim;//是否被选为了受害者
+	time_t		wait_started;	//处于锁等待的起始时间,便于用锁超时进行时间检测判断
+	que_thr_t*	wait_thr;	//正在等哪个会话
+	lock_pool_t	rec_pool;	//一个事务上预先分配的记录锁缓存池
+	lock_pool_t	table_pool;	//一个事务上预先分配的表锁缓存池
+	ulint		rec_cached;	/*!< Next free rec lock in pool */
+	ulint		table_cached;	/*!< Next free table lock in pool */
+	mem_heap_t*	lock_heap;	//锁的内存空间,是从堆上申请的
+	trx_lock_list_t trx_locks;	//事务已经申请到的事务的锁的双向列表
+	lock_pool_t	table_locks;	//本事务内所有的表锁
+	bool		cancel;		//本事务是否被取消(被回滚或起时等待发生将认为事务被取消)
+	ulint		n_rec_locks;	//本事务内的所有记录锁
+	bool		start_stmt;
+}
+class  lock_sys_t <<struct>> {
+.. 全局行锁 ..
+  char		pad1[CACHE_LINE_SIZE];	
+	LockMutex	mutex;			
+	hash_table_t*	rec_hash;		//全局的记录锁Hash表,所有的记录锁注册到这个Hash表
+	hash_table_t*	prdt_hash;		//全局的谓词锁Hash表,所有谓词锁注册到这个hash表
+	hash_table_t*	prdt_page_hash;		//全局的谓词页锁hash表
+	char		pad2[CACHE_LINE_SIZE];	
+	LockMutex	wait_mutex;		//保护下面的几个成员系统锁
+	srv_slot_t*	waiting_threads;	//正在等待的线程
+	srv_slot_t*	last_slot;	//在waiting_threads中最高(最后)的槽	
+	ibool		rollback_complete;//所有回滚事务完成(伴随事务上的锁要被释放)
+	ulint		n_lock_max_wait_time;	
+	os_event_t	timeout_event;	
+	bool		timeout_thread_active;	/*!< True if the timeout thread is running */
+
+}
+#+END_SRC

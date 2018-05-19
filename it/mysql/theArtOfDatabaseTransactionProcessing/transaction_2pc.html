@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-05-17 四 22:01 -->
+<!-- 2018-05-19 六 10:48 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -232,61 +232,89 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org13efa75">1. 简介</a>
+<li><a href="#orged5655f">1. 简介</a>
 <ul>
-<li><a href="#org3d8567b">1.1. 系统锁: 是保护共享的内存数据结构 不被并发的session同时修改.如各种MUTEX(如trx_sys-&gt;mutex,事务锁管理需要使用的lock_sys-&gt;mutex,回滚段内存结构管理需要使用rseg-&gt;mutex)</a></li>
-<li><a href="#org6fa87c4">1.2. 事务锁: 用户 SQL执行过程中,保护用户表中数据不被并发的session同时修改,如我们常提及的读锁,写锁,意向锁.事务锁是事务并发访问控制技术中基于技术中基于锁的并发控制技术所指的锁。</a></li>
+<li><a href="#org5ddf2a0">1.1. 系统锁: 是保护共享的内存数据结构 不被并发的session同时修改.如各种MUTEX(如trx_sys-&gt;mutex,事务锁管理需要使用的lock_sys-&gt;mutex,回滚段内存结构管理需要使用rseg-&gt;mutex)</a></li>
+<li><a href="#org24ef11f">1.2. 事务锁: 用户 SQL执行过程中,保护用户表中数据不被并发的session同时修改,如我们常提及的读锁,写锁,意向锁.事务锁是事务并发访问控制技术中基于技术中基于锁的并发控制技术所指的锁。</a></li>
 </ul>
 </li>
-<li><a href="#org20eb1f1">2. 锁的概述</a>
+<li><a href="#orgb608732">2. 锁的概述</a>
 <ul>
-<li><a href="#org60a2a47">2.1. 全局锁表</a>
+<li><a href="#orgefa22bd">2.1. 全局锁表</a>
 <ul>
-<li><a href="#org059d3fb">2.1.1. 第一阶段,初始化,Mysql Server 层会初始化出两个全局变量,InnoDB初始化一个全局变量:</a></li>
-<li><a href="#org71120f4">2.1.2. 第二阶段 运行态.接受用户sql语句，进行语法分析，得到sql语句的加锁语义</a></li>
-<li><a href="#orgccea8d5">2.1.3. 第三阶段 结束 有两层含义 1. 事务结束 需要释放锁(体现两阶段锁的思想),2.数据库引擎系统结束，释放系统资源包括释放锁</a></li>
+<li><a href="#orgdc39da5">2.1.1. 第一阶段,初始化,Mysql Server 层会初始化出两个全局变量,InnoDB初始化一个全局变量:</a></li>
+<li><a href="#org200c036">2.1.2. 第二阶段 运行态.接受用户sql语句，进行语法分析，得到sql语句的加锁语义</a></li>
+<li><a href="#orgf23dea1">2.1.3. 第三阶段 结束 有两层含义 1. 事务结束 需要释放锁(体现两阶段锁的思想),2.数据库引擎系统结束，释放系统资源包括释放锁</a></li>
 </ul>
 </li>
-<li><a href="#org2e929ee">2.2. MDL_request 来自SQL语句语义的加锁请求,不同的sql语句暗含不同的加锁语义,语义解析阶段即把加锁语义分析获得</a></li>
+<li><a href="#org85c702d">2.2. MDL_request 来自SQL语句语义的加锁请求,不同的sql语句暗含不同的加锁语义,语义解析阶段即把加锁语义分析获得</a></li>
 </ul>
 </li>
-<li><a href="#org1cd1fc8">3. 系统锁</a>
+<li><a href="#org5436642">3. 系统锁</a>
 <ul>
-<li><a href="#orgd5641c1">3.1. 读写锁</a></li>
-<li><a href="#orgb9a6618">3.2. 读写锁的创建与释放见rw_lock_create_func()</a></li>
+<li><a href="#orgd0e31d7">3.1. 读写锁</a></li>
+<li><a href="#org3184f56">3.2. 读写锁的创建与释放见rw_lock_create_func()</a></li>
+</ul>
+</li>
+<li><a href="#orgf893a13">4. 记录锁的基本数据结构</a>
+<ul>
+<li><a href="#org1081a76">4.1. 锁的粒度</a></li>
+<li><a href="#org9f6c2b4">4.2. 锁的种类</a></li>
+<li><a href="#orgc12c512">4.3. 锁的基本结构</a></li>
+<li><a href="#org342b60e">4.4. 显示锁与隐匿锁</a>
+<ul>
+<li><a href="#org1c35645">4.4.1. 显示锁</a></li>
+<li><a href="#org5e4ca8d">4.4.2. 隐匿锁</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#orga1a3539">5. 记录锁</a>
+<ul>
+<li><a href="#orgf74c109">5.1. 记录锁的数据结构</a></li>
+<li><a href="#orgcf3470b">5.2. 记录锁的生命周期</a></li>
+<li><a href="#org49c2917">5.3. 锁的施加</a></li>
+</ul>
+</li>
+<li><a href="#orgdc12836">6. SQL语义定义锁</a>
+<ul>
+<li><a href="#org9e00bbc">6.1. 锁的粒度</a></li>
+<li><a href="#org71d83bf">6.2. 重要的数据结构</a></li>
+<li><a href="#orgf9e5a4e">6.3. InnoDB对接Mysql Server</a></li>
+<li><a href="#org7afded4">6.4. 事务与锁</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org13efa75" class="outline-2">
-<h2 id="org13efa75"><span class="section-number-2">1</span> 简介</h2>
+<div id="outline-container-orged5655f" class="outline-2">
+<h2 id="orged5655f"><span class="section-number-2">1</span> 简介</h2>
 <div class="outline-text-2" id="text-1">
-</div><div id="outline-container-org3d8567b" class="outline-3">
-<h3 id="org3d8567b"><span class="section-number-3">1.1</span> 系统锁: 是保护共享的内存数据结构 不被并发的session同时修改.如各种MUTEX(如trx_sys-&gt;mutex,事务锁管理需要使用的lock_sys-&gt;mutex,回滚段内存结构管理需要使用rseg-&gt;mutex)</h3>
+</div><div id="outline-container-org5ddf2a0" class="outline-3">
+<h3 id="org5ddf2a0"><span class="section-number-3">1.1</span> 系统锁: 是保护共享的内存数据结构 不被并发的session同时修改.如各种MUTEX(如trx_sys-&gt;mutex,事务锁管理需要使用的lock_sys-&gt;mutex,回滚段内存结构管理需要使用rseg-&gt;mutex)</h3>
 </div>
-<div id="outline-container-org6fa87c4" class="outline-3">
-<h3 id="org6fa87c4"><span class="section-number-3">1.2</span> 事务锁: 用户 SQL执行过程中,保护用户表中数据不被并发的session同时修改,如我们常提及的读锁,写锁,意向锁.事务锁是事务并发访问控制技术中基于技术中基于锁的并发控制技术所指的锁。</h3>
+<div id="outline-container-org24ef11f" class="outline-3">
+<h3 id="org24ef11f"><span class="section-number-3">1.2</span> 事务锁: 用户 SQL执行过程中,保护用户表中数据不被并发的session同时修改,如我们常提及的读锁,写锁,意向锁.事务锁是事务并发访问控制技术中基于技术中基于锁的并发控制技术所指的锁。</h3>
 </div>
 </div>
-<div id="outline-container-org20eb1f1" class="outline-2">
-<h2 id="org20eb1f1"><span class="section-number-2">2</span> 锁的概述</h2>
+<div id="outline-container-orgb608732" class="outline-2">
+<h2 id="orgb608732"><span class="section-number-2">2</span> 锁的概述</h2>
 <div class="outline-text-2" id="text-2">
 <p>
 从技术本质上看，加锁操作就是为特定对象设置一个标志位,然后 使用锁机制(对象上存在标志位则不能改写,放弃加锁请求或等待锁释放后再进行操作)和释放锁
 锁的另外一层含义是抑制并发,保护共享资源即在抑制并发。
 </p>
 </div>
-<div id="outline-container-org60a2a47" class="outline-3">
-<h3 id="org60a2a47"><span class="section-number-3">2.1</span> 全局锁表</h3>
+<div id="outline-container-orgefa22bd" class="outline-3">
+<h3 id="orgefa22bd"><span class="section-number-3">2.1</span> 全局锁表</h3>
 <div class="outline-text-3" id="text-2-1">
 <p>
  全局锁表: 1 元数据锁表;2行级锁表
 Mysql Server层提供了一个全局的元数据锁表"MDL_map_ m_locks",用以处理DDL之间的并发,处理DDL和DML之间的并发,并发冲突根源在于对于数据的竞争 
 </p>
 </div>
-<div id="outline-container-org059d3fb" class="outline-4">
-<h4 id="org059d3fb"><span class="section-number-4">2.1.1</span> 第一阶段,初始化,Mysql Server 层会初始化出两个全局变量,InnoDB初始化一个全局变量:</h4>
+<div id="outline-container-orgdc39da5" class="outline-4">
+<h4 id="orgdc39da5"><span class="section-number-4">2.1.1</span> 第一阶段,初始化,Mysql Server 层会初始化出两个全局变量,InnoDB初始化一个全局变量:</h4>
 <div class="outline-text-4" id="text-2-1-1">
 <ul class="org-ul">
 <li>Mysql Server 层初始化出一个个全局事务管理器,对系统全局事务进行管理，如一致性读要使用MVCC管理器,回滚段等.</li>
@@ -297,8 +325,8 @@ Mysql Server层提供了一个全局的元数据锁表"MDL_map_ m_locks",用以�
 </ul>
 </div>
 </div>
-<div id="outline-container-org71120f4" class="outline-4">
-<h4 id="org71120f4"><span class="section-number-4">2.1.2</span> 第二阶段 运行态.接受用户sql语句，进行语法分析，得到sql语句的加锁语义</h4>
+<div id="outline-container-org200c036" class="outline-4">
+<h4 id="org200c036"><span class="section-number-4">2.1.2</span> 第二阶段 运行态.接受用户sql语句，进行语法分析，得到sql语句的加锁语义</h4>
 <div class="outline-text-4" id="text-2-1-2">
 <ul class="org-ul">
 <li>如果是DDL语句,则交给MYSQL SERVER 层处理，对应的锁是元数据锁</li>
@@ -306,12 +334,12 @@ Mysql Server层提供了一个全局的元数据锁表"MDL_map_ m_locks",用以�
 </ul>
 </div>
 </div>
-<div id="outline-container-orgccea8d5" class="outline-4">
-<h4 id="orgccea8d5"><span class="section-number-4">2.1.3</span> 第三阶段 结束 有两层含义 1. 事务结束 需要释放锁(体现两阶段锁的思想),2.数据库引擎系统结束，释放系统资源包括释放锁</h4>
+<div id="outline-container-orgf23dea1" class="outline-4">
+<h4 id="orgf23dea1"><span class="section-number-4">2.1.3</span> 第三阶段 结束 有两层含义 1. 事务结束 需要释放锁(体现两阶段锁的思想),2.数据库引擎系统结束，释放系统资源包括释放锁</h4>
 </div>
 </div>
-<div id="outline-container-org2e929ee" class="outline-3">
-<h3 id="org2e929ee"><span class="section-number-3">2.2</span> MDL_request 来自SQL语句语义的加锁请求,不同的sql语句暗含不同的加锁语义,语义解析阶段即把加锁语义分析获得</h3>
+<div id="outline-container-org85c702d" class="outline-3">
+<h3 id="org85c702d"><span class="section-number-3">2.2</span> MDL_request 来自SQL语句语义的加锁请求,不同的sql语句暗含不同的加锁语义,语义解析阶段即把加锁语义分析获得</h3>
 <div class="outline-text-3" id="text-2-2">
 <ul class="org-ul">
 <li>MDL_request : 每个会话即用户连接(物理线程)上存在一个元数据锁的上下文，用以表示本会话生命周期内(实则是本会话的当前事务生命期内)的各种锁的施加,获得等情况</li>
@@ -320,15 +348,15 @@ Mysql Server层提供了一个全局的元数据锁表"MDL_map_ m_locks",用以�
 </div>
 </div>
 </div>
-<div id="outline-container-org1cd1fc8" class="outline-2">
-<h2 id="org1cd1fc8"><span class="section-number-2">3</span> 系统锁</h2>
+<div id="outline-container-org5436642" class="outline-2">
+<h2 id="org5436642"><span class="section-number-2">3</span> 系统锁</h2>
 <div class="outline-text-2" id="text-3">
 <p>
 InnoDB提供两种系统锁,用于多线程间同步与互斥。第一是读写锁,使用读锁和写锁实现互斥并发会话对同一个内存的对象(如数据缓存区)的修改操作.第二是mutex锁,利用操作系统的mutex功能对共享对象加锁,以完全互斥的方式保护内存中的数据结构.
 </p>
 </div>
-<div id="outline-container-orgd5641c1" class="outline-3">
-<h3 id="orgd5641c1"><span class="section-number-3">3.1</span> 读写锁</h3>
+<div id="outline-container-orgd0e31d7" class="outline-3">
+<h3 id="orgd0e31d7"><span class="section-number-3">3.1</span> 读写锁</h3>
 <div class="outline-text-3" id="text-3-1">
 <p>
 InnoDB提供一种自施锁,是基于操作系统的Test-And-Sety原子指令实现.称为read-write-lock
@@ -344,14 +372,211 @@ InnoDB提供一种自施锁,是基于操作系统的Test-And-Sety原子指令实
 </p>
 </div>
 </div>
-<div id="outline-container-orgb9a6618" class="outline-3">
-<h3 id="orgb9a6618"><span class="section-number-3">3.2</span> 读写锁的创建与释放见rw_lock_create_func()</h3>
+<div id="outline-container-org3184f56" class="outline-3">
+<h3 id="org3184f56"><span class="section-number-3">3.2</span> 读写锁的创建与释放见rw_lock_create_func()</h3>
+</div>
+</div>
+<div id="outline-container-orgf893a13" class="outline-2">
+<h2 id="orgf893a13"><span class="section-number-2">4</span> 记录锁的基本数据结构</h2>
+<div class="outline-text-2" id="text-4">
+</div><div id="outline-container-org1081a76" class="outline-3">
+<h3 id="org1081a76"><span class="section-number-3">4.1</span> 锁的粒度</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+InnoDB的事务锁,支持四种基本的锁
+</p>
+
+<div class="figure">
+<p><img src="images/transaction_lock_mode.png" alt="transaction_lock_mode.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org9f6c2b4" class="outline-3">
+<h3 id="org9f6c2b4"><span class="section-number-3">4.2</span> 锁的种类</h3>
+<div class="outline-text-3" id="text-4-2">
+<pre class="example">
+##见lock0lock.h
+#define LOCK_ORDINARY	0	/*!&lt; this flag denotes an ordinary
+        next-key lock in contrast to LOCK_GAP
+        or LOCK_REC_NOT_GAP */
+//间隙锁记录之前的间隙被锁定,阻止记录被修改,也阻止记录前间歇被插入
+#define LOCK_GAP	512	/*!&lt; when this bit is set, it means that the
+        lock holds only on the gap before the record;
+        for instance, an x-lock on the gap does not
+        give permission to modify the record on which
+        the bit is set; locks of this type are created
+        when records are removed from the index chain
+        of records */
+//记录被锁定,记录之前的间隙不被锁定
+#define LOCK_REC_NOT_GAP 1024	/*!&lt; this bit means that the lock is only on
+        the index record and does NOT block inserts
+        to the gap before the index record; this is
+        used in the case when we retrieve a record
+        with a unique key, and is also used in
+        locking plain SELECTs (not part of UPDATE
+        or DELETE) when the user has set the READ
+        COMMITTED isolation level */
+//插入意见锁        
+#define LOCK_INSERT_INTENTION 2048 /*!&lt; this bit is set when we place a waiting
+        gap type record lock request in order to let
+        an insert of an index record to wait until
+        there are no conflicting locks by other
+        transactions on the gap; note that this flag
+        remains set when the waiting lock is granted,
+        or if the lock is inherited to a neighboring
+        record */
+#define LOCK_PREDICATE	8192	/*!&lt; Predicate lock */
+#define LOCK_PRDT_PAGE	16384	/*!&lt; Page lock */
+
+
+</pre>
+</div>
+</div>
+<div id="outline-container-orgc12c512" class="outline-3">
+<h3 id="orgc12c512"><span class="section-number-3">4.3</span> 锁的基本结构</h3>
+<div class="outline-text-3" id="text-4-3">
+
+<div class="figure">
+<p><img src="images/transaction_lock_t.png" alt="transaction_lock_t.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org342b60e" class="outline-3">
+<h3 id="org342b60e"><span class="section-number-3">4.4</span> 显示锁与隐匿锁</h3>
+<div class="outline-text-3" id="text-4-4">
+</div><div id="outline-container-org1c35645" class="outline-4">
+<h4 id="org1c35645"><span class="section-number-4">4.4.1</span> 显示锁</h4>
+<div class="outline-text-4" id="text-4-4-1">
+<p>
+使用lock tables操作过程中使用的锁
+</p>
+</div>
+</div>
+<div id="outline-container-org5e4ca8d" class="outline-4">
+<h4 id="org5e4ca8d"><span class="section-number-4">4.4.2</span> 隐匿锁</h4>
+<div class="outline-text-4" id="text-4-4-2">
+<p>
+InnoDB实现的一种延迟加锁的机制,用来减少加锁的数量.
+</p>
+</div>
+<ol class="org-ol"><li><a id="org5b8b669"></a>InnoDB隐匿锁必是排它锁<br /></li>
+<li><a id="org6dc30ac"></a>对于隐式排它锁,不能锁定间隙只能锁定(索引上的)记录.这是因为陈式锁是针对被修改的记录(属于Record类型),所以不能有间隙(GAP),如果间隙位(gap bit)被置位,锁只能加在间隙上.<br /></li>
+<li><a id="org0ca37a1"></a>INSERT操作会在记录系统写入trx_id,根据lock_clust_rec_some_has_impl()函数判断,这种情况下只能用隐式锁<br /></li></ol>
+</div>
+</div>
+</div>
+<div id="outline-container-orga1a3539" class="outline-2">
+<h2 id="orga1a3539"><span class="section-number-2">5</span> 记录锁</h2>
+<div class="outline-text-2" id="text-5">
+</div><div id="outline-container-orgf74c109" class="outline-3">
+<h3 id="orgf74c109"><span class="section-number-3">5.1</span> 记录锁的数据结构</h3>
+<div class="outline-text-3" id="text-5-1">
+
+<div class="figure">
+<p><img src="images/transaction_lock_rec_t.png" alt="transaction_lock_rec_t.png" />
+</p>
+</div>
+
+<p>
+本结构体之后紧跟着一个位图,标记了一个页面中有哪些记录被加锁,这说明锁不是施加在记录上，而是施加在页面 上.
+</p>
+</div>
+</div>
+<div id="outline-container-orgcf3470b" class="outline-3">
+<h3 id="orgcf3470b"><span class="section-number-3">5.2</span> 记录锁的生命周期</h3>
+<div class="outline-text-3" id="text-5-2">
+<p>
+记录锁的初始化: lock_t* RectLock::lock_alloc()
+记录锁被使用完毕后,随着事务结束,被lock_release()-&gt;lock_rec_dequeue_from_page()释放
+</p>
+</div>
+</div>
+<div id="outline-container-org49c2917" class="outline-3">
+<h3 id="org49c2917"><span class="section-number-3">5.3</span> 锁的施加</h3>
+<div class="outline-text-3" id="text-5-3">
+<pre class="example">
+lock_clust_rec_read_check_and_lock();//因为读操作在主键索引记录上加记录锁
+lock_clust_rec_modify_check_and_lock();//国为修改(更新,删除)操作主键索引记录上加记录锁
+lock_sec_rec_read_check_and_lock();//因为读操作在二级索引上加记录锁
+lock_sec_rec_modify_check_and_lock();//因为修改操作在二级索引上加记录锁
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-orgdc12836" class="outline-2">
+<h2 id="orgdc12836"><span class="section-number-2">6</span> SQL语义定义锁</h2>
+<div class="outline-text-2" id="text-6">
+<p>
+MYSQL 上层是Server,提供词法分析,语法分析,SQL优化和执行器的执行框架,InnoDB就是负责事务和存储的插件
+</p>
+
+<p>
+对于事务的处理,并不是简单地交由各个插件独立处理,而是在Mysql Server层开始,就做了宏观的规定,这些规定落在thr_lock.h,thr_lock.c,handler.cc,handler.h这些文件中
+</p>
+</div>
+<div id="outline-container-org9e00bbc" class="outline-3">
+<h3 id="org9e00bbc"><span class="section-number-3">6.1</span> 锁的粒度</h3>
+<div class="outline-text-3" id="text-6-1">
+<p>
+在thr_lock.h中,定义了Mysql Server层的锁的粒度.
+</p>
+
+<div class="figure">
+<p><img src="images/transaction_thr_lock_type.png" alt="transaction_thr_lock_type.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org71d83bf" class="outline-3">
+<h3 id="org71d83bf"><span class="section-number-3">6.2</span> 重要的数据结构</h3>
+<div class="outline-text-3" id="text-6-2">
+<p>
+innoDB的row0mysql.h中定义了一些重要的结构体,存放了一个表的元组操作相关的一些重要信息,这个结构起了cache作用,其主要作用还是汇集row上的相关操作
+其他三个重要的结构体,属于mysql server层
+</p>
+
+<div class="figure">
+<p><img src="images/transaction_mysql_lock.png" alt="transaction_mysql_lock.png" />
+</p>
+</div>
+
+<p>
+线程Session中锁整体相关信息
+</p>
+
+<div class="figure">
+<p><img src="images/x.png" alt="x.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgf9e5a4e" class="outline-3">
+<h3 id="orgf9e5a4e"><span class="section-number-3">6.3</span> InnoDB对接Mysql Server</h3>
+</div>
+<div id="outline-container-org7afded4" class="outline-3">
+<h3 id="org7afded4"><span class="section-number-3">6.4</span> 事务与锁</h3>
+<div class="outline-text-3" id="text-6-4">
+<p>
+锁发生在一个事务内部,所以锁信息依附于一个事务,一个会话上,同一时刻只能有一个事务
+</p>
+
+<div class="figure">
+<p><img src="images/transaction_trx_lock_t.png" alt="transaction_trx_lock_t.png" />
+</p>
+</div>
+</div>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: wlt</p>
-<p class="date">Created: 2018-05-17 四 22:01</p>
+<p class="date">Created: 2018-05-19 六 10:48</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
