@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2018-05-21 一 07:14 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title></title>
+<meta name="generator" content="Org mode" />
+<meta name="author" content="wlt" />
+<style type="text/css">
+ <!--/*--><![CDATA[/*><!--*/
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 3px #eee;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: visible;
+    padding-top: 1.2em;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    background-color: white;
+    top: -10px;
+    right: 10px;
+    padding: 3px;
+    border: 1px solid black;
+  }
+  pre.src:hover:before { display: inline;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { width: 90%; }
+  /*]]>*/-->
+</style>
+<script type="text/javascript">
+/*
+@licstart  The following is the entire license notice for the
+JavaScript code in this tag.
+
+Copyright (C) 2012-2017 Free Software Foundation, Inc.
+
+The JavaScript code in this tag is free software: you can
+redistribute it and/or modify it under the terms of the GNU
+General Public License (GNU GPL) as published by the Free Software
+Foundation, either version 3 of the License, or (at your option)
+any later version.  The code is distributed WITHOUT ANY WARRANTY;
+without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the GNU GPL for more details.
+
+As additional permission under GNU GPL version 3 section 7, you
+may distribute non-source (e.g., minimized or compacted) forms of
+that code without the copy of the GNU GPL normally required by
+section 4, provided you include this license notice and a URL
+through which recipients can access the Corresponding Source.
+
+
+@licend  The above is the entire license notice
+for the JavaScript code in this tag.
+*/
+<!--/*--><![CDATA[/*><!--*/
+ function CodeHighlightOn(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(null != target) {
+     elem.cacheClassElem = elem.className;
+     elem.cacheClassTarget = target.className;
+     target.className = "code-highlighted";
+     elem.className   = "code-highlighted";
+   }
+ }
+ function CodeHighlightOff(elem, id)
+ {
+   var target = document.getElementById(id);
+   if(elem.cacheClassElem)
+     elem.className = elem.cacheClassElem;
+   if(elem.cacheClassTarget)
+     target.className = elem.cacheClassTarget;
+ }
+/*]]>*///-->
+</script>
+</head>
+<body>
+<div id="content">
+<div id="table-of-contents">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents">
+<ul>
+<li><a href="#org535d8c6">1. innodb文件结构</a>
+<ul>
+<li><a href="#org73ce245">1.1. 准备</a>
+<ul>
+<li><a href="#org5fa2652">1.1.1. 数据库及表准备</a></li>
+</ul>
+</li>
+<li><a href="#org72cfe3d">1.2. Inno数据存储结构说明</a>
+<ul>
+<li><a href="#org0d70015">1.2.1. 表空间文件组成</a></li>
+<li><a href="#orge3c3e03">1.2.2. 段</a></li>
+<li><a href="#org35de0ac">1.2.3. 簇</a></li>
+<li><a href="#org8649296">1.2.4. 页面</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#org04bb41f">2. 索引</a>
+<ul>
+<li><a href="#org6bae65d">2.1. 二级索引</a>
+<ul>
+<li><a href="#org0e5cae8">2.1.1. 自定义主键的聚簇索引</a></li>
+<li><a href="#org6b9541e">2.1.2. 未定义主键聚簇索引</a></li>
+<li><a href="#org97dfad0">2.1.3. 自定义主键的二级唯一索引</a></li>
+<li><a href="#org4aa7596">2.1.4. 自定义主键的二级非唯一索引</a></li>
+<li><a href="#org207a370">2.1.5. 未定义主键的二级唯一索引</a></li>
+<li><a href="#org3eb8cab">2.1.6. 未定义主键的二级非唯一索引</a></li>
+</ul>
+</li>
+<li><a href="#orgba3804a">2.2. 查询B+ Tree索引的流程</a></li>
+</ul>
+</li>
+<li><a href="#org2ce0413">3. Buffer Pool</a></li>
+<li><a href="#org4ca0e8b">4. redo log</a>
+<ul>
+<li><a href="#org163c1a3">4.1. 提交事务时,redo日志落盘时机</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div id="outline-container-org535d8c6" class="outline-2">
+<h2 id="org535d8c6"><span class="section-number-2">1</span> innodb文件结构</h2>
+<div class="outline-text-2" id="text-1">
+</div><div id="outline-container-org73ce245" class="outline-3">
+<h3 id="org73ce245"><span class="section-number-3">1.1</span> 准备</h3>
+<div class="outline-text-3" id="text-1-1">
+</div><div id="outline-container-org5fa2652" class="outline-4">
+<h4 id="org5fa2652"><span class="section-number-4">1.1.1</span> 数据库及表准备</h4>
+<div class="outline-text-4" id="text-1-1-1">
+<div class="org-src-container">
+<pre class="src src-sql">create database sample1;
+use sample1;
+create table sample1( id int not null auto_increment primary key, name varchar(8) );
+insert into sample1(name) values('aa');
+</pre>
+</div>
+</div>
+</div>
+</div>
+<div id="outline-container-org72cfe3d" class="outline-3">
+<h3 id="org72cfe3d"><span class="section-number-3">1.2</span> Inno数据存储结构说明</h3>
+<div class="outline-text-3" id="text-1-2">
+</div><div id="outline-container-org0d70015" class="outline-4">
+<h4 id="org0d70015"><span class="section-number-4">1.2.1</span> 表空间文件组成</h4>
+<div class="outline-text-4" id="text-1-2-1">
+<p>
+在/var/lib/mysql目录下执行: tree -a sample1  可以看到如下结果:
+</p>
+<pre class="example">
+sample1/
+├── db.opt
+├── sample1.frm
+└── sample1.ibd
+</pre>
+<p>
+可以看到在准备环节创建的sample1表的对应的文件 : sample1.ibd
+</p>
+
+<p>
+(.frm文件对于InnoDB来说只是一个为了与mysql兼容的附属品而已,Mysql是一个插件式的数据库管理系统,它的结构分两层,分别是server层和存储层,server层只有一个,而存储层可以有多个存储引擎)
+</p>
+
+<p>
+InnoDB存储引擎的逻辑存储结构和Oracle大致相同,所有数据都被逻辑地存放在表空间中(tablespace),表空间又由段(segment)，簇(extend),页(page)组成,一些文档又称为块(block). 一个表空间可以有多个文件,每个文件都各自编号.创建一个表空间时，至少有一个文件,称为0号文件,这个文件的第一个页面(page_no为0)存储了这个表空间中所有段簇页管理入口,表空间,段，簇，页的关系如下图所示:
+</p>
+
+<div class="figure">
+<p><img src="images/file_tablespace_rel.png" alt="file_tablespace_rel.png" />
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orge3c3e03" class="outline-4">
+<h4 id="orge3c3e03"><span class="section-number-4">1.2.2</span> 段</h4>
+<div class="outline-text-4" id="text-1-2-2">
+<p>
+段是表空间中的主要组织结构,它是逻辑概念，用来管理物理文件,是构成索引,表,回滚段的基本元素.创建一个索引(B+树)时会同时创建两个段,分别是内节点段和叶子段,内节点段用来管理(存储)B+树中非叶子节点(页面)的数据,叶子段用来管理(存储)B+树中叶子节点数据.
+</p>
+</div>
+</div>
+<div id="outline-container-org35de0ac" class="outline-4">
+<h4 id="org35de0ac"><span class="section-number-4">1.2.3</span> 簇</h4>
+<div class="outline-text-4" id="text-1-2-3">
+<p>
+段由若干簇构成,创建一个段会创建一个默认簇.一个簇存不下来会从段分配多一个新的簇.
+</p>
+</div>
+</div>
+<div id="outline-container-org8649296" class="outline-4">
+<h4 id="org8649296"><span class="section-number-4">1.2.4</span> 页面</h4>
+<div class="outline-text-4" id="text-1-2-4">
+<p>
+页是簇组成单位,也是数据库管理的最小单位,也是能分配的最小单位.
+<img src="images/page_logic.jpg" alt="page_logic.jpg" />
+</p>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org04bb41f" class="outline-2">
+<h2 id="org04bb41f"><span class="section-number-2">2</span> 索引</h2>
+<div class="outline-text-2" id="text-2">
+<p>
+聚簇索引并不是一种单独的索引类型,而是一种数据存储方式.InnoDB聚簇索引实际上是在同一结构中保存了b+Tree索引和数据行
+当有聚簇索引时,它的数据行实际上存放的叶子节点.聚簇表示数据行和相邻的健值紧凑地存储在一起.
+InnoDB的二级索引(Secondary Index)节点存储索引值,叶子节点保存的是"回表"的信息,所谓回表,就是使用二级索引的指针的值，来找到聚簇索引的全部数据.然后根据完整数据索引取出所需要的列的过程.
+<img src="images/index_cluster_secondary.png" alt="index_cluster_secondary.png" />
+</p>
+</div>
+<div id="outline-container-org6bae65d" class="outline-3">
+<h3 id="org6bae65d"><span class="section-number-3">2.1</span> 二级索引</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+聚簇索引与二级索引之间的逻辑关系如下:
+</p>
+</div>
+<div id="outline-container-org0e5cae8" class="outline-4">
+<h4 id="org0e5cae8"><span class="section-number-4">2.1.1</span> 自定义主键的聚簇索引</h4>
+<div class="outline-text-4" id="text-2-1-1">
+<p>
+索引结构: [主键][TRXID][ROLLPTR][其他建表创建的非主键列]
+</p>
+
+<p>
+参与记录比较的列: 主键列
+</p>
+
+<p>
+内节点Key列: [主键列]+PageNo指针
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6b9541e" class="outline-4">
+<h4 id="org6b9541e"><span class="section-number-4">2.1.2</span> 未定义主键聚簇索引</h4>
+<div class="outline-text-4" id="text-2-1-2">
+<p>
+索引结构:[ROWID][TRXID][ROLLPTR][其他建表创建的非主键列]
+</p>
+
+<p>
+参与记录比较列: 只ROWID一列而已
+</p>
+
+<p>
+内节点Key列: [ROWID]+PageNo指针
+</p>
+</div>
+</div>
+
+<div id="outline-container-org97dfad0" class="outline-4">
+<h4 id="org97dfad0"><span class="section-number-4">2.1.3</span> 自定义主键的二级唯一索引</h4>
+<div class="outline-text-4" id="text-2-1-3">
+<p>
+索引结构:[唯一索引列][主键列]
+</p>
+
+<p>
+参与记录比较列:[唯一索引列][主键列]
+</p>
+
+<p>
+内节点Key列:[唯一索引列]+PageNo指针
+</p>
+</div>
+</div>
+
+<div id="outline-container-org4aa7596" class="outline-4">
+<h4 id="org4aa7596"><span class="section-number-4">2.1.4</span> 自定义主键的二级非唯一索引</h4>
+<div class="outline-text-4" id="text-2-1-4">
+<p>
+索引结构:[非唯一索引列][主键列]
+</p>
+
+<p>
+参与记录比较的列:[非唯一索引列][主键列]
+</p>
+
+<p>
+内节点Key列:[非唯一索引列][主键列]+PageNo指针
+</p>
+</div>
+</div>
+
+<div id="outline-container-org207a370" class="outline-4">
+<h4 id="org207a370"><span class="section-number-4">2.1.5</span> 未定义主键的二级唯一索引</h4>
+<div class="outline-text-4" id="text-2-1-5">
+<p>
+索引结构:[唯一索引列][ROWID]
+</p>
+
+<p>
+参与记录比较的列:[唯一索引][ROWID]
+</p>
+
+<p>
+内节点Key列: [唯一索引列]+PageNo指针
+</p>
+</div>
+</div>
+
+<div id="outline-container-org3eb8cab" class="outline-4">
+<h4 id="org3eb8cab"><span class="section-number-4">2.1.6</span> 未定义主键的二级非唯一索引</h4>
+<div class="outline-text-4" id="text-2-1-6">
+<p>
+索引结构:[非唯一索引列][ROWID]
+</p>
+
+<p>
+参与记录比较的列:[非唯一索引列][ROWID]
+</p>
+
+<p>
+内节点Key列:[非唯一索引][ROWID]+PageNo指针
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgba3804a" class="outline-3">
+<h3 id="orgba3804a"><span class="section-number-3">2.2</span> 查询B+ Tree索引的流程</h3>
+<div class="outline-text-3" id="text-2-2">
+
+<div class="figure">
+<p><img src="images/page_index.jpg" alt="page_index.jpg" />
+</p>
+</div>
+
+<p>
+B+树索引定位到数据所在的页面后,将数据页加载到内存中,通过查找槽定位数据.多条记录对应一个槽(slot),槽占用两个字节,槽的增长是从高字节到低字节的顺序存储的.最高位槽代表的是页面内索引顺序最小的记录.
+</p>
+
+<p>
+mysql通过二分法查找定位到具体的数据
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org2ce0413" class="outline-2">
+<h2 id="org2ce0413"><span class="section-number-2">3</span> Buffer Pool</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+主要是用来存储访问过的数据页面,是一块连续内存.它是数据库中拥有最大块内在的系统模块.
+</p>
+
+<p>
+InnoDB存储引擎中的数据访问是按页(默认16KB)的方式从数据库文件读取到Buffer Pool中的.数据库预先分配很多空间,用来与文件数据进行交换.按LRU算法实现Buffer Pool页面管理.
+</p>
+
+<p>
+Buffer Pool大小可在配置文件中配置,由参数innodb_buffer_pool_size的大小来决定，默认是128MB.可通过调整innodb_buffer_pool_instances设置pool的实例数.
+</p>
+
+
+
+<div class="figure">
+<p><img src="images/innodb_buffer_pool_class_uml.png" alt="innodb_buffer_pool_class_uml.png" />
+</p>
+</div>
+
+
+
+<div class="figure">
+<p><img src="images/innodb_buffer_pool_class_memory.png" alt="innodb_buffer_pool_class_memory.png" />
+</p>
+</div>
+
+<p>
+对于InnoDB任何修改都会首先在buf pool的page上进行,然后 这样的页面将被标记为dirty并被放到专门的flush_list上,后续由master thread或专门刷脏线程的阶段性将这些页面写入磁盘(落盘细节后面会再讲)
+</p>
+</div>
+</div>
+<div id="outline-container-org4ca0e8b" class="outline-2">
+<h2 id="org4ca0e8b"><span class="section-number-2">4</span> redo log</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+前面讲到master thread或专门刷脏线程会将dirty页面写入磁盘.这里首先是顺序写入到redo log,这样的好处是避免每次操作磁盘导致大量的随机IO.
+</p>
+
+<p>
+InoDB通过日志组来管理日志文件,它包含若干个日志文件,REDO日志写入都是字节连续的,其内部也是按照大小相等页面切割,大小是512字节,即扇区大小(历史原因).
+</p>
+</div>
+<div id="outline-container-org163c1a3" class="outline-3">
+<h3 id="org163c1a3"><span class="section-number-3">4.1</span> 提交事务时,redo日志落盘时机</h3>
+<div class="outline-text-3" id="text-4-1">
+<p>
+<img src="images/redo_log_commit.jpg" alt="redo_log_commit.jpg" />
+  因为innodb_flush_log_at_trx_commit值的不同,会产生不同的行为. 
+</p>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: wlt</p>
+<p class="date">Created: 2018-05-21 一 07:14</p>
+<p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>
