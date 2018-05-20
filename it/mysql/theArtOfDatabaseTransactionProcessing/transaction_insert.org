@@ -1,0 +1,43 @@
+** gdb断点
+#+BEGIN_SRC plantuml :file images/transaction_insert_gdb_break.png :cmdline -charset utf-8
+b mysql_parse()
+b trx_start_low  #开始事务
+b row_ins()   # insert 方法
+b lock_trx_release_locks   # 释放锁,见162页
+b os_file_flush_func()    #redo落盘
+b mtr_t::commit()   #mini Transaction提交
+b finish_write   #写到日志缓存,注意REDO数据还没有落盘
+b lock_rec_lock   #施加记录锁
+b handler::update_auto_increment
+#+END_SRC
+*** handler::update_auto_increment
+    write_record->handler:ha_write_row->ha_innobase::write_row->handler::update_auto_increment
+*** trx_start_low
+    row_insert_for_mysql->row_insert_for_mysql_using_ins_graph->trx_start_if_not_started_xa_low->trx_start_low
+*** row_ins()
+    row_insert_for_mysql->row_insert_for_mysql_using_ins_graph->row_ins_step
+*** mtr_t::commit()
+    row_ins()->row_ins_index_entry_step->row_ins_index_entry->row_ins_clust_index_entry_low
+    ->btr_cur_optimistic_insert->btr_cur_ins_lock_and_undo->trx_undo_report_row_operation
+    ->trx_undo_assign_undo->mtr::commit
+*** os_file_flush_func()
+*** mtr_t::commit()
+    row_ins()->row_ins_index_entry_step->row_ins_index_entry->row_ins_clust_index_entry_low   2647行
+    big_rec 是什么
+*** mtr_t::commit() xx
+    dict_stats_thread->dict_stats_process_entry_from_recalc_pool->dict_stats_update->dict_stats_update_persistent->
+    dict_stats_analyze_index->mtr::commit
+*** mtr_t::commit()xx
+    同上
+*** mtr_t::commit()
+    见359
+*** lock_trx_release_locks
+    见359
+*** mtr_t:commit
+    row_upd_del_mark_set_clust_rec->btr_cur_del_mark_set-clust_rec->trx_undo_assign_undo->mtr_t:commit
+*** mtr_t::commit
+    btr_cur_del_mark_set_clust_rec->trx_undo_report_row_operation
+
+    
+
+
