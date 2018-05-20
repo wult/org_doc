@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-05-15 二 22:52 -->
+<!-- 2018-05-20 日 23:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -232,28 +232,28 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org76f7c7d">1. 10.2 事务管理基础</a>
+<li><a href="#orge366709">1. 10.2 事务管理基础</a>
 <ul>
-<li><a href="#orgfd62aa0">1.1. 事务状态</a></li>
-<li><a href="#orgf6c41c0">1.2. 表示事务的数据结构</a></li>
-<li><a href="#orgd4caa98">1.3. redo日志</a>
+<li><a href="#org3a421e5">1.1. 事务状态</a></li>
+<li><a href="#org11a2685">1.2. 表示事务的数据结构</a></li>
+<li><a href="#orgd385de2">1.3. redo日志</a>
 <ul>
-<li><a href="#orga58fea0">1.3.1. 数据结构</a></li>
-<li><a href="#org41cf062">1.3.2. REDO日志文件的管理方式</a></li>
-<li><a href="#orgaaee370">1.3.3. REDO日志与binlog日志的区别</a></li>
+<li><a href="#org9b9a964">1.3.1. 数据结构</a></li>
+<li><a href="#org5cce996">1.3.2. REDO日志文件的管理方式</a></li>
+<li><a href="#org2c33707">1.3.3. REDO日志与binlog日志的区别</a></li>
 </ul>
 </li>
-<li><a href="#org1f7c2a7">1.4. Mini-Transaction</a></li>
+<li><a href="#org3d85064">1.4. Mini-Transaction</a></li>
 </ul>
 </li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org76f7c7d" class="outline-2">
-<h2 id="org76f7c7d"><span class="section-number-2">1</span> 10.2 事务管理基础</h2>
+<div id="outline-container-orge366709" class="outline-2">
+<h2 id="orge366709"><span class="section-number-2">1</span> 10.2 事务管理基础</h2>
 <div class="outline-text-2" id="text-1">
-</div><div id="outline-container-orgfd62aa0" class="outline-3">
-<h3 id="orgfd62aa0"><span class="section-number-3">1.1</span> 事务状态</h3>
+</div><div id="outline-container-org3a421e5" class="outline-3">
+<h3 id="org3a421e5"><span class="section-number-3">1.1</span> 事务状态</h3>
 <div class="outline-text-3" id="text-1-1">
 
 <div class="figure">
@@ -266,8 +266,8 @@ for the JavaScript code in this tag.
 </p>
 </div>
 </div>
-<div id="outline-container-orgf6c41c0" class="outline-3">
-<h3 id="orgf6c41c0"><span class="section-number-3">1.2</span> 表示事务的数据结构</h3>
+<div id="outline-container-org11a2685" class="outline-3">
+<h3 id="org11a2685"><span class="section-number-3">1.2</span> 表示事务的数据结构</h3>
 <div class="outline-text-3" id="text-1-2">
 <p>
 事务的数据结构中,把事务的属性如隔离级别和事务状态,与并发相关的锁如MVCC机制的快照隔离,UNDO日志关联起来
@@ -279,18 +279,18 @@ for the JavaScript code in this tag.
 </div>
 
 <ul class="org-ul">
-<li>表示事务的数据结构是trx<sub>t,在事务的结构体中,与并发控制紧密相关的是</sub>"ReadView *read<sub>view</sub>" 和"trx<sub>lock</sub><sub>t</sub> lock"</li>
-<li>与事务管理相关的是“trx<sub>state</sub><sub>t</sub> state”或"ulint isolation<sub>level</sub>"等</li>
-<li>与事务管理相关的另外一个主要结构体成员是"trx<sub>savept</sub><sub>t</sub> last<sub>sql</sub><sub>stat</sub><sub>start</sub>",即事务在执行过程中，通过保存点机制使用SQL语句的失败不会导致整个事务回滚，这如同使用栈(但不是栈，可以把一串UNDO日志视为一个逻辑栈)</li>
-<li>与事务回滚相关的是"trx<sub>rsegs</sub><sub>t</sub> rsegs"-&gt;"trx<sub>undo</sub><sub>ptr</sub><sub>tm</sub><sub>redo</sub>/m<sub>noredo</sub>" -&gt;"trx<sub>rseg</sub><sub>t</sub>* rseg"</li>
+<li>表示事务的数据结构是trx_t,在事务的结构体中,与并发控制紧密相关的是"ReadView *read_view" 和"trx_lock_t lock"</li>
+<li>与事务管理相关的是“trx_state_t state”或"ulint isolation_level"等</li>
+<li>与事务管理相关的另外一个主要结构体成员是"trx_savept_t last_sql_stat_start",即事务在执行过程中，通过保存点机制使用SQL语句的失败不会导致整个事务回滚，这如同使用栈(但不是栈，可以把一串UNDO日志视为一个逻辑栈)</li>
+<li>与事务回滚相关的是"trx_rsegs_t rsegs"-&gt;"trx_undo_ptr_tm_redo/m_noredo" -&gt;"trx_rseg_t* rseg"</li>
 </ul>
 </div>
 </div>
-<div id="outline-container-orgd4caa98" class="outline-3">
-<h3 id="orgd4caa98"><span class="section-number-3">1.3</span> redo日志</h3>
+<div id="outline-container-orgd385de2" class="outline-3">
+<h3 id="orgd385de2"><span class="section-number-3">1.3</span> redo日志</h3>
 <div class="outline-text-3" id="text-1-3">
-</div><div id="outline-container-orga58fea0" class="outline-4">
-<h4 id="orga58fea0"><span class="section-number-4">1.3.1</span> 数据结构</h4>
+</div><div id="outline-container-org9b9a964" class="outline-4">
+<h4 id="org9b9a964"><span class="section-number-4">1.3.1</span> 数据结构</h4>
 <div class="outline-text-4" id="text-1-3-1">
 <p>
 redo日志作用:
@@ -307,17 +307,17 @@ redo日志作用:
 </div>
 </div>
 
-<div id="outline-container-org41cf062" class="outline-4">
-<h4 id="org41cf062"><span class="section-number-4">1.3.2</span> REDO日志文件的管理方式</h4>
+<div id="outline-container-org5cce996" class="outline-4">
+<h4 id="org5cce996"><span class="section-number-4">1.3.2</span> REDO日志文件的管理方式</h4>
 <div class="outline-text-4" id="text-1-3-2">
 <p>
-REDO日志从缓存区中被刷出后，保存在日志文件组(group),每个日志文件组至少有两个REDO日志文件，ib<sub>logfile0,ib</sub><sub>logfile1的文件,文件个数可以通过innodb</sub><sub>log</sub><sub>files</sub><sub>in</sub><sub>group参数调节</sub>
+REDO日志从缓存区中被刷出后，保存在日志文件组(group),每个日志文件组至少有两个REDO日志文件，ib_logfile0,ib_logfile1的文件,文件个数可以通过innodb_log_files_in_group参数调节
 每个REDO日志文件大小相同，当文件满了的时候 ,会自动切换到下个日志文件以循环使  每个REDO日志文件大小相同，当文件满了的时候 ,会自动切换到下个日志文件以循环使用.
 </p>
 </div>
 </div>
-<div id="outline-container-orgaaee370" class="outline-4">
-<h4 id="orgaaee370"><span class="section-number-4">1.3.3</span> REDO日志与binlog日志的区别</h4>
+<div id="outline-container-org2c33707" class="outline-4">
+<h4 id="org2c33707"><span class="section-number-4">1.3.3</span> REDO日志与binlog日志的区别</h4>
 <div class="outline-text-4" id="text-1-3-3">
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
@@ -365,15 +365,15 @@ REDO日志从缓存区中被刷出后，保存在日志文件组(group),每个�
 </div>
 </div>
 </div>
-<div id="outline-container-org1f7c2a7" class="outline-3">
-<h3 id="org1f7c2a7"><span class="section-number-3">1.4</span> Mini-Transaction</h3>
+<div id="outline-container-org3d85064" class="outline-3">
+<h3 id="org3d85064"><span class="section-number-3">1.4</span> Mini-Transaction</h3>
 <div class="outline-text-3" id="text-1-4">
 <p>
 Mini Transaction用于实现事务的执行，REDO日志的写入,页数据刷盘,故障恢复时的页恢复。REDO日志需要基于Mini Transaction
 </p>
 
 <p>
-Mini Transaction的数据结构mtr<sub>t表示</sub> ,主要标识日志相关信息以及相关锁信息.
+Mini Transaction的数据结构mtr_t表示 ,主要标识日志相关信息以及相关锁信息.
 </p>
 
 <div class="figure">
@@ -390,7 +390,7 @@ Mini Transaction是InnoDB事务处理的最核心部分,是管理引擎内部操
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: wlt</p>
-<p class="date">Created: 2018-05-15 二 22:52</p>
+<p class="date">Created: 2018-05-20 日 23:12</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>

@@ -1,4 +1,4 @@
-
+#+OPTIONS: ^:nil
 ** 10.2 事务管理基础
 ***  事务状态
 #+BEGIN_SRC plantuml :file images/transaction_trx_state.png :cmdline -charset utf-8

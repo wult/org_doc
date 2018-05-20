@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2018-05-13 日 20:13 -->
+<!-- 2018-05-20 日 22:49 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title></title>
@@ -232,12 +232,12 @@ for the JavaScript code in this tag.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents">
 <ul>
-<li><a href="#org7be6c5e">1. Buffer Pool</a></li>
+<li><a href="#orge9cbef2">1. Buffer Pool</a></li>
 </ul>
 </div>
 </div>
-<div id="outline-container-org7be6c5e" class="outline-2">
-<h2 id="org7be6c5e"><span class="section-number-2">1</span> Buffer Pool</h2>
+<div id="outline-container-orge9cbef2" class="outline-2">
+<h2 id="orge9cbef2"><span class="section-number-2">1</span> Buffer Pool</h2>
 <div class="outline-text-2" id="text-1">
 <p>
 主要是用来存储访问过的数据页面,是一块连续内存.它是数据库中拥有最大块内在的系统模块.
@@ -248,8 +248,9 @@ InnoDB存储引擎中的数据访问是按页(默认16KB)的方式从数据库�
 </p>
 
 <p>
-Buffer Pool大小可在配置文件中配置,由参数innodb<sub>buffer</sub><sub>pool</sub><sub>size的大小来决定</sub>，默认是128MB.可通过调整innodb<sub>buffer</sub><sub>pool</sub><sub>instances设置pool的实例数</sub>.
+Buffer Pool大小可在配置文件中配置,由参数innodb_buffer_pool_size的大小来决定，默认是128MB.可通过调整innodb_buffer_pool_instances设置pool的实例数.
 </p>
+
 
 
 <div class="figure">
@@ -263,12 +264,16 @@ Buffer Pool大小可在配置文件中配置,由参数innodb<sub>buffer</sub><su
 <p><img src="images/innodb_buffer_pool_class_memory.png" alt="innodb_buffer_pool_class_memory.png" />
 </p>
 </div>
+
+<p>
+对于InnoDB任何修改都会首先在buf pool的page上进行,然后 这样的页面将被标记为dirty并被放到专门的flush_list上,后续由master thread或专门刷脏线程的阶段性将这些页面写入磁盘(落盘细节后面会再讲)
+</p>
 </div>
 </div>
 </div>
 <div id="postamble" class="status">
 <p class="author">Author: wlt</p>
-<p class="date">Created: 2018-05-13 日 20:13</p>
+<p class="date">Created: 2018-05-20 日 22:49</p>
 <p class="validation"><a href="http://validator.w3.org/check?uri=referer">Validate</a></p>
 </div>
 </body>
