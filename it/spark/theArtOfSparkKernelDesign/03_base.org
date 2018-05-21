@@ -1,0 +1,3 @@
+** 3.2 Spark内置RPC框架
+   Spark用户文件上传及jar包上传抛弃Jetty实现的HttpFileServer,改用RPC框架NettyStreamNanager.
+   TransportContext内部包含传输上下文配置信息TransportConf和对客户端请求消息进行处理的RpcHandler.TransportConf在创建TransportClientFactory和TransportServer时都是必需的,
