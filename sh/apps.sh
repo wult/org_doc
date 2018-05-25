@@ -16,7 +16,8 @@ EOF
 				clear ;;
 		2)
 			
-				sh /opt/forticlient-sslvpn/forticlientsslvpn.sh &
+				cd  /opt/forticlient-sslvpn/64bit/
+				./forticlientsslvpn_cli --server vpn2-gz.vipshop.com:443 --vpnuser liantian.wu --keepalive
 				clear;;
 		3)
 			
