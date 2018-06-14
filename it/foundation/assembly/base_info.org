@@ -7,4 +7,12 @@
 | FS       | extra segment register  | 附加数据段的段基值，用途不固定 |
 | GS       | extra segemtnt register | 附加数据段的段基值             |
 | SS       | stack segment register  | 堆栈段的值                          |
-
+** 指令
+*** call
+call 指令中,机器自动往栈顶压了数值: eip.主要是为了让调用函数执行完call 调用回来之后,能运行接下为的指令
+*** leave
+leave 指令顺还执行下面两条指令:
+#+BEGIN_SRC 
+move %ebp,%esp
+pop %eip
+#+END_SRC
