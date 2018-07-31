@@ -1,0 +1,14 @@
+** main
+    位于java.c文件
+*** loadJavaVM
+    加载libjvm.so,并初始化InvocationFunctions *ifn 
+  获取CLASSPATH,并setClassPath(s)
+  
+  如果jarfile!=0 ; setClassPath(jarfile);
+*** SetJavaCommandLineProp
+    将classpath之类的属性变为参数
+** JavaMain
+*** InitializeJVM
+    将JavaVM,JNIEnv类型成员指向正确jni函数,
+ mainClassName=NewPlatformString(env,classname);
+ classname = (char *)(*env)->GetStringUTFChars(env, mainClassName, 0);
