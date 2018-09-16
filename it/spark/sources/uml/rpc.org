@@ -1,0 +1,181 @@
+** TransportContext
+*** master class   
+#+BEGIN_SRC plantuml :file images/transportContext_class.png :cmdline -charset utf-8
+interface Encodable
+interface Message {
+    ManagedBuffer body()
+}
+interface ResponseMessage
+interface RequestMessage
+Encodable <|-- Message
+note left : An on-the-write-wire transmittable message
+abstract class AbstractMessage
+Message <|.. AbstractMessage
+Message <|-- ResponseMessage
+
+AbstractMessage <|-- RpcRequest
+AbstractMessage <|-- StreamRequest
+AbstractMessage <|-- ChunkFetchRequest
+AbstractMessage <|-- OneWayMessage
+
+RequestMessage <|.. RpcRequest
+RequestMessage <|.. StreamRequest
+RequestMessage <|.. ChunkFetchRequest
+RequestMessage <|.. OneWayMessage
+note bottom of OneWayMessage 
+A RPC that does not expect a reply,
+which is handled by a remote
+end note
+
+
+
+
+AbstractMessage <|-- AbstractResponseMessage
+ResponseMessage <|.. AbstractResponseMessage
+AbstractResponseMessage <|-- ChunkFetchSuccess
+AbstractResponseMessage <|-- RpcResponse
+AbstractResponseMessage <|-- StreamResponse
+
+
+
+
+
+MessageHandler <|-- TransportRequestHandler
+MessageHandler <|-- TransportResponseHandler
+
+Message <-- MessageHandler
+abstract class MessageHandler {
+    void handler(T message) //handles the receipt of a single message
+    void channelActive() //invoked when the channel this MessageHandler is on is active
+    void exceptionCaught(Throwable cause) //invoked when an exception was caught on the channel
+    void channelInactive() //Invoked when the channel this MessageHandler is on is inactive
+}
+note top of MessageHandler
+handlers either request or response message coming off of Netty.
+A MessageHandler instance is associated with a single 
+(though it may have multiple clients on the same channel)
+end note
+
+class TransportRequestHandler { 
+
+}
+note bottom of TransportRequestHandler 
+A handler that processes requests from 
+clients and writes chunk data back.
+Each handler is attached to a single 
+Netty channel. and keeps track of which
+ streams have been fetch via this channel,
+ in order to clean them up if the channel
+ is terminated 
+end note
+class TransportResponseHandler {
+}
+note bottom of TransportResponseHandler
+handler that processes server response.
+in response to request issued from a 
+TransportClient . It works by tracking
+the list of outstanding request
+(and their callbacks)
+end note
+
+class ChannelInboundHandlerAdapter
+ChannelInboundHandlerAdapter <|-- TransportChannelHandler
+class TransportChannelHandler {
+    TransportClient client
+    TransportResponseHandler responseHandler
+    TransportRequestHandler requestHandler
+    void channelRead(ChannelHandlerContext ctx,Object request)
+}
+note bottom of TransportChannelHandler
+channelRead:
+if request instanceof RequestMessage
+   requestHandler.handler()
+else if request instanceof ResponseMessage
+   responseHandler.handler()
+end note
+
+TransportRequestHandler <-- TransportChannelHandler
+TransportResponseHandler <-- TransportChannelHandler
+#+END_SRC
+
+message 及 ManagerBuffer
+#+BEGIN_SRC plantuml :file images/message_managedBuffer.png :cmdline -charset utf-8
+interface Message {
+    Type type()
+    ManagedBuffer body()
+    boolean isBodyInFrame()//消息的主体是否包含在消息同一帧中
+}
+
+enum Type {
+    ChunkFetchRequest
+    ChunkFetchSuccess
+    ChunkFetchFailure
+    RpcRequest
+    RpcResponse
+    RpcFailure
+    StreamRequest
+    StreamResponse
+    StreamFailure
+    OneWayMessage
+    User
+}
+Message --> Type
+Message --> ManagedBuffer
+abstract class ManagedBuffer {
+    long size()//数据字节数 
+    ByteBuffer nioByteBuffer()//按NIO的ByteBuffer类型返回
+    InputStream createInputStream()//按InputStream返回
+    ManagedBuffer retain()//有新使用者,则更新视图引用
+    ManagedBuffer release()//使用者不用,减少引用数,0时释放
+    Object convertToNetty()//将缓冲欧转为Netty对象
+}
+
+ManagedBuffer <|-- NettyManagedBuffer
+ManagedBuffer <|-- FileSegmentManagedBuffer
+ManagedBuffer <|-- RecordingManagedBuffer
+ManagedBuffer <|-- NioManagedBuffer
+
+#+END_SRC
+***  createServer
+#+BEGIN_SRC plantuml :file images/transportContext_createServer.png :cmdline -charset utf-8
+actor start
+start -> TransportContext
+create TransportServer
+TransportContext -> TransportServer : createServer()
+activate TransportServer
+TransportServer -> TransportServer : init()
+create ServerBootStrap
+TransportServer -> ServerBootStrap : new
+ServerBootStrap -> TransportServer : return bootstrap
+create ChannelInitializer
+TransportServer -> ChannelInitializer : bootstrap.childHandler
+ChannelInitializer -> TransportContext : initializePipeline(SocketChannel,RpcHandler)
+
+deactivate TransportServer
+#+END_SRC
+*** initializePipeline
+#+BEGIN_SRC plantuml :file images/transportContext_initializePipeline.png :cmdline -charset utf-8
+actor start
+start -> TransportContext : initializePipeline
+activate TransportContext
+TransportContext -> TransportContext : createChannelHandler 
+activate TransportContext
+create TransportChannelHandler
+TransportContext -> TransportChannelHandler : new
+create TransportClient
+TransportContext -> TransportClient : new Transportclient(Channel,TransportResponseHandler)
+create TransportRequestHandler 
+TransportContext -> TransportRequestHandler : new TransportRequestHandler(Channel,TransportClient,RpcHandler)
+create TransportChannelHandler
+TransportContext -> TransportChannelHandler : new TransportChannelHandler(TransportClient,TransportResponseHandler,TransportRequestHandler,long,boolean)
+TransportChannelHandler -> TransportContext : return channelHandler
+deactivate TransportContext
+TransportContext -> SocketChannel : channel.pipeline.addLast("encode",MessageEncode())
+TransportContext -> SocketChannel : channel.pipeline.addLast("framedecoder",TransportFrameDecoder())
+TransportContext -> SocketChannel : channel.pipeline.addLast("decoder",MessageDecoder())
+TransportContext -> SocketChannel : channel.pipeline.addLast("idleStatehandler",IdleStateHandler())
+TransportContext -> SocketChannel : channel.pipeline.addLast("handler",channelHandler)
+create InetSocketAddress 
+TransportContext -> InetSocketAddress : bootstrap.bind(address)
+deactivate TransportContext
+#+END_SRC

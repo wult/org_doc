@@ -1,0 +1,7 @@
+** socket name
+*** transportServer
+    name:  conf.getModuleName()+"_server"
+** store
+*** RDD
+    name: rdd_$rddId_$splitIndex
+   
