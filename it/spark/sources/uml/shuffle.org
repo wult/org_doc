@@ -1,0 +1,211 @@
+** collections
+#+BEGIN_SRC plantuml :file images/shuffle_collection_class.png :cmdline -charset utf-8
+interface SizeTracker {
+    void resetSamples()//重置样本
+    void afterUpdate()//callback to be invoked after every update
+    void takeSample()//take a new sample of the current collection's size
+    void estimateSize()
+
+}
+note bottom of SizeTracker
+a general interface for collections
+to keep track of their estimated 
+sizes in bytes.
+end note
+
+interface WritablePartitionedIterator {
+    void writeNext(writer:DiskBlockObjectWriter)
+    boolean hasNext()
+    int nextPartition()
+}
+WritablePartitionedIterator <-- WritablePartitionedPairCollection
+
+interface WritablePartitionedPairCollection {
+    void insert(partition : int,key:K,value:V)
+    void partitionedDestructiveSortedIterator(keyComparator:Option[Comparator[k]])
+}
+note top of WritablePartitionedPairCollection
+a common interface for size-tracking
+collections of key-value pairs that
+-have an associated partition for 
+each key-value pair
+-support a memory-efficient sorted iterator
+-support a writablePartitionedIterator 
+for writing the contents directly as bytes
+例如 key为(0,#),value为1的键值对,真正键实际为#
+end note
+
+
+
+
+interface Iterable
+
+Interable <|-- AppendOnlyMap
+
+class AppendOnlyMap {
+    void update(key:K,value:V)//将key更新到data数组
+    V changeValue(key:K,updateFunc: (Boolean , V) => V)//实现缓存聚合算法
+    Iterator[(K,V)] iterator()
+    void incrementSize()//扩充容量
+    void growTable()//将data数组容量扩大一倍
+    Iterator[(K,V)] destructiveSortedIterator(keyComparator:Comparator[K])//排序
+}
+note bottom of AppendOnlyMap 
+Spark提供AppendOnlyMap来对null值缓存,
+AppendOnlyMap还是在内存中对任务结果进行
+聚合运算的利器
+end note
+
+
+class SizeTrackingAppendOnlyMap {
+    void update(key:K,value:V)
+    V changeValue(key:K,updateFunc:(Boolean,V)=>V)
+    void growTable()
+}
+AppendOnlyMap <|-- SizeTrackingAppendOnlyMap
+SizeTracker <|.. SizeTrackingAppendOnlyMap
+
+class PartitionedAppendOnlyMap {
+    Iterator partitionedDestructiveSortedIterator(keyComparator:Option[Comparator[K]])
+    void insert(partition:Int,key:K,value:V)
+}
+
+SizeTrackingAppendOnlyMap <|-- PartitionedAppendOnlyMap
+WritablePartitionedPairCollection <|.. PartitionedAppendOnlyMap
+
+
+class PartitionedPairBuffer {
+   void insert(partition : Int,Key:K,value:V) 
+   void growArray()
+   Iterator partitionedDestructiveSortedIterator(keyComparator:Option[Comparator[K]])
+   Iterator[((Int,K),V)] iterator()
+
+}
+note bottom of PartitionedPairBuffer
+append-only buffer of key-value pairs
+each with a corresponding partition 
+ID, that keeps track of its estimated
+ size in bytes.
+相当Collection功能
+end note
+
+WritablePartitionedPairCollection <|-- PartitionedPairBuffer
+SizeTracker <|.. PartitionedPairBuffer
+#+END_SRC
+** memory
+#+BEGIN_SRC plantuml :file images/shuffle_memory.png :cmdline -charset utf-8
+abstract class MemoryPool {
+    long pooleSize
+    long memoryFree()
+    void incrementPoolSize(delta:Long)
+    void decrementPoolSize(delta:Long)
+    long memoryUsed()
+}
+note bottom of MemoryPool 
+manages bookkeeping for an
+adjustable-sized region of
+memory.This class is internal
+to the MemoryManager.
+end note
+
+class ExecutionMemoryPool {
+    String poolName
+    HashMap<Long,Long> memoryForTask
+    Long memoryUsed()
+    Long getMemoryUsageForTask(taskAttemptId:Long)
+    Long acquireMemory(numBytes:Long,taskAttemptId:Long,maybeGrowPool:Long,computeMaxPoolSize())
+    void releaseMemory(numBytes:Long,taskAttemptId:Long)
+    Long releaseAllMemoryForTask(taskAttemptId:Long)
+}
+
+note bottom of ExecutionMemoryPool
+Implements policies and bookkeeping
+for sharing an adjustable-sized
+pool of memory between tasks.
+end note
+
+MemoryPool <|-- ExecutionMemoryPool
+MemoryPool <|-- StorageMemory
+
+StaticMemoryManager --|> MemoryManager
+UnifiedMemoryManager --|> MemoryManager
+
+abstract class MemoryManager {
+    StorageMemoryPool onHeapStorageMemoryPool;
+    StorageMemoryPool offHeapStorageMemoryPool;
+    ExecutionMemoryPool onHeapExecutionMemoryPoo;
+    ExecutionMemoryPool offHeapExecutionMemoryPoo;
+    Long maxOffHeapMemory
+    Long offHeapStorageMemory
+    Long maxOnHeapStorageMemory
+    Long maxOffHeapStorageMemory
+    MemoryMode tungstenMemoryMode
+    Long pageSizeBytes
+    MemoryAllocator tungstenMemoryAllocator//内存分配器
+    Boolean acquireStorageMemory(blockId:BlockId,numBytes:Long,memoryMode:MemoryMode)
+    Boolean acquireUnrollMemory(blockId:BlockId,numBytes:Long,memoryMode:MemoryMode)
+    Long acquireExecutionMemory(numBytes:Long,taskAttemptId:Long,memoryMode:MemoryMode)
+    void releaseExecutionMemory(numBytes:Long,taskAttemptId:Long,memoryMode:MemoryMode)
+    Long releaseAllExecutionMemoryForTask(taskAttemptId:Long)
+    void releaseStorageMemory(numBytes:Long,memoryMode:MemoryMode)
+    void releaseAllStorageMemory()
+    void releaseUnrollMemory(numBytes: Long, memoryMode: MemoryMode)
+    Long executionMemoryUsed()
+    Long storageMemoryUsed()
+    Long getExecutionMemoryUsageForTask(taskAttemptId: Long)
+
+}
+MemoryManager --> StorageMemoryPool
+MemoryManager --> ExecutionMemoryPool
+
+interface MemoryAllocator {
+    MemoryBlock allocate(long size)
+    void free(MemoryBlock memory)
+    UnsafeMemoryAllocator UNSAFE
+    HeapMemoryAllocator HEAP
+}
+MemoryAllocator <|.. HeapMemoryAllocator
+MemoryAllocator <|.. UnsafeMemoryAllocator
+MemoryManager --> MemoryAllocator
+
+
+class MemoryLocation {
+    Object obj
+    long offset
+    void setObjAndOffset(Object newObj,long newOffset)
+    Object getBaseObject()
+    long getBaseOffset()
+}
+note bottom of MemoryLocation
+a memory location.Tracked
+either by a memory address
+(with off-heap allocation),
+or by an offset from a JVM
+object(in-heap allocation)
+end note
+
+class MemoryBlock {
+    long length
+    int pageNumber
+    long size()
+    MemoryBlock fromLongArray(long[] array)
+    void fill(byte value)
+}
+note bottom of MemoryBlock
+A consecutive block of
+memory,starting at a 
+MemoryLocation with a 
+fiexed size.
+类似操作系统的Page概念
+end note
+MemoryLocation <|-- MemoryBlock
+MemoryAllocator <-- MemoryBlock
+#+END_SRC
+** shuffleManager
+#+BEGIN_SRC plantuml :file images/shuffle_manager.png :cmdline -charset utf-8
+Spillable <|-- ExternalSorter
+
+class ExternalSorter {
+
+}
+#+END_SRC
