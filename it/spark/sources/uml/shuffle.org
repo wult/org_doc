@@ -206,6 +206,20 @@ MemoryAllocator <-- MemoryBlock
 Spillable <|-- ExternalSorter
 
 class ExternalSorter {
+    context:TaskContext
+    partitioner : Option[Partitioner]
+    blockManager : BlockManager
+    diskBlockManager : DiskBlockManager
+    serializerManager : SerializerManager
+    map:PartitionedAppendOnlyMap
+    buffer:PartitionedPairBuffer
+    isShuffleSort:Boolean
+    readingIterator:SpillableIterator
+    void insertAll(records:Iterator[Product2[K,V]])//写入前的排序聚合
+    void maybeSpillCollection(usingMap:Boolean)//缓存溢出写入
+    Boolean maybeSpill(collection:C,currentMemory:Long)//将溢出写入磁盘
+    void spill(collection:WritablePartitionedPairCollection[K,C])
 
 }
+
 #+END_SRC
