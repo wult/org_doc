@@ -204,6 +204,7 @@ MemoryAllocator <-- MemoryBlock
 ** shuffleManager
 #+BEGIN_SRC plantuml :file images/shuffle_manager.png :cmdline -charset utf-8
 Spillable <|-- ExternalSorter
+MemoryConsumer <|-- ShuffleExternalSorter
 
 class ExternalSorter {
     context:TaskContext
@@ -222,4 +223,44 @@ class ExternalSorter {
 
 }
 
+class ShuffleExternalSorter {
+
+}
+
+ShuffleManager <|.. SortShuffleManager
+interface ShuffleManager {
+    ShuffleHandle registerShuffle(shuffleId:Int,numMaps:Int,dependency:ShuffleDependency)
+    ShuffleWriter getWriter(handle:ShuffleHandler,mapId:Int,context:TaskContext)
+    ShuffleRead getReader(handle:ShuffleHandler,startPartition:int,endPartition:int,context:TaskContext)
+    boolean unregisterShuffle(shuffleId:Int)
+    ShuffleBlockResoler shuffleBlockResolver()
+    void stop()
+}
+
+class SortShuffleManager {
+
+}
+
+
+
+class ShuffleWriter {
+  void write(records:Iterator[Product2[K,V]])
+  Option[MapStatus] stop(success:Boolean)
+}
+
+class BypassMergeSortShuffleWriter {
+  
+}
+
+class SortShuffleWriter {
+
+}
+
+class UnsafeShuffleWriter {
+
+}
+
+ShuffleWriter <|-- BypassMergeSortShuffleWriter
+ShuffleWriter <|-- SortShuffleWriter
+ShuffleWriter <|-- UnsafeShuffleWriter
 #+END_SRC
