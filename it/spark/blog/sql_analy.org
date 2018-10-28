@@ -1,0 +1,101 @@
+#+BEGIN_SRC plantuml :file images/unresolvedPlan.png :cmdline -charset utf-8
+
+@startsalt
+{
+{T
++ Project类型
+++ projectList
++++ id
++++ age
+++ child:Filter类型
++++ condition: And类型
+++++ left : EqualTo
++++++ left: lower(name)
++++++ right: tom
+++++ right: GreaterThan
++++++ left: age
++++++ right: 20 
++++ child:UnresolvedRelation类型
+++++ tableIdentifier: employee
+
+}
+}
+#+END_SRC
+
+
+#+BEGIN_SRC plantuml :file images/analyze_Plan.png :cmdline -charset utf-8
+@startsalt
+{
+{T
++ Project类型
+++ projectList
++++ id#0
++++ age#2
+++ child:Filter类型
++++ condition: And类型
+++++ left : EqualTo
++++++ left: lower(name#1)
++++++ right: tom
+++++ right: GreaterThan
++++++ left: age#2
++++++ right: 20 
++++ child: SubqueryAlias
+++++ alias: employee
+++++ child : Relation类型
++++++ relation : JDBCRelation类型
+++++++ schema: StructType类型
+
+}
+}
+#+END_SRC
+
+
+#+BEGIN_SRC plantuml :file images/optimizer_Plan.png :cmdline -charset utf-8
+@startsalt
+{
+{T
++ Project类型
+++ projectList
++++ id#0
++++ age#2
+++ child:Filter类型
++++ condition: And类型
+++++ left And
++++++ left IsNotNull
++++++ child AttributeReference
+++++++ name: age
++++++ right: EqualTo
+++++++ left: lower(name#1)
+++++++ right: tom
+++++ right: GreaterThan
++++++ left: age#2
++++++ right: 20 
++++ child : Relation类型
+++++ relation : JDBCRelation类型
++++++ schema: StructType类型
+
+}
+}
+#+END_SRC
+
+#+BEGIN_SRC plantuml :file images/physic.png :cmdline -charset utf-8
+
+@startsalt
+{
+{T
++ ProjectExec类型
+++ projectList
++++ id#0
++++ age#2
+++ child : FilterExec类型
++++ condition: EqualTo类型
+++++ left : lower(name#1)
+++++ right: tom
++++ child: RowDataSourceScanExec类型
+++++ filters
++++++ isNotNull(age)
++++++ GreaterThan(age,20)
+++++ rdd : JDBCRDD
+}
+}
+#+END_SRC

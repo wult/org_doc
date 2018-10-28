@@ -231,7 +231,7 @@ ShuffleManager <|.. SortShuffleManager
 interface ShuffleManager {
     ShuffleHandle registerShuffle(shuffleId:Int,numMaps:Int,dependency:ShuffleDependency)
     ShuffleWriter getWriter(handle:ShuffleHandler,mapId:Int,context:TaskContext)
-    ShuffleRead getReader(handle:ShuffleHandler,startPartition:int,endPartition:int,context:TaskContext)
+    ShuffleReader getReader(handle:ShuffleHandler,startPartition:int,endPartition:int,context:TaskContext)
     boolean unregisterShuffle(shuffleId:Int)
     ShuffleBlockResoler shuffleBlockResolver()
     void stop()
@@ -240,7 +240,6 @@ interface ShuffleManager {
 class SortShuffleManager {
 
 }
-
 
 
 class ShuffleWriter {
@@ -253,14 +252,63 @@ class BypassMergeSortShuffleWriter {
 }
 
 class SortShuffleWriter {
-
+    shuffleBlockResolver:IndexShuffleBlockResolver
+    handle:BaseShuffleHandle
+    mapId:Int
+    context:TaskContextImpl
+    blockManager:BlockManager
+    sorter:ExternalSorter
+    mapStatus:MapStatus
+    writeMetrics:ShuffleWriteMetrics
 }
+note bottom of SortShuffleWriter 
+提供对Shuffle数据排序功能.SortShuffleWriter
+使用ExternalSorter为排序器
+end note
 
 class UnsafeShuffleWriter {
 
 }
 
+ShuffleManager <-- ShuffleWriter
 ShuffleWriter <|-- BypassMergeSortShuffleWriter
 ShuffleWriter <|-- SortShuffleWriter
 ShuffleWriter <|-- UnsafeShuffleWriter
+
+interface ShuffleReader {
+    Iterator[Product2[K,C]] read()
+}
+
+class BlockStoreShuffleReader {
+
+}
+
+ShuffleManager <-- ShuffleReader
+ShuffleReader <|.. BlockStoreShuffleReader
+
+class ShuffleBlockFetcherIterator {
+
+}
+
+interface ShuffleHandle {
+
+}
+
+class BaseShuffleHandle {
+}
+
+class BypassMergeSortShuffleHandle {
+}
+class SerializedShuffleHandle {
+}
+
+ShuffleManager <-- ShuffleHandle
+ShuffleHandle <|.. BaseShuffleHandle
+BaseShuffleHandle <|-- BypassMergeSortShuffleHandle
+BaseShuffleHandle <|-- SerializedShuffleHandle
+
+interface MapStatus {
+  BlockManagerId location()
+  Long getSizeForBlock(reduceId:Int)
+}
 #+END_SRC
